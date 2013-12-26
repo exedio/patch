@@ -38,8 +38,10 @@ public final class Patches
 		for(final Patch patch : patches)
 		{
 			final String id = patch.getID();
+			// TODO faster query
 			if(PatchRun.forPatch(id)==null)
 			{
+				// TODO logging
 				// TODO transactions
 				// TODO ctx stop
 				// TODO ctx message
