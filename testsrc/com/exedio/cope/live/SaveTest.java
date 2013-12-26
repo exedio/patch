@@ -22,7 +22,7 @@ import static com.exedio.cope.junit.CopeAssert.assertContains;
 import static com.exedio.cope.junit.CopeAssert.list;
 import static junit.framework.Assert.assertEquals;
 
-import com.exedio.cope.live.cope.CopeModel4Test;
+import com.exedio.cope.patch.cope.CopeModel4Test;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.Before;
 import org.junit.Test;

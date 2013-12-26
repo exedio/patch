@@ -19,7 +19,7 @@
 package com.exedio.cope.patch;
 
 import com.exedio.cope.Model;
-import com.exedio.cope.live.cope.CopeModel4Test;
+import com.exedio.cope.patch.cope.CopeModel4Test;
 import org.junit.Test;
 
 public class PatchTest extends CopeModel4Test

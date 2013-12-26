@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package com.exedio.cope.live;
+package com.exedio.cope.patch;
 
 import org.junit.extensions.cpsuite.ClasspathSuite;
 import org.junit.runner.RunWith;

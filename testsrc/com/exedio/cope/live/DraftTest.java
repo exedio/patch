@@ -23,7 +23,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
 
 import com.exedio.cope.Model;
-import com.exedio.cope.live.cope.CopeModel4Test;
+import com.exedio.cope.patch.cope.CopeModel4Test;
 import org.junit.Before;
 import org.junit.Test;
 

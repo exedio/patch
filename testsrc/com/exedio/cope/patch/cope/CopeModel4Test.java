@@ -20,7 +20,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package com.exedio.cope.live.cope;
+package com.exedio.cope.patch.cope;
 
 import com.exedio.cope.ConnectProperties;
 import com.exedio.cope.Model;
