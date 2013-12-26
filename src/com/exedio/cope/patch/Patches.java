@@ -25,9 +25,11 @@ import java.util.List;
 
 public final class Patches
 {
-	public static void run(final List<? extends Patch> patches, final JobContext ctx)
+	public static void run(
+			final List<? extends Patch> patchesDescending,
+			final JobContext ctx)
 	{
-		final ArrayList<Patch> x = new ArrayList<Patch>(patches);
+		final ArrayList<Patch> x = new ArrayList<Patch>(patchesDescending);
 		Collections.reverse(x);
 		for(final Patch patch : x)
 			patch.run(ctx);
