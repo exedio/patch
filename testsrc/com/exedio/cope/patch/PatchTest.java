@@ -19,6 +19,7 @@
 package com.exedio.cope.patch;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.EMPTY_LIST;
 import static org.junit.Assert.assertEquals;
 
 import com.exedio.cope.Model;
@@ -39,7 +40,7 @@ public class PatchTest extends CopeModel4Test
 
 	@Test public void one()
 	{
-		assertEquals(asList(), ids());
+		assertEquals(EMPTY_LIST, ids());
 		Patches.run(asList(
 				new SamplePatch("one")
 			),
@@ -50,7 +51,7 @@ public class PatchTest extends CopeModel4Test
 
 	@Test public void two()
 	{
-		assertEquals(asList(), ids());
+		assertEquals(EMPTY_LIST, ids());
 		Patches.run(asList(
 				new SamplePatch("two"),
 				new SamplePatch("one")
