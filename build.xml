@@ -19,29 +19,6 @@
 		</classpath>
 	</taskdef>
 	
-	<target name="catalina">
-		<property name="catalina.root" value="apache-tomcat-6.0.16" />
-		<untar src="lib/apache-tomcat.tar.gz"
-				 compression="gzip"
-				 dest="${basedir}">
-			<patternset>
-				<exclude name="${catalina.root}/conf/server.xml" />
-				<exclude name="${catalina.root}/conf/tomcat-users.xml" />
-				<exclude name="${catalina.root}/webapps/ROOT/**" />
-				<exclude name="${catalina.root}/webapps/docs/**" />
-				<exclude name="${catalina.root}/webapps/examples/**" />
-			</patternset>
-			<mapper type="glob" from="${catalina.root}/*" to="tomcat/*" />
-		</untar>
-		<chmod dir="tomcat/bin" perm="ugo+x" includes="*.sh" />
-		<copy todir="tomcat/conf">
-			<fileset dir="${basedir}">
-				<include name="server.xml" />
-				<include name="tomcat-users.xml" />
-			</fileset>
-		</copy>
-	</target>
-	
 	<target name="src.jspm">
 		<jspm method="append"><!-- TODO use defaults -->
 			<fileset dir="src" includes="**/*.jspm" />
@@ -127,86 +104,26 @@
 			<zipfileset dir="${basedir}/src"><include name="**/*.java"/><exclude name="**/*_Jspm.java" /></zipfileset>
 		</zip>
 	</target>
-
-	<target name="webtestsrc.jspm">
-		<jspm method="write"><!-- TODO use defaults -->
-			<fileset dir="webtestsrc" includes="**/*.jspm" />
-		</jspm>
-	</target>
-	
-	<target name="webtestsrc.instrument" unless="skip.instrument">
-		<instrument finalArgs="true" suppressUnusedWarningOnPrivateActivationConstructor="true" verbose="false">
-			<fileset dir="webtestsrc">
-				<include name="**/*.java" />
-				<exclude name="**/EditedServlet_Jspm.java" />
-				<exclude name="**/Out.java" />
-				<exclude name="**/OutRequest.java" />
-				<exclude name="**/OutFilter.java" />
-			</fileset>
-		</instrument>
-	</target>
-	
-	<target name="webtestsrc.compile"
-			depends="webtestsrc.jspm, webtestsrc.instrument, src.compile">
-		<compile srcdir="webtestsrc">
-			<classpath>
-				<pathelement location="build/classes/src" />
-				<pathelement location="lib/servlet-api.jar" />
-				<pathelement location="lib/exedio-cops.jar" />
-				<pathelement location="lib/exedio-cope.jar" />
-			</classpath>
-		</compile>
-	</target>
-
-	<target name="webtest.web"
-			  depends="src.compile, webtestsrc.compile">
-		<copy todir="webtestweb/WEB-INF/classes">
-			<fileset dir="build/classes/src" />
-			<fileset dir="build/classes/webtestsrc" />
-		</copy>
-		<copy todir="webtestweb/WEB-INF/lib">
-			<fileset file="lib/trove.jar" />
-			<fileset file="lib/exedio-cope-util.jar" />
-			<fileset file="lib/exedio-cops.jar" />
-			<fileset file="lib/exedio-cope.jar" />
-			<fileset file="lib/exedio-cope-console.jar" />
-			<fileset file="lib/commons-fileupload.jar" />
-			<fileset file="lib/commons-io.jar" />
-			<fileset file="lib/hsqldb.jar" />
-		</copy>
-	</target>
-	
-	<target name="webtest.tomcat" depends="webtest.web, catalina">
-		<copy tofile="tomcat/conf/Catalina/localhost/copelive.xml"
-				file="context.xml" />
-	</target>
 	
 	<target name="clean">
 		<delete>
 			<fileset dir="src">
 				<include name="**/*_Jspm.java" />
 			</fileset>
-			<fileset dir="webtestsrc">
-				<include name="**/*_Jspm.java" />
-			</fileset>
 		</delete>
 		<delete dir="build" />
-		<delete dir="webtestweb/WEB-INF/classes" />
-		<delete dir="webtestweb/WEB-INF/lib" />
-		<delete dir="tomcat" />
+		<delete dir="webtestweb/WEB-INF/classes" /><!-- not created anymore -->
+		<delete dir="webtestweb/WEB-INF/lib" /><!-- not created anymore -->
+		<delete dir="tomcat" /><!-- not created anymore -->
 	</target>
 	
-	<target name="jspm" depends="src.jspm, webtestsrc.jspm" />
+	<target name="jspm" depends="src.jspm" />
 	
 	<target name="src" depends="jspm" description="creates all sources, so the IDE does not complain" />
 	
-	<target name="instrument" depends="testsrc.instrument, webtestsrc.instrument" />
+	<target name="instrument" depends="testsrc.instrument" />
 	
-	<target name="compile" depends="src.compile, webtestsrc.compile, testsrc.compile" />
-	
-	<target name="web" depends="webtest.web" />
-	
-	<target name="tomcat" depends="webtest.tomcat" />
+	<target name="compile" depends="src.compile, testsrc.compile" />
 	
 	<target name="api">
 
@@ -237,7 +154,7 @@
 	</target>
 	
 	<target name="build"
-			depends="compile, test, jar, tomcat" />
+			depends="compile, test, jar" />
 	
 	
 	<target name="findbugs" depends="compile, findbugs.taskdef">
@@ -253,7 +170,6 @@
 					reportlevel="low">
 			<class location="${basedir}/build/classes/src" />
 			<class location="${basedir}/build/classes/testsrc" />
-			<class location="${basedir}/build/classes/webtestsrc" />
 			<auxclasspath>
 				<pathelement location="${basedir}/lib/exedio-cope.jar" />
 				<pathelement location="${basedir}/lib/exedio-cops.jar" />
