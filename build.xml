@@ -1,0 +1,282 @@
+<?xml version="1.0"?>
+
+<project name="copelive" default="build" basedir=".">
+
+	<property file="local.properties" />
+	<property file="project.properties" />
+	
+	<import file="macros/compile.xml" />
+	<import file="macros/findbugs.xml" />
+	
+	<taskdef
+			resource="com/exedio/jspm/ant.properties"
+			classpath="lib/exedio-jspm.jar" />
+
+	<taskdef resource="com/exedio/cope/instrument/ant.properties">
+		<classpath>
+			<pathelement location="lib/servlet-api.jar" />
+			<pathelement location="lib/exedio-cope-instrument.jar" />
+		</classpath>
+	</taskdef>
+	
+	<target name="catalina">
+		<property name="catalina.root" value="apache-tomcat-6.0.16" />
+		<untar src="lib/apache-tomcat.tar.gz"
+				 compression="gzip"
+				 dest="${basedir}">
+			<patternset>
+				<exclude name="${catalina.root}/conf/server.xml" />
+				<exclude name="${catalina.root}/conf/tomcat-users.xml" />
+				<exclude name="${catalina.root}/webapps/ROOT/**" />
+				<exclude name="${catalina.root}/webapps/docs/**" />
+				<exclude name="${catalina.root}/webapps/examples/**" />
+			</patternset>
+			<mapper type="glob" from="${catalina.root}/*" to="tomcat/*" />
+		</untar>
+		<chmod dir="tomcat/bin" perm="ugo+x" includes="*.sh" />
+		<copy todir="tomcat/conf">
+			<fileset dir="${basedir}">
+				<include name="server.xml" />
+				<include name="tomcat-users.xml" />
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="src.jspm">
+		<jspm method="append"><!-- TODO use defaults -->
+			<fileset dir="src" includes="**/*.jspm" />
+		</jspm>
+	</target>
+	
+	<target name="src.compile" depends="src.jspm">
+		<compile srcdir="src">
+			<classpath>
+				<pathelement location="lib/servlet-api.jar" />
+				<pathelement location="lib/commons-fileupload.jar" />
+				<pathelement location="lib/exedio-cops.jar" />
+				<pathelement location="lib/exedio-cope.jar" />
+			</classpath>
+		</compile>
+	</target>
+	
+	<target name="testsrc.instrument" unless="skip.instrument">
+		<instrument finalArgs="true" suppressUnusedWarningOnPrivateActivationConstructor="true" verbose="false">
+			<fileset dir="testsrc">
+				<include name="com/exedio/cope/live/DraftedItem.java" />
+			</fileset>
+		</instrument>
+	</target>
+	
+	<target name="testsrc.compile" depends="src.compile, testsrc.instrument">
+		<compile srcdir="testsrc">
+			<classpath>
+				<pathelement location="build/classes/src" />
+				<pathelement location="lib/exedio-cope.jar" />
+				<pathelement location="lib/commons-fileupload.jar" />
+				<pathelement location="lib/servlet-api.jar" />
+				<pathelement location="lib/junit.jar" />
+				<pathelement location="lib/cpsuite.jar" />
+				<pathelement location="lib/findbugs-annotations.jar" />
+			</classpath>
+		</compile>
+	</target>
+	
+	<target name="test" depends="testsrc.compile">
+		<mkdir dir="build/testresults" />
+		<mkdir dir="build/testtmpdir" />
+		<junit fork="yes" dir="${basedir}"
+				 haltonerror="true" haltonfailure="true"
+				 showoutput="true" printsummary="true">
+			<formatter type="brief" usefile="false" />
+			<formatter type="xml" />
+			<classpath>
+				<pathelement location="build/classes/src" />
+				<pathelement location="build/classes/testsrc" />
+				<pathelement location="lib/servlet-api.jar" />
+				<pathelement location="lib/hsqldb.jar" />
+				<pathelement location="lib/junit.jar" />
+				<pathelement location="lib/cpsuite.jar" />
+				<pathelement location="lib/exedio-cops.jar" />
+				<pathelement location="lib/exedio-cope.jar" />
+			</classpath>
+			<test name="${test}" todir="build/testresults" outfile="copelive" />
+			<sysproperty key="java.io.tmpdir" value="${basedir}/build/testtmpdir" />
+			<sysproperty key="java.awt.headless" value="true" />
+			<assertions><enable/></assertions>
+		</junit>
+	</target>
+	
+	<target name="jar" depends="src.compile">
+		<jar jarfile="build/exedio-cope-live.jar" filesonly="true" duplicate="fail" strict="fail" level="9">
+			<fileset dir="build/classes/src" />
+			<manifest>
+				<attribute name="Specification-Title" value="exedio cope live" />
+				<attribute name="Specification-Version" value="${build.tag}" />
+				<attribute name="Specification-Vendor" value="exedio GmbH" />
+				<attribute name="Implementation-Title" value="exedio cope live" />
+				<attribute name="Implementation-Version" value="${build.tag}" />
+				<attribute name="Implementation-Vendor" value="exedio GmbH" />
+				<attribute name="Class-Path" value="exedio-cope.jar" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="jar.src">
+		<mkdir dir="build" />
+		<zip destfile="build/exedio-cope-live-src.zip" filesonly="true" whenempty="fail" duplicate="fail" level="9">
+			<zipfileset dir="${basedir}/src"><include name="**/*.java"/><exclude name="**/*_Jspm.java" /></zipfileset>
+		</zip>
+	</target>
+
+	<target name="webtestsrc.jspm">
+		<jspm method="write"><!-- TODO use defaults -->
+			<fileset dir="webtestsrc" includes="**/*.jspm" />
+		</jspm>
+	</target>
+	
+	<target name="webtestsrc.instrument" unless="skip.instrument">
+		<instrument finalArgs="true" suppressUnusedWarningOnPrivateActivationConstructor="true" verbose="false">
+			<fileset dir="webtestsrc">
+				<include name="**/*.java" />
+				<exclude name="**/EditedServlet_Jspm.java" />
+				<exclude name="**/Out.java" />
+				<exclude name="**/OutRequest.java" />
+				<exclude name="**/OutFilter.java" />
+			</fileset>
+		</instrument>
+	</target>
+	
+	<target name="webtestsrc.compile"
+			depends="webtestsrc.jspm, webtestsrc.instrument, src.compile">
+		<compile srcdir="webtestsrc">
+			<classpath>
+				<pathelement location="build/classes/src" />
+				<pathelement location="lib/servlet-api.jar" />
+				<pathelement location="lib/exedio-cops.jar" />
+				<pathelement location="lib/exedio-cope.jar" />
+			</classpath>
+		</compile>
+	</target>
+
+	<target name="webtest.web"
+			  depends="src.compile, webtestsrc.compile">
+		<copy todir="webtestweb/WEB-INF/classes">
+			<fileset dir="build/classes/src" />
+			<fileset dir="build/classes/webtestsrc" />
+		</copy>
+		<copy todir="webtestweb/WEB-INF/lib">
+			<fileset file="lib/trove.jar" />
+			<fileset file="lib/exedio-cope-util.jar" />
+			<fileset file="lib/exedio-cops.jar" />
+			<fileset file="lib/exedio-cope.jar" />
+			<fileset file="lib/exedio-cope-console.jar" />
+			<fileset file="lib/commons-fileupload.jar" />
+			<fileset file="lib/commons-io.jar" />
+			<fileset file="lib/hsqldb.jar" />
+		</copy>
+	</target>
+	
+	<target name="webtest.tomcat" depends="webtest.web, catalina">
+		<copy tofile="tomcat/conf/Catalina/localhost/copelive.xml"
+				file="context.xml" />
+	</target>
+	
+	<target name="clean">
+		<delete>
+			<fileset dir="src">
+				<include name="**/*_Jspm.java" />
+			</fileset>
+			<fileset dir="webtestsrc">
+				<include name="**/*_Jspm.java" />
+			</fileset>
+		</delete>
+		<delete dir="build" />
+		<delete dir="webtestweb/WEB-INF/classes" />
+		<delete dir="webtestweb/WEB-INF/lib" />
+		<delete dir="tomcat" />
+	</target>
+	
+	<target name="jspm" depends="src.jspm, webtestsrc.jspm" />
+	
+	<target name="src" depends="jspm" description="creates all sources, so the IDE does not complain" />
+	
+	<target name="instrument" depends="testsrc.instrument, webtestsrc.instrument" />
+	
+	<target name="compile" depends="src.compile, webtestsrc.compile, testsrc.compile" />
+	
+	<target name="web" depends="webtest.web" />
+	
+	<target name="tomcat" depends="webtest.tomcat" />
+	
+	<target name="api">
+
+		<javadoc
+				destdir="build/api"
+				maxmemory="60m"
+				source="1.5"
+				private="true"
+				author="on"
+				use="on"
+				version="on"
+				windowtitle="exedio cope"
+				splitindex="on"
+				failonerror="true"
+			>
+			<doctitle><![CDATA[Cope Live Editor<br>API Specification]]></doctitle>
+			<header><![CDATA[<a href="http://cope.sourceforge.net/" target="_top">exedio cope</a>]]></header>
+			<footer><![CDATA[Cope with<br>Object<br>Persistence]]></footer>
+			<bottom><![CDATA[<a href="http://sourceforge.net/" target="_top"><img src="http://sourceforge.net/sflogo.php?group_id=152867&amp;type=1" width="88" height="31" border="0" align="right" alt="SourceForge.net&nbsp;Logo" /></a><small>Copyright &copy; 2004-2008 <a href="http://www.exedio.com/" target="_top">exedio</a> Gesellschaft f&uuml;r Softwareentwicklung mbH. All rights reserved.</small><br><font size="-3">${build.tag}</font>]]></bottom>
+			<fileset dir="src" includes="**/*.java" />
+			<classpath>
+				<pathelement location="lib/exedio-cope.jar" />
+				<pathelement location="lib/exedio-cops.jar" />
+				<pathelement location="lib/servlet-api.jar" />
+				<pathelement location="lib/commons-fileupload.jar" />
+			</classpath>
+		</javadoc>
+	</target>
+	
+	<target name="build"
+			depends="compile, test, jar, tomcat" />
+	
+	
+	<target name="findbugs" depends="compile, findbugs.taskdef">
+		<findbugs
+					home="${basedir}/build/findbugs-home"
+					jvmargs="-Xmx512M"
+					failOnError="true"
+					warningsProperty="findbugs.warnings"
+					output="${findbugs.output}"
+					outputFile="${basedir}/build/findbugs.${findbugs.output}"
+					excludeFilter="conf/findbugs-exclude.xml"
+					effort="max"
+					reportlevel="low">
+			<class location="${basedir}/build/classes/src" />
+			<class location="${basedir}/build/classes/testsrc" />
+			<class location="${basedir}/build/classes/webtestsrc" />
+			<auxclasspath>
+				<pathelement location="${basedir}/lib/exedio-cope.jar" />
+				<pathelement location="${basedir}/lib/exedio-cops.jar" />
+				<pathelement location="${basedir}/lib/commons-io.jar" />
+				<pathelement location="${basedir}/lib/servlet-api.jar" />
+				<pathelement location="${basedir}/lib/junit.jar" />
+			</auxclasspath>
+		</findbugs>
+	</target>
+	
+	<target name="all" depends="build, jar.src, findbugs" />
+	
+	<target name="jenkins" depends="all">
+		<copy todir="${basedir}/build/success">
+			<fileset file="${basedir}/build/exedio-cope-live.jar" />
+			<fileset file="${basedir}/build/exedio-cope-live-src.zip" />
+			<fileset file="${basedir}/exedio-cope-live-log.txt" />
+		</copy>
+		<copy file="ivy.xml" tofile="build/success/ivy.xml" overwrite="true">
+			<filterset>
+				<filter token="BUILD_REVISION" value="${build.revision}" />
+			</filterset>
+		</copy>
+	</target>
+	
+</project>
