@@ -18,15 +18,15 @@
 
 package com.exedio.cope.patch;
 
-import com.exedio.cope.util.EmptyJobContext;
+import com.exedio.cope.util.JobContext;
 import java.util.List;
 
 public final class Patches
 {
-	public static void run(final List<? extends Patch> patches)
+	public static void run(final List<? extends Patch> patches, final JobContext ctx)
 	{
 		for(final Patch patch : patches)
-			patch.run(new EmptyJobContext());
+			patch.run(ctx);
 	}
 
 	private Patches()

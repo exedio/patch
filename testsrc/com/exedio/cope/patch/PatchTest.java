@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import com.exedio.cope.Model;
 import com.exedio.cope.Query;
 import com.exedio.cope.patch.cope.CopeModel4Test;
+import com.exedio.cope.util.EmptyJobContext;
 import java.util.List;
 import org.junit.Test;
 
@@ -41,7 +42,9 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(asList(), ids());
 		Patches.run(asList(
 				new SamplePatch("one")
-		));
+			),
+			new EmptyJobContext()
+		);
 		assertEquals(asList("one"), ids());
 	}
 
@@ -51,7 +54,9 @@ public class PatchTest extends CopeModel4Test
 		Patches.run(asList(
 				new SamplePatch("one"),
 				new SamplePatch("two")
-		));
+			),
+			new EmptyJobContext()
+		);
 		assertEquals(asList("one", "two"), ids());
 	}
 
