@@ -22,5 +22,6 @@ import com.exedio.cope.util.JobContext;
 
 public abstract class Patch
 {
+	public abstract String getID();
 	public abstract void run(JobContext ctx);
 }

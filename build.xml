@@ -14,7 +14,15 @@
 		</classpath>
 	</taskdef>
 	
-	<target name="src.compile">
+	<target name="src.instrument" unless="skip.instrument">
+		<instrument finalArgs="true" suppressUnusedWarningOnPrivateActivationConstructor="true" verbose="false">
+			<fileset dir="src">
+				<include name="com/exedio/cope/patch/PatchRun.java" />
+			</fileset>
+		</instrument>
+	</target>
+	
+	<target name="src.compile" depends="src.instrument">
 		<compile srcdir="src">
 			<classpath>
 				<pathelement location="lib/exedio-cope.jar" />
@@ -99,7 +107,7 @@
 		<delete dir="tomcat" /><!-- not created anymore -->
 	</target>
 	
-	<target name="instrument" depends="testsrc.instrument" />
+	<target name="instrument" depends="src.instrument, testsrc.instrument" />
 	
 	<target name="compile" depends="src.compile, testsrc.compile" />
 	

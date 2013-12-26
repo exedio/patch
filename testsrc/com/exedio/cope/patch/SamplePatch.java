@@ -30,6 +30,12 @@ public class SamplePatch extends Patch
 	}
 
 	@Override
+	public String getID()
+	{
+		return id;
+	}
+
+	@Override
 	public void run(final JobContext ctx)
 	{
 		new SampleItem(id);

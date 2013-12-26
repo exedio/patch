@@ -18,6 +18,7 @@
 
 package com.exedio.cope.patch;
 
+import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,8 +33,17 @@ public final class Patches
 		final ArrayList<Patch> patches = new ArrayList<Patch>(patchesDescending);
 		Collections.reverse(patches);
 		for(final Patch patch : patches)
-			patch.run(ctx);
+		{
+			final String id = patch.getID();
+			if(PatchRun.forPatch(id)==null)
+			{
+				patch.run(ctx);
+				new PatchRun(id);
+			}
+		}
 	}
+
+	public static final TypeSet types = new TypeSet(PatchRun.TYPE);
 
 	private Patches()
 	{
