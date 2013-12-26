@@ -29,9 +29,9 @@ public final class Patches
 			final List<? extends Patch> patchesDescending,
 			final JobContext ctx)
 	{
-		final ArrayList<Patch> x = new ArrayList<Patch>(patchesDescending);
-		Collections.reverse(x);
-		for(final Patch patch : x)
+		final ArrayList<Patch> patches = new ArrayList<Patch>(patchesDescending);
+		Collections.reverse(patches);
+		for(final Patch patch : patches)
 			patch.run(ctx);
 	}
 
