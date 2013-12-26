@@ -10,7 +10,6 @@
 	
 	<taskdef resource="com/exedio/cope/instrument/ant.properties">
 		<classpath>
-			<pathelement location="lib/servlet-api.jar" />
 			<pathelement location="lib/exedio-cope-instrument.jar" />
 		</classpath>
 	</taskdef>
@@ -18,9 +17,6 @@
 	<target name="src.compile">
 		<compile srcdir="src">
 			<classpath>
-				<pathelement location="lib/servlet-api.jar" />
-				<pathelement location="lib/commons-fileupload.jar" />
-				<pathelement location="lib/exedio-cops.jar" />
 				<pathelement location="lib/exedio-cope.jar" />
 			</classpath>
 		</compile>
@@ -39,8 +35,6 @@
 			<classpath>
 				<pathelement location="build/classes/src" />
 				<pathelement location="lib/exedio-cope.jar" />
-				<pathelement location="lib/commons-fileupload.jar" />
-				<pathelement location="lib/servlet-api.jar" />
 				<pathelement location="lib/junit.jar" />
 				<pathelement location="lib/cpsuite.jar" />
 				<pathelement location="lib/findbugs-annotations.jar" />
@@ -59,11 +53,9 @@
 			<classpath>
 				<pathelement location="build/classes/src" />
 				<pathelement location="build/classes/testsrc" />
-				<pathelement location="lib/servlet-api.jar" />
 				<pathelement location="lib/hsqldb.jar" />
 				<pathelement location="lib/junit.jar" />
 				<pathelement location="lib/cpsuite.jar" />
-				<pathelement location="lib/exedio-cops.jar" />
 				<pathelement location="lib/exedio-cope.jar" />
 			</classpath>
 			<test name="${test}" todir="build/testresults" outfile="copepatch" />
@@ -128,9 +120,6 @@
 			<fileset dir="src" includes="**/*.java" />
 			<classpath>
 				<pathelement location="lib/exedio-cope.jar" />
-				<pathelement location="lib/exedio-cops.jar" />
-				<pathelement location="lib/servlet-api.jar" />
-				<pathelement location="lib/commons-fileupload.jar" />
 			</classpath>
 		</javadoc>
 	</target>
@@ -154,9 +143,6 @@
 			<class location="${basedir}/build/classes/testsrc" />
 			<auxclasspath>
 				<pathelement location="${basedir}/lib/exedio-cope.jar" />
-				<pathelement location="${basedir}/lib/exedio-cops.jar" />
-				<pathelement location="${basedir}/lib/commons-io.jar" />
-				<pathelement location="${basedir}/lib/servlet-api.jar" />
 				<pathelement location="${basedir}/lib/junit.jar" />
 			</auxclasspath>
 		</findbugs>

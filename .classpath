@@ -2,11 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="testsrc"/>
-	<classpathentry kind="lib" path="lib/commons-fileupload.jar"/>
 	<classpathentry kind="lib" path="lib/junit.jar"/>
-	<classpathentry kind="lib" path="lib/servlet-api.jar" sourcepath="lib/servlet-api-source.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/exedio-cops.jar" sourcepath="lib/exedio-cops-src.zip"/>
 	<classpathentry kind="lib" path="lib/exedio-cope.jar" sourcepath="lib/exedio-cope-src.zip"/>
 	<classpathentry kind="lib" path="lib/cpsuite.jar" sourcepath="lib/cpsuite-src.zip"/>
 	<classpathentry kind="lib" path="lib/findbugs-annotations.jar"/>
