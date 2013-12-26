@@ -20,8 +20,6 @@
 		<artifact name="exedio-cope-patch" type="log" ext="txt" />
 	</publications>
 	<dependencies>
-		<dependency org="javax.servlet" name="servlet-api" rev="2.4" />
-		<dependency org="commons-fileupload" name="commons-fileupload" rev="1.2.1"/>
 		<dependency org="junit" name="junit" rev="4.9" conf="build->default">
 			<exclude org="org.hamcrest" module="hamcrest-core" />
 		</dependency>
@@ -30,8 +28,5 @@
 			<conf name="runtime" mapped="runtime" />
 			<conf name="build" mapped="hsqldb" />
 		</dependency>
-		<dependency org="com.exedio" name="cops" rev="200" />
-		<dependency org="com.exedio" name="jspm" rev="89" conf="build->runtime" />
-		<dependency org="com.exedio" name="copeconsole" rev="6294" conf="build->runtime" />
 	</dependencies>
 </ivy-module>
