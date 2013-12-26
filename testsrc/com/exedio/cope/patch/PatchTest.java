@@ -18,8 +18,13 @@
 
 package com.exedio.cope.patch;
 
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+
 import com.exedio.cope.Model;
+import com.exedio.cope.Query;
 import com.exedio.cope.patch.cope.CopeModel4Test;
+import java.util.List;
 import org.junit.Test;
 
 public class PatchTest extends CopeModel4Test
@@ -31,8 +36,29 @@ public class PatchTest extends CopeModel4Test
 		super(MODEL);
 	}
 
-	@Test public void testIt()
+	@Test public void one()
 	{
-		SampleItem item = new SampleItem("one");
+		assertEquals(asList(), ids());
+		Patches.run(asList(
+				new SamplePatch("one")
+		));
+		assertEquals(asList("one"), ids());
+	}
+
+	@Test public void two()
+	{
+		assertEquals(asList(), ids());
+		Patches.run(asList(
+				new SamplePatch("one"),
+				new SamplePatch("two")
+		));
+		assertEquals(asList("one", "two"), ids());
+	}
+
+	private List<String> ids()
+	{
+		final Query<String> q = new Query<String>(SampleItem.patch, SampleItem.TYPE, null);
+		q.setOrderBy(SampleItem.number, true);
+		return q.search();
 	}
 }
