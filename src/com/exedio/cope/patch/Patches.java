@@ -19,13 +19,17 @@
 package com.exedio.cope.patch;
 
 import com.exedio.cope.util.JobContext;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public final class Patches
 {
 	public static void run(final List<? extends Patch> patches, final JobContext ctx)
 	{
-		for(final Patch patch : patches)
+		final ArrayList<Patch> x = new ArrayList<Patch>(patches);
+		Collections.reverse(x);
+		for(final Patch patch : x)
 			patch.run(ctx);
 	}
 

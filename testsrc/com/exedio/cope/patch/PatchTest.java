@@ -52,8 +52,8 @@ public class PatchTest extends CopeModel4Test
 	{
 		assertEquals(asList(), ids());
 		Patches.run(asList(
-				new SamplePatch("one"),
-				new SamplePatch("two")
+				new SamplePatch("two"),
+				new SamplePatch("one")
 			),
 			new EmptyJobContext()
 		);
