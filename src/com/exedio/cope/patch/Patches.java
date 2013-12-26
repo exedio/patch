@@ -28,6 +28,7 @@ public final class Patches
 {
 	// TODO remove patches safely
 	// TODO stages
+	// TODO fail on duplicate ids
 	public static void run(
 			final List<? extends Patch> patchesDescending,
 			final JobContext ctx)
