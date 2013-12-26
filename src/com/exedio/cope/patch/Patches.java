@@ -26,6 +26,8 @@ import java.util.List;
 
 public final class Patches
 {
+	// TODO remove patches safely
+	// TODO stages
 	public static void run(
 			final List<? extends Patch> patchesDescending,
 			final JobContext ctx)
@@ -37,6 +39,11 @@ public final class Patches
 			final String id = patch.getID();
 			if(PatchRun.forPatch(id)==null)
 			{
+				// TODO transactions
+				// TODO ctx stop
+				// TODO ctx message
+				// TODO ctx progress
+				// TODO date / elapsed
 				patch.run(ctx);
 				new PatchRun(id);
 			}
