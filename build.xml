@@ -40,6 +40,7 @@
 		<instrument finalArgs="true" suppressUnusedWarningOnPrivateActivationConstructor="true" verbose="false">
 			<fileset dir="testsrc">
 				<include name="com/exedio/cope/live/DraftedItem.java" />
+				<include name="com/exedio/cope/patch/*Item.java" />
 			</fileset>
 		</instrument>
 	</target>
