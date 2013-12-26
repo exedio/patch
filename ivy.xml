@@ -4,7 +4,7 @@
 				xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
 	<info
 			organisation="com.exedio"
-			module="copelive"
+			module="copepatch"
 			revision="@BUILD_REVISION@">
 		<license
 				name="GNU Lesser General Public License, Version 2.1"
@@ -15,9 +15,9 @@
 		<conf name="build" extends="runtime" visibility="private" />
 	</configurations>
 	<publications>
-		<artifact name="exedio-cope-live" />
-		<artifact name="exedio-cope-live" type="src" ext="zip" />
-		<artifact name="exedio-cope-live" type="log" ext="txt" />
+		<artifact name="exedio-cope-patch" />
+		<artifact name="exedio-cope-patch" type="src" ext="zip" />
+		<artifact name="exedio-cope-patch" type="log" ext="txt" />
 	</publications>
 	<dependencies>
 		<dependency org="javax.servlet" name="servlet-api" rev="2.4" />
