@@ -8,10 +8,6 @@
 	<import file="macros/compile.xml" />
 	<import file="macros/findbugs.xml" />
 	
-	<taskdef
-			resource="com/exedio/jspm/ant.properties"
-			classpath="lib/exedio-jspm.jar" />
-
 	<taskdef resource="com/exedio/cope/instrument/ant.properties">
 		<classpath>
 			<pathelement location="lib/servlet-api.jar" />
@@ -19,13 +15,7 @@
 		</classpath>
 	</taskdef>
 	
-	<target name="src.jspm">
-		<jspm method="append"><!-- TODO use defaults -->
-			<fileset dir="src" includes="**/*.jspm" />
-		</jspm>
-	</target>
-	
-	<target name="src.compile" depends="src.jspm">
+	<target name="src.compile">
 		<compile srcdir="src">
 			<classpath>
 				<pathelement location="lib/servlet-api.jar" />
@@ -108,7 +98,7 @@
 	
 	<target name="clean">
 		<delete>
-			<fileset dir="src">
+			<fileset dir="src"><!-- not created anymore -->
 				<include name="**/*_Jspm.java" />
 			</fileset>
 		</delete>
@@ -117,10 +107,6 @@
 		<delete dir="webtestweb/WEB-INF/lib" /><!-- not created anymore -->
 		<delete dir="tomcat" /><!-- not created anymore -->
 	</target>
-	
-	<target name="jspm" depends="src.jspm" />
-	
-	<target name="src" depends="jspm" description="creates all sources, so the IDE does not complain" />
 	
 	<target name="instrument" depends="testsrc.instrument" />
 	
