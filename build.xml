@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="copelive" default="build" basedir=".">
+<project name="copepatch" default="build" basedir=".">
 
 	<property file="local.properties" />
 	<property file="project.properties" />
@@ -29,7 +29,6 @@
 	<target name="testsrc.instrument" unless="skip.instrument">
 		<instrument finalArgs="true" suppressUnusedWarningOnPrivateActivationConstructor="true" verbose="false">
 			<fileset dir="testsrc">
-				<include name="com/exedio/cope/live/DraftedItem.java" />
 				<include name="com/exedio/cope/patch/*Item.java" />
 			</fileset>
 		</instrument>
@@ -67,7 +66,7 @@
 				<pathelement location="lib/exedio-cops.jar" />
 				<pathelement location="lib/exedio-cope.jar" />
 			</classpath>
-			<test name="${test}" todir="build/testresults" outfile="copelive" />
+			<test name="${test}" todir="build/testresults" outfile="copepatch" />
 			<sysproperty key="java.io.tmpdir" value="${basedir}/build/testtmpdir" />
 			<sysproperty key="java.awt.headless" value="true" />
 			<assertions><enable/></assertions>
@@ -75,13 +74,13 @@
 	</target>
 	
 	<target name="jar" depends="src.compile">
-		<jar jarfile="build/exedio-cope-live.jar" filesonly="true" duplicate="fail" strict="fail" level="9">
+		<jar jarfile="build/exedio-cope-patch.jar" filesonly="true" duplicate="fail" strict="fail" level="9">
 			<fileset dir="build/classes/src" />
 			<manifest>
-				<attribute name="Specification-Title" value="exedio cope live" />
+				<attribute name="Specification-Title" value="exedio cope patch" />
 				<attribute name="Specification-Version" value="${build.tag}" />
 				<attribute name="Specification-Vendor" value="exedio GmbH" />
-				<attribute name="Implementation-Title" value="exedio cope live" />
+				<attribute name="Implementation-Title" value="exedio cope patch" />
 				<attribute name="Implementation-Version" value="${build.tag}" />
 				<attribute name="Implementation-Vendor" value="exedio GmbH" />
 				<attribute name="Class-Path" value="exedio-cope.jar" />
@@ -91,7 +90,7 @@
 	
 	<target name="jar.src">
 		<mkdir dir="build" />
-		<zip destfile="build/exedio-cope-live-src.zip" filesonly="true" whenempty="fail" duplicate="fail" level="9">
+		<zip destfile="build/exedio-cope-patch-src.zip" filesonly="true" whenempty="fail" duplicate="fail" level="9">
 			<zipfileset dir="${basedir}/src"><include name="**/*.java"/><exclude name="**/*_Jspm.java" /></zipfileset>
 		</zip>
 	</target>
@@ -171,9 +170,9 @@
 	
 	<target name="jenkins" depends="all">
 		<copy todir="${basedir}/build/success">
-			<fileset file="${basedir}/build/exedio-cope-live.jar" />
-			<fileset file="${basedir}/build/exedio-cope-live-src.zip" />
-			<fileset file="${basedir}/exedio-cope-live-log.txt" />
+			<fileset file="${basedir}/build/exedio-cope-patch.jar" />
+			<fileset file="${basedir}/build/exedio-cope-patch-src.zip" />
+			<fileset file="${basedir}/exedio-cope-patch-log.txt" />
 		</copy>
 		<copy file="ivy.xml" tofile="build/success/ivy.xml" overwrite="true">
 			<filterset>
