@@ -1,8 +1,0 @@
-
-<Context
-		path="/copelive"
-		docBase="../../webtestweb"
-		cookies="false"
-		debug="0"
-		privileged="true">
-</Context>
