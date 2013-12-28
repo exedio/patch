@@ -109,13 +109,52 @@ public class PatchTest extends CopeModel4Test
 		}
 	}
 
+	@Test public void fail()
+	{
+		assertEquals(EMPTY_LIST, items());
+		final List<SamplePatch> patches = asList(
+			newSamplePatch("fail"),
+			newSamplePatch("ok"));
+		try
+		{
+			run(patches, new EmptyJobContext());
+			fail();
+		}
+		catch(final RuntimeException e)
+		{
+			assertEquals("failed", e.getMessage());
+		}
+		final SampleItem ok;
+		{
+			final Iterator<SampleItem> items = items().iterator();
+			ok = assertIt("ok", "patch ok", items.next());
+			assertFalse(items.hasNext());
+		}
+		try
+		{
+			run(patches, new EmptyJobContext());
+			fail();
+		}
+		catch(final RuntimeException e)
+		{
+			assertEquals("failed", e.getMessage());
+		}
+		assertEquals(asList(ok), items());
+	}
+
 	private static void run(
 			final List<? extends Patch> patchesDescending,
 			final JobContext ctx)
 	{
 		MODEL.commit();
-		Patches.run(patchesDescending, ctx);
-		MODEL.startTransaction(PatchTest.class.getName());
+		try
+		{
+			Patches.run(patchesDescending, ctx);
+		}
+		finally
+		{
+			MODEL.startTransaction(PatchTest.class.getName());
+		}
 	}
 
 	private SamplePatch newSamplePatch(final String id)

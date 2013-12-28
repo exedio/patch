@@ -42,5 +42,7 @@ public class SamplePatch extends Patch
 	public void run(final JobContext ctx)
 	{
 		new SampleItem(id, model.currentTransaction().getName());
+		if("fail".equals(id))
+			throw new RuntimeException("failed");
 	}
 }
