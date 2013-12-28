@@ -29,6 +29,7 @@ import com.exedio.cope.Revisions;
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.EmptyJobContext;
+import com.exedio.cope.util.JobContext;
 import java.util.Iterator;
 import java.util.List;
 import org.junit.Test;
@@ -49,19 +50,19 @@ public class PatchTest extends CopeModel4Test
 	@Test public void one()
 	{
 		assertEquals(EMPTY_LIST, items());
-		Patches.run(asList(
-				new SamplePatch("one")
+		run(asList(
+				newSamplePatch("one")
 			),
 			new EmptyJobContext()
 		);
 		final SampleItem one;
 		{
 			final Iterator<SampleItem> items = items().iterator();
-			one = assertIt("one", items.next());
+			one = assertIt("one", "patch one", items.next());
 			assertFalse(items.hasNext());
 		}
-		Patches.run(asList(
-				new SamplePatch("one")
+		run(asList(
+				newSamplePatch("one")
 			),
 			new EmptyJobContext()
 		);
@@ -71,9 +72,9 @@ public class PatchTest extends CopeModel4Test
 	@Test public void two()
 	{
 		assertEquals(EMPTY_LIST, items());
-		Patches.run(asList(
-				new SamplePatch("two"),
-				new SamplePatch("one")
+		run(asList(
+				newSamplePatch("two"),
+				newSamplePatch("one")
 			),
 			new EmptyJobContext()
 		);
@@ -81,21 +82,21 @@ public class PatchTest extends CopeModel4Test
 		final SampleItem two;
 		{
 			final Iterator<SampleItem> items = items().iterator();
-			one = assertIt("one", items.next());
-			two = assertIt("two", items.next());
+			one = assertIt("one", "patch one", items.next());
+			two = assertIt("two", "patch two", items.next());
 			assertFalse(items.hasNext());
 		}
-		Patches.run(asList(
-				new SamplePatch("two"),
-				new SamplePatch("one")
+		run(asList(
+				newSamplePatch("two"),
+				newSamplePatch("one")
 			),
 			new EmptyJobContext()
 		);
 		assertEquals(asList(one, two), items());
-		Patches.run(asList(
-				new SamplePatch("three"),
-				new SamplePatch("two"),
-				new SamplePatch("one")
+		run(asList(
+				newSamplePatch("three"),
+				newSamplePatch("two"),
+				newSamplePatch("one")
 			),
 			new EmptyJobContext()
 		);
@@ -103,9 +104,23 @@ public class PatchTest extends CopeModel4Test
 			final Iterator<SampleItem> items = items().iterator();
 			assertEquals(one, items.next());
 			assertEquals(two, items.next());
-			assertIt("three", items.next());
+			assertIt("three", "patch three", items.next());
 			assertFalse(items.hasNext());
 		}
+	}
+
+	private static void run(
+			final List<? extends Patch> patchesDescending,
+			final JobContext ctx)
+	{
+		MODEL.commit();
+		Patches.run(patchesDescending, ctx);
+		MODEL.startTransaction(PatchTest.class.getName());
+	}
+
+	private SamplePatch newSamplePatch(final String id)
+	{
+		return new SamplePatch(MODEL, id);
 	}
 
 	private List<SampleItem> items()
@@ -115,9 +130,13 @@ public class PatchTest extends CopeModel4Test
 		return q.search();
 	}
 
-	private SampleItem assertIt(final String id, final SampleItem actual)
+	private SampleItem assertIt(
+			final String id,
+			final String transactionName,
+			final SampleItem actual)
 	{
 		assertEquals("id", id, actual.getPatch());
+		assertEquals("transactionName", transactionName, actual.getTransactionName());
 		return actual;
 	}
 }

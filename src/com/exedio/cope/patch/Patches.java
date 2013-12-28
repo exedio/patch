@@ -18,6 +18,7 @@
 
 package com.exedio.cope.patch;
 
+import com.exedio.cope.Model;
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
 import java.util.ArrayList;
@@ -35,20 +36,30 @@ public final class Patches
 	{
 		final ArrayList<Patch> patches = new ArrayList<Patch>(patchesDescending);
 		Collections.reverse(patches);
+		final Model model = PatchRun.TYPE.getModel();
 		for(final Patch patch : patches)
 		{
 			final String id = patch.getID();
-			// TODO faster query
-			if(PatchRun.forPatch(id)==null)
+			try
 			{
-				// TODO logging
-				// TODO transactions
-				// TODO ctx stop
-				// TODO ctx message
-				// TODO ctx progress
-				// TODO date / elapsed
-				patch.run(ctx);
-				new PatchRun(id);
+				model.startTransaction("patch " + id);
+				// TODO faster query
+				if(PatchRun.forPatch(id)==null)
+				{
+					// TODO logging
+					// TODO transactions
+					// TODO ctx stop
+					// TODO ctx message
+					// TODO ctx progress
+					// TODO date / elapsed
+					patch.run(ctx);
+					new PatchRun(id);
+				}
+				model.commit();
+			}
+			finally
+			{
+				model.rollbackIfNotCommitted();
 			}
 		}
 	}

@@ -18,14 +18,17 @@
 
 package com.exedio.cope.patch;
 
+import com.exedio.cope.Model;
 import com.exedio.cope.util.JobContext;
 
 public class SamplePatch extends Patch
 {
+	private final Model model;
 	private final String id;
 
-	SamplePatch(final String id)
+	SamplePatch(final Model model, final String id)
 	{
+		this.model = model;
 		this.id = id;
 	}
 
@@ -38,6 +41,6 @@ public class SamplePatch extends Patch
 	@Override
 	public void run(final JobContext ctx)
 	{
-		new SampleItem(id);
+		new SampleItem(id, model.currentTransaction().getName());
 	}
 }
