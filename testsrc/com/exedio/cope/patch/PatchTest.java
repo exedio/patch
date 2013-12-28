@@ -21,6 +21,7 @@ package com.exedio.cope.patch;
 import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_LIST;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import com.exedio.cope.Model;
 import com.exedio.cope.Query;
@@ -28,6 +29,7 @@ import com.exedio.cope.Revisions;
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.EmptyJobContext;
+import java.util.Iterator;
 import java.util.List;
 import org.junit.Test;
 
@@ -46,38 +48,50 @@ public class PatchTest extends CopeModel4Test
 
 	@Test public void one()
 	{
-		assertEquals(EMPTY_LIST, ids());
+		assertEquals(EMPTY_LIST, items());
 		Patches.run(asList(
 				new SamplePatch("one")
 			),
 			new EmptyJobContext()
 		);
-		assertEquals(asList("one"), ids());
+		final SampleItem one;
+		{
+			final Iterator<SampleItem> items = items().iterator();
+			one = assertIt("one", items.next());
+			assertFalse(items.hasNext());
+		}
 		Patches.run(asList(
 				new SamplePatch("one")
 			),
 			new EmptyJobContext()
 		);
-		assertEquals(asList("one"), ids());
+		assertEquals(asList(one), items());
 	}
 
 	@Test public void two()
 	{
-		assertEquals(EMPTY_LIST, ids());
+		assertEquals(EMPTY_LIST, items());
 		Patches.run(asList(
 				new SamplePatch("two"),
 				new SamplePatch("one")
 			),
 			new EmptyJobContext()
 		);
-		assertEquals(asList("one", "two"), ids());
+		final SampleItem one;
+		final SampleItem two;
+		{
+			final Iterator<SampleItem> items = items().iterator();
+			one = assertIt("one", items.next());
+			two = assertIt("two", items.next());
+			assertFalse(items.hasNext());
+		}
 		Patches.run(asList(
 				new SamplePatch("two"),
 				new SamplePatch("one")
 			),
 			new EmptyJobContext()
 		);
-		assertEquals(asList("one", "two"), ids());
+		assertEquals(asList(one, two), items());
 		Patches.run(asList(
 				new SamplePatch("three"),
 				new SamplePatch("two"),
@@ -85,13 +99,25 @@ public class PatchTest extends CopeModel4Test
 			),
 			new EmptyJobContext()
 		);
-		assertEquals(asList("one", "two", "three"), ids());
+		{
+			final Iterator<SampleItem> items = items().iterator();
+			assertEquals(one, items.next());
+			assertEquals(two, items.next());
+			assertIt("three", items.next());
+			assertFalse(items.hasNext());
+		}
 	}
 
-	private List<String> ids()
+	private List<SampleItem> items()
 	{
-		final Query<String> q = new Query<String>(SampleItem.patch, SampleItem.TYPE, null);
+		final Query<SampleItem> q = SampleItem.TYPE.newQuery();
 		q.setOrderBy(SampleItem.number, true);
 		return q.search();
+	}
+
+	private SampleItem assertIt(final String id, final SampleItem actual)
+	{
+		assertEquals("id", id, actual.getPatch());
+		return actual;
 	}
 }
