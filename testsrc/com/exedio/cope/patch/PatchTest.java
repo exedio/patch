@@ -22,6 +22,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_LIST;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 import com.exedio.cope.Model;
 import com.exedio.cope.Query;
@@ -109,7 +110,7 @@ public class PatchTest extends CopeModel4Test
 		}
 	}
 
-	@Test public void fail()
+	@Test public void failure()
 	{
 		assertEquals(EMPTY_LIST, items());
 		final List<SamplePatch> patches = asList(
