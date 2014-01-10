@@ -80,6 +80,7 @@ public class PatchTest extends CopeModel4Test
 				newSamplePatch("one")
 			), ctx
 		);
+		ctx.assertIt("requestedToStop()"+"requestedToStop()");
 		final SampleItem one;
 		final SampleItem two;
 		{
@@ -93,6 +94,7 @@ public class PatchTest extends CopeModel4Test
 				newSamplePatch("one")
 			), ctx
 		);
+		ctx.assertIt("requestedToStop()"+"requestedToStop()");
 		assertEquals(asList(one, two), items());
 		run(asList(
 				newSamplePatch("three"),
@@ -100,6 +102,7 @@ public class PatchTest extends CopeModel4Test
 				newSamplePatch("one")
 			), ctx
 		);
+		ctx.assertIt("requestedToStop()"+"requestedToStop()"+"requestedToStop()");
 		{
 			final Iterator<SampleItem> items = items().iterator();
 			assertEquals(one, items.next());
@@ -107,6 +110,7 @@ public class PatchTest extends CopeModel4Test
 			assertIt("three", "patch three", items.next());
 			assertFalse(items.hasNext());
 		}
+		ctx.assertIt("");
 	}
 
 	@Test public void failure()
@@ -281,6 +285,19 @@ public class PatchTest extends CopeModel4Test
 
 	static class JC extends AssertionErrorJobContext
 	{
+		private final StringBuilder actual = new StringBuilder();
 
+		@Override
+		public boolean requestedToStop()
+		{
+			actual.append("requestedToStop()");
+			return false;
+		}
+
+		void assertIt(final String expected)
+		{
+			assertEquals(expected, actual.toString());
+			actual.setLength(0);
+		}
 	}
 }

@@ -71,12 +71,14 @@ public final class Patches
 			final String id = patch.getID();
 			try
 			{
+				if(ctx.requestedToStop())
+					throw new RuntimeException("stop");
+
 				model.startTransaction("patch " + id);
 				// TODO faster query
 				if(PatchRun.forPatch(id)==null)
 				{
 					// TODO logging
-					// TODO ctx stop
 					// TODO ctx message
 					// TODO ctx progress
 					final long start = System.nanoTime();
