@@ -33,6 +33,7 @@ public final class Patches
 {
 	// TODO remove patches safely
 	// TODO stages
+	// TODO concurrency
 	public static void run(
 			final List<? extends Patch> patchesDescending,
 			final JobContext ctx)
