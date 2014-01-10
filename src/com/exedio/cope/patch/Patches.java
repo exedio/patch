@@ -40,7 +40,14 @@ public final class Patches
 			int position = 0;
 			for(final Patch patch : patches)
 			{
+				if(patch==null)
+					throw new IllegalArgumentException(
+							"null at position " + position);
 				final String id = patch.getID();
+				if(id==null)
+					throw new IllegalArgumentException(
+							"null id at position " + position +
+							" with class " + patch.getClass().getName());
 				if(!ids.add(id))
 					throw new IllegalArgumentException(
 							"duplicate id >" + id + "< at position " + position +

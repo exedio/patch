@@ -143,6 +143,49 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(asList(ok), items());
 	}
 
+	@Test public void nullPatch()
+	{
+		assertEquals(EMPTY_LIST, items());
+		final List<SamplePatch> patches = asList(
+			newSamplePatch("other1"),
+			null,
+			newSamplePatch("other2"));
+		try
+		{
+			run(patches, new EmptyJobContext());
+			fail();
+		}
+		catch(final IllegalArgumentException e)
+		{
+			assertEquals(
+					"null at position 1",
+					e.getMessage());
+		}
+		assertEquals(EMPTY_LIST, items());
+	}
+
+	@Test public void nullID()
+	{
+		assertEquals(EMPTY_LIST, items());
+		final List<SamplePatch> patches = asList(
+			newSamplePatch("other1"),
+			newSamplePatch(null),
+			newSamplePatch("other2"));
+		try
+		{
+			run(patches, new EmptyJobContext());
+			fail();
+		}
+		catch(final IllegalArgumentException e)
+		{
+			assertEquals(
+					"null id at position 1 " +
+					"with class com.exedio.cope.patch.SamplePatch",
+					e.getMessage());
+		}
+		assertEquals(EMPTY_LIST, items());
+	}
+
 	@Test public void duplicateID()
 	{
 		assertEquals(EMPTY_LIST, items());
