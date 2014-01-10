@@ -74,7 +74,6 @@ public final class Patches
 				if(PatchRun.forPatch(id)==null)
 				{
 					// TODO logging
-					// TODO transactions
 					// TODO ctx stop
 					// TODO ctx message
 					// TODO ctx progress
