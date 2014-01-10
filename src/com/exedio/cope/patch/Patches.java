@@ -18,6 +18,8 @@
 
 package com.exedio.cope.patch;
 
+import static com.exedio.cope.misc.TimeUtil.toMillies;
+
 import com.exedio.cope.ConstraintViolationException;
 import com.exedio.cope.Model;
 import com.exedio.cope.TypeSet;
@@ -77,9 +79,9 @@ public final class Patches
 					// TODO ctx stop
 					// TODO ctx message
 					// TODO ctx progress
-					// TODO date / elapsed
+					final long start = System.nanoTime();
 					patch.run(ctx);
-					new PatchRun(id);
+					new PatchRun(id, toMillies(System.nanoTime(), start));
 				}
 				model.commit();
 			}
