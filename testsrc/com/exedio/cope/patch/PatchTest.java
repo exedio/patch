@@ -158,7 +158,7 @@ public class PatchTest extends CopeModel4Test
 		}
 		catch(final IllegalArgumentException e)
 		{
-			assertEquals("duplicate id >duplicate<", e.getMessage());
+			assertEquals("duplicate id >duplicate< at position 2", e.getMessage());
 		}
 		assertEquals(EMPTY_LIST, items());
 	}

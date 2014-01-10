@@ -37,11 +37,13 @@ public final class Patches
 		final ArrayList<Patch> patches = new ArrayList<Patch>(patchesDescending);
 		{
 			final HashSet<String> ids = new HashSet<String>();
+			int position = 0;
 			for(final Patch patch : patches)
 			{
 				final String id = patch.getID();
 				if(!ids.add(id))
-					throw new IllegalArgumentException("duplicate id >" + id +'<');
+					throw new IllegalArgumentException("duplicate id >" + id + "< at position " + position);
+				position++;
 			}
 		}
 		Collections.reverse(patches);
