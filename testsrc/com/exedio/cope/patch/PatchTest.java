@@ -149,7 +149,8 @@ public class PatchTest extends CopeModel4Test
 		final List<SamplePatch> patches = asList(
 			newSamplePatch("other1"),
 			null,
-			newSamplePatch("other2"));
+			newSamplePatch("other2"),
+			newSamplePatch("other3"));
 		try
 		{
 			run(patches, new EmptyJobContext());
@@ -170,7 +171,8 @@ public class PatchTest extends CopeModel4Test
 		final List<SamplePatch> patches = asList(
 			newSamplePatch("other1"),
 			newSamplePatch(null),
-			newSamplePatch("other2"));
+			newSamplePatch("other2"),
+			newSamplePatch("other3"));
 		try
 		{
 			run(patches, new EmptyJobContext());
@@ -195,7 +197,8 @@ public class PatchTest extends CopeModel4Test
 		final List<SamplePatch> patches = asList(
 			newSamplePatch("other1"),
 			newSamplePatch(""),
-			newSamplePatch("other2"));
+			newSamplePatch("other2"),
+			newSamplePatch("other3"));
 		try
 		{
 			run(patches, new EmptyJobContext());
@@ -222,7 +225,8 @@ public class PatchTest extends CopeModel4Test
 			newSamplePatch("other1"),
 			newSamplePatch("duplicate"),
 			newSamplePatch("duplicate"),
-			newSamplePatch("other2"));
+			newSamplePatch("other2"),
+			newSamplePatch("other3"));
 		try
 		{
 			run(patches, new EmptyJobContext());
