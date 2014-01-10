@@ -29,6 +29,7 @@ import com.exedio.cope.Query;
 import com.exedio.cope.Revisions;
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.patch.cope.CopeModel4Test;
+import com.exedio.cope.util.AssertionErrorJobContext;
 import com.exedio.cope.util.EmptyJobContext;
 import com.exedio.cope.util.JobContext;
 import java.util.Iterator;
@@ -73,11 +74,11 @@ public class PatchTest extends CopeModel4Test
 	@Test public void two()
 	{
 		assertEquals(EMPTY_LIST, items());
+		final JC ctx = new JC();
 		run(asList(
 				newSamplePatch("two"),
 				newSamplePatch("one")
-			),
-			new EmptyJobContext()
+			), ctx
 		);
 		final SampleItem one;
 		final SampleItem two;
@@ -90,16 +91,14 @@ public class PatchTest extends CopeModel4Test
 		run(asList(
 				newSamplePatch("two"),
 				newSamplePatch("one")
-			),
-			new EmptyJobContext()
+			), ctx
 		);
 		assertEquals(asList(one, two), items());
 		run(asList(
 				newSamplePatch("three"),
 				newSamplePatch("two"),
 				newSamplePatch("one")
-			),
-			new EmptyJobContext()
+			), ctx
 		);
 		{
 			final Iterator<SampleItem> items = items().iterator();
@@ -278,5 +277,10 @@ public class PatchTest extends CopeModel4Test
 		assertEquals("id", id, actual.getPatch());
 		assertEquals("transactionName", transactionName, actual.getTransactionName());
 		return actual;
+	}
+
+	static class JC extends AssertionErrorJobContext
+	{
+
 	}
 }
