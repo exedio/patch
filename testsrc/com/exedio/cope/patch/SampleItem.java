@@ -24,7 +24,7 @@ import com.exedio.cope.StringField;
 
 public class SampleItem extends Item
 {
-	static final StringField patch = new StringField().toFinal().unique();
+	static final StringField patch = new StringField().toFinal().unique().lengthRange(0, 1000);
 	static final IntegerField number = new IntegerField().toFinal().unique().defaultToNext(1000);
 	static final StringField transactionName = new StringField().toFinal();
 

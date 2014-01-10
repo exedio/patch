@@ -179,9 +179,38 @@ public class PatchTest extends CopeModel4Test
 		catch(final IllegalArgumentException e)
 		{
 			assertEquals(
-					"null id at position 1 " +
+					"illegal id at position 1 " +
 					"with class com.exedio.cope.patch.SamplePatch",
 					e.getMessage());
+			assertEquals(
+					"mandatory violation for CopePatchRun.patch",
+					e.getCause().getMessage());
+		}
+		assertEquals(EMPTY_LIST, items());
+	}
+
+	@Test public void emptyID()
+	{
+		assertEquals(EMPTY_LIST, items());
+		final List<SamplePatch> patches = asList(
+			newSamplePatch("other1"),
+			newSamplePatch(""),
+			newSamplePatch("other2"));
+		try
+		{
+			run(patches, new EmptyJobContext());
+			fail();
+		}
+		catch(final IllegalArgumentException e)
+		{
+			assertEquals(
+					"illegal id at position 1 " +
+					"with class com.exedio.cope.patch.SamplePatch",
+					e.getMessage());
+			assertEquals(
+					"length violation, '' is too short for CopePatchRun.patch, " +
+					"must be at least 1 characters, but was 0.",
+					e.getCause().getMessage());
 		}
 		assertEquals(EMPTY_LIST, items());
 	}

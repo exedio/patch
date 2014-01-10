@@ -18,6 +18,7 @@
 
 package com.exedio.cope.patch;
 
+import com.exedio.cope.ConstraintViolationException;
 import com.exedio.cope.Model;
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
@@ -44,10 +45,16 @@ public final class Patches
 					throw new IllegalArgumentException(
 							"null at position " + position);
 				final String id = patch.getID();
-				if(id==null)
+				try
+				{
+					PatchRun.patch.check(id);
+				}
+				catch(final ConstraintViolationException e)
+				{
 					throw new IllegalArgumentException(
-							"null id at position " + position +
-							" with class " + patch.getClass().getName());
+							"illegal id at position " + position +
+							" with class " + patch.getClass().getName(), e);
+				}
 				if(!ids.add(id))
 					throw new IllegalArgumentException(
 							"duplicate id >" + id + "< at position " + position +
