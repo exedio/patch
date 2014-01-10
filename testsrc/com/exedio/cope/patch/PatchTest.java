@@ -52,9 +52,10 @@ public class PatchTest extends CopeModel4Test
 	@Test public void one()
 	{
 		assertEquals(EMPTY_LIST, items());
-		run(asList(
+		final Patches patches = Patches.byDescending(asList(
 				newSamplePatch("one")
-			),
+		));
+		run(patches,
 			new EmptyJobContext()
 		);
 		final SampleItem one;
@@ -63,9 +64,7 @@ public class PatchTest extends CopeModel4Test
 			one = assertIt("one", "patch one", items.next());
 			assertFalse(items.hasNext());
 		}
-		run(asList(
-				newSamplePatch("one")
-			),
+		run(patches,
 			new EmptyJobContext()
 		);
 		assertEquals(asList(one), items());
@@ -75,10 +74,12 @@ public class PatchTest extends CopeModel4Test
 	{
 		assertEquals(EMPTY_LIST, items());
 		final JC ctx = new JC();
-		run(asList(
+		final Patches patches = Patches.byDescending(asList(
 				newSamplePatch("two"),
 				newSamplePatch("one")
-			), ctx
+		));
+		run(patches,
+			ctx
 		);
 		ctx.assertIt("requestedToStop()"+"requestedToStop()");
 		final SampleItem one;
@@ -89,18 +90,18 @@ public class PatchTest extends CopeModel4Test
 			two = assertIt("two", "patch two", items.next());
 			assertFalse(items.hasNext());
 		}
-		run(asList(
-				newSamplePatch("two"),
-				newSamplePatch("one")
-			), ctx
+		run(patches,
+			ctx
 		);
 		ctx.assertIt("requestedToStop()"+"requestedToStop()");
 		assertEquals(asList(one, two), items());
-		run(asList(
+		final Patches patches2 = Patches.byDescending(asList(
 				newSamplePatch("three"),
 				newSamplePatch("two"),
 				newSamplePatch("one")
-			), ctx
+		));
+		run(patches2,
+				ctx
 		);
 		ctx.assertIt("requestedToStop()"+"requestedToStop()"+"requestedToStop()");
 		{
@@ -116,9 +117,9 @@ public class PatchTest extends CopeModel4Test
 	@Test public void failure()
 	{
 		assertEquals(EMPTY_LIST, items());
-		final List<SamplePatch> patches = asList(
+		final Patches patches = Patches.byDescending(asList(
 			newSamplePatch("fail"),
-			newSamplePatch("ok"));
+			newSamplePatch("ok")));
 		try
 		{
 			run(patches, new EmptyJobContext());
@@ -156,7 +157,7 @@ public class PatchTest extends CopeModel4Test
 			newSamplePatch("other3"));
 		try
 		{
-			run(patches, new EmptyJobContext());
+			Patches.byDescending(patches);
 			fail();
 		}
 		catch(final IllegalArgumentException e)
@@ -178,7 +179,7 @@ public class PatchTest extends CopeModel4Test
 			newSamplePatch("other3"));
 		try
 		{
-			run(patches, new EmptyJobContext());
+			Patches.byDescending(patches);
 			fail();
 		}
 		catch(final IllegalArgumentException e)
@@ -204,7 +205,7 @@ public class PatchTest extends CopeModel4Test
 			newSamplePatch("other3"));
 		try
 		{
-			run(patches, new EmptyJobContext());
+			Patches.byDescending(patches);
 			fail();
 		}
 		catch(final IllegalArgumentException e)
@@ -232,7 +233,7 @@ public class PatchTest extends CopeModel4Test
 			newSamplePatch("other3"));
 		try
 		{
-			run(patches, new EmptyJobContext());
+			Patches.byDescending(patches);
 			fail();
 		}
 		catch(final IllegalArgumentException e)
@@ -247,13 +248,13 @@ public class PatchTest extends CopeModel4Test
 	}
 
 	private static void run(
-			final List<? extends Patch> patchesDescending,
+			final Patches patches,
 			final JobContext ctx)
 	{
 		MODEL.commit();
 		try
 		{
-			Patches.run(patchesDescending, ctx);
+			patches.run(ctx);
 		}
 		finally
 		{

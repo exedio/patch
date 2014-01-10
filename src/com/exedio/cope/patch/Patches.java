@@ -31,14 +31,21 @@ import java.util.List;
 
 public final class Patches
 {
+	private final ArrayList<Patch> patches;
+
 	// TODO remove patches safely
 	// TODO stages
 	// TODO concurrency
-	public static void run(
-			final List<? extends Patch> patchesDescending,
-			final JobContext ctx)
+	public static Patches byDescending(
+		final List<? extends Patch> patchesDescending)
 	{
-		final ArrayList<Patch> patches = new ArrayList<Patch>(patchesDescending);
+		return new Patches(patchesDescending);
+	}
+
+	private Patches(
+			final List<? extends Patch> patchesDescending)
+	{
+		this.patches = new ArrayList<Patch>(patchesDescending);
 		{
 			final HashSet<String> ids = new HashSet<String>();
 			int position = 0;
@@ -66,6 +73,10 @@ public final class Patches
 			}
 		}
 		Collections.reverse(patches);
+	}
+
+	public void run(final JobContext ctx)
+	{
 		final Model model = PatchRun.TYPE.getModel();
 		for(final Patch patch : patches)
 		{
@@ -96,9 +107,4 @@ public final class Patches
 	}
 
 	public static final TypeSet types = new TypeSet(PatchRun.TYPE);
-
-	private Patches()
-	{
-		// prevent instantiation
-	}
 }
