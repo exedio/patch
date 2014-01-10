@@ -55,18 +55,14 @@ public class PatchTest extends CopeModel4Test
 		final Patches patches = Patches.byDescending(asList(
 				newSamplePatch("one")
 		));
-		run(patches,
-			new EmptyJobContext()
-		);
+		run(patches, new EmptyJobContext());
 		final SampleItem one;
 		{
 			final Iterator<SampleItem> items = items().iterator();
 			one = assertIt("one", "patch one", items.next());
 			assertFalse(items.hasNext());
 		}
-		run(patches,
-			new EmptyJobContext()
-		);
+		run(patches, new EmptyJobContext());
 		assertEquals(asList(one), items());
 	}
 
@@ -78,9 +74,7 @@ public class PatchTest extends CopeModel4Test
 				newSamplePatch("two"),
 				newSamplePatch("one")
 		));
-		run(patches,
-			ctx
-		);
+		run(patches, ctx);
 		ctx.assertIt("requestedToStop()"+"requestedToStop()");
 		final SampleItem one;
 		final SampleItem two;
@@ -90,9 +84,7 @@ public class PatchTest extends CopeModel4Test
 			two = assertIt("two", "patch two", items.next());
 			assertFalse(items.hasNext());
 		}
-		run(patches,
-			ctx
-		);
+		run(patches, ctx);
 		ctx.assertIt("requestedToStop()"+"requestedToStop()");
 		assertEquals(asList(one, two), items());
 		final Patches patches2 = Patches.byDescending(asList(
@@ -100,9 +92,7 @@ public class PatchTest extends CopeModel4Test
 				newSamplePatch("two"),
 				newSamplePatch("one")
 		));
-		run(patches2,
-				ctx
-		);
+		run(patches2, ctx);
 		ctx.assertIt("requestedToStop()"+"requestedToStop()"+"requestedToStop()");
 		{
 			final Iterator<SampleItem> items = items().iterator();
