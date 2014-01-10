@@ -23,18 +23,27 @@ import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public final class Patches
 {
 	// TODO remove patches safely
 	// TODO stages
-	// TODO fail on duplicate ids
 	public static void run(
 			final List<? extends Patch> patchesDescending,
 			final JobContext ctx)
 	{
 		final ArrayList<Patch> patches = new ArrayList<Patch>(patchesDescending);
+		{
+			final HashSet<String> ids = new HashSet<String>();
+			for(final Patch patch : patches)
+			{
+				final String id = patch.getID();
+				if(!ids.add(id))
+					throw new IllegalArgumentException("duplicate id >" + id +'<');
+			}
+		}
 		Collections.reverse(patches);
 		final Model model = PatchRun.TYPE.getModel();
 		for(final Patch patch : patches)

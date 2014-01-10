@@ -143,6 +143,26 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(asList(ok), items());
 	}
 
+	@Test public void duplicateID()
+	{
+		assertEquals(EMPTY_LIST, items());
+		final List<SamplePatch> patches = asList(
+			newSamplePatch("other1"),
+			newSamplePatch("duplicate"),
+			newSamplePatch("duplicate"),
+			newSamplePatch("other2"));
+		try
+		{
+			run(patches, new EmptyJobContext());
+			fail();
+		}
+		catch(final IllegalArgumentException e)
+		{
+			assertEquals("duplicate id >duplicate<", e.getMessage());
+		}
+		assertEquals(EMPTY_LIST, items());
+	}
+
 	private static void run(
 			final List<? extends Patch> patchesDescending,
 			final JobContext ctx)
