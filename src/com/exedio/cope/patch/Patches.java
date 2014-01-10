@@ -42,7 +42,9 @@ public final class Patches
 			{
 				final String id = patch.getID();
 				if(!ids.add(id))
-					throw new IllegalArgumentException("duplicate id >" + id + "< at position " + position);
+					throw new IllegalArgumentException(
+							"duplicate id >" + id + "< at position " + position +
+							" with class " + patch.getClass().getName());
 				position++;
 			}
 		}
