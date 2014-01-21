@@ -19,6 +19,10 @@
 				<exclude name="servlet-api-source.jar" />
 				<exclude name="trove-src.jar" />
 				<exclude name="xalan-jar.jar" />
+				<exclude name="exedio-cope-servletutil-log.txt" />
+				<exclude name="exedio-cope-servletutil-src.zip" />
+				<exclude name="exedio-cope-servletutil.jar" />
+				<exclude name="hamcrest-core.jar" />
 			</fileset>
 		</copy>
 
