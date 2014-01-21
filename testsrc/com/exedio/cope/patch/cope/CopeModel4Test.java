@@ -85,7 +85,7 @@ public class CopeModel4Test
 	 */
 	protected ConnectProperties getConnectProperties()
 	{
-		return new ConnectProperties(Properties.getSystemPropertySource());
+		return new ConnectProperties(Properties.SYSTEM_PROPERTY_SOURCE);
 	}
 
 	protected boolean doesManageTransactions()
