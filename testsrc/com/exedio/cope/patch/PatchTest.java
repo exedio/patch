@@ -237,6 +237,46 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(EMPTY_LIST, items());
 	}
 
+	@Test public void stale()
+	{
+		final String id = "staleID";
+
+		assertEquals(EMPTY_LIST, items());
+		run(Patches.byDescending(asList(newSamplePatch(id))), new EmptyJobContext());
+		final SampleItem one;
+		{
+			final Iterator<SampleItem> items = items().iterator();
+			one = assertIt(id, "patch " + id, items.next());
+			assertFalse(items.hasNext());
+		}
+
+		run(Patches.byDescending(asList(Patches.stale(id))), new EmptyJobContext());
+		{
+			final Iterator<SampleItem> items = items().iterator();
+			assertEquals(one, items.next());
+			assertFalse(items.hasNext());
+		}
+	}
+
+	@Test public void staleError()
+	{
+		assertEquals(EMPTY_LIST, items());
+		final Patches patches = Patches.byDescending(asList(Patches.stale("staleID")));
+		try
+		{
+			run(patches, new EmptyJobContext());
+			fail();
+		}
+		catch(final RuntimeException e)
+		{
+			assertEquals(
+					"stale patch staleID is supposed to been run already, " +
+					"therefore cannot be run again. ",
+					e.getMessage());
+		}
+		assertEquals(EMPTY_LIST, items());
+	}
+
 	private static void run(
 			final Patches patches,
 			final JobContext ctx)

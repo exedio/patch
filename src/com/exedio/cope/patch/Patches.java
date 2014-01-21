@@ -107,4 +107,24 @@ public final class Patches
 	}
 
 	public static final TypeSet types = new TypeSet(PatchRun.TYPE);
+
+	public static Patch stale(final String id)
+	{
+		return new Patch(){
+			@Override public String getID()
+			{
+				return id;
+			}
+			@Override public void run(final JobContext ctx)
+			{
+				throw new RuntimeException(
+						"stale patch " + id + " is supposed to been run already, " +
+						"therefore cannot be run again. ");
+			}
+			@Override public String toString()
+			{
+				return id;
+			}
+		};
+	}
 }
