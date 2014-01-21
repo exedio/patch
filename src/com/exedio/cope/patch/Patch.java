@@ -20,9 +20,8 @@ package com.exedio.cope.patch;
 
 import com.exedio.cope.util.JobContext;
 
-// TODO interface
-public abstract class Patch
+public interface Patch
 {
-	public abstract String getID();
-	public abstract void run(JobContext ctx);
+	String getID();
+	void run(JobContext ctx);
 }

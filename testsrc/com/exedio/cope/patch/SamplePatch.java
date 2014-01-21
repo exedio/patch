@@ -21,7 +21,7 @@ package com.exedio.cope.patch;
 import com.exedio.cope.Model;
 import com.exedio.cope.util.JobContext;
 
-public class SamplePatch extends Patch
+public class SamplePatch implements Patch
 {
 	private final Model model;
 	private final String id;
