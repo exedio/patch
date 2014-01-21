@@ -24,9 +24,9 @@
 			<exclude org="org.hamcrest" module="hamcrest-core" />
 		</dependency>
 		<dependency org="findbugs-x" name="findbugs" rev="2.0.1" conf="build->default" />
-		<dependency org="com.exedio" name="cope" rev="6825">
+		<dependency org="com.exedio" name="cope" rev="7497">
 			<conf name="runtime" mapped="runtime" />
-			<conf name="build" mapped="hsqldb" />
+			<conf name="build" mapped="hsqldb,junit,sources" />
 		</dependency>
 	</dependencies>
 </ivy-module>

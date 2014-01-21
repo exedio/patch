@@ -11,6 +11,7 @@
 	<taskdef resource="com/exedio/cope/instrument/ant.properties">
 		<classpath>
 			<pathelement location="lib/exedio-cope-instrument.jar" />
+			<pathelement location="lib/slf4j-api.jar" />
 		</classpath>
 	</taskdef>
 	
@@ -26,6 +27,8 @@
 		<compile srcdir="src">
 			<classpath>
 				<pathelement location="lib/exedio-cope.jar" />
+				<pathelement location="lib/exedio-cope-instrument-annotations.jar" />
+				<pathelement location="lib/findbugs-annotations.jar" />
 			</classpath>
 		</compile>
 	</target>
@@ -43,6 +46,8 @@
 			<classpath>
 				<pathelement location="build/classes/src" />
 				<pathelement location="lib/exedio-cope.jar" />
+				<pathelement location="lib/exedio-cope-junit.jar" />
+				<pathelement location="lib/exedio-cope-instrument-annotations.jar" />
 				<pathelement location="lib/junit.jar" />
 				<pathelement location="lib/cpsuite.jar" />
 				<pathelement location="lib/findbugs-annotations.jar" />
@@ -151,7 +156,9 @@
 			<class location="${basedir}/build/classes/testsrc" />
 			<auxclasspath>
 				<pathelement location="${basedir}/lib/exedio-cope.jar" />
+				<pathelement location="${basedir}/lib/exedio-cope-junit.jar" />
 				<pathelement location="${basedir}/lib/junit.jar" />
+				<pathelement location="${basedir}/lib/slf4j-api.jar" />
 			</auxclasspath>
 		</findbugs>
 	</target>

@@ -9,5 +9,7 @@
 	<classpathentry kind="lib" path="lib/findbugs-annotations.jar"/>
 	<classpathentry kind="lib" path="lib/exedio-cope-util.jar" sourcepath="lib/exedio-cope-util-src.zip"/>
 	<classpathentry kind="lib" path="lib/hsqldb.jar"/>
+	<classpathentry kind="lib" path="lib/exedio-cope-junit.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api.jar"/>
 	<classpathentry kind="output" path=".eclipse-output"/>
 </classpath>
