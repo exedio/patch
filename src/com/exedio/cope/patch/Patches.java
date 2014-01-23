@@ -86,6 +86,8 @@ public final class Patches
 				if(ctx.requestedToStop())
 					throw new RuntimeException("stop");
 
+				if(patch.isTransactionally())
+				{
 				model.startTransaction("patch " + id);
 				// TODO faster query
 				if(PatchRun.forPatch(id)==null)
@@ -98,6 +100,26 @@ public final class Patches
 					new PatchRun(id, toMillies(System.nanoTime(), start));
 				}
 				model.commit();
+				}
+				else
+				{
+					model.startTransaction("patch " + id + " switch");
+					final boolean run = (PatchRun.forPatch(id)==null);
+					model.commit();
+					if(run)
+					{
+						// TODO logging
+						// TODO ctx message
+						// TODO ctx progress
+						final long start = System.nanoTime();
+						patch.run(ctx);
+						final long end = System.nanoTime();
+
+						model.startTransaction("patch " + id + " log");
+						new PatchRun(id, toMillies(end, start));
+						model.commit();
+					}
+				}
 			}
 			finally
 			{
@@ -114,6 +136,10 @@ public final class Patches
 			@Override public String getID()
 			{
 				return id;
+			}
+			@Override public boolean isTransactionally()
+			{
+				return false;
 			}
 			@Override public void run(final JobContext ctx)
 			{

@@ -23,5 +23,6 @@ import com.exedio.cope.util.JobContext;
 public interface Patch
 {
 	String getID();
+	boolean isTransactionally();
 	void run(JobContext ctx);
 }

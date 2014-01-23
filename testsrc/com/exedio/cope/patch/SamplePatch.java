@@ -18,6 +18,8 @@
 
 package com.exedio.cope.patch;
 
+import static org.junit.Assert.assertFalse;
+
 import com.exedio.cope.Model;
 import com.exedio.cope.util.JobContext;
 
@@ -25,11 +27,13 @@ public class SamplePatch implements Patch
 {
 	private final Model model;
 	private final String id;
+	private final boolean isTransactionally;
 
-	SamplePatch(final Model model, final String id)
+	SamplePatch(final Model model, final String id, final boolean isTransactionally)
 	{
 		this.model = model;
 		this.id = id;
+		this.isTransactionally = isTransactionally;
 	}
 
 	@Override
@@ -39,9 +43,32 @@ public class SamplePatch implements Patch
 	}
 
 	@Override
+	public boolean isTransactionally()
+	{
+		return isTransactionally;
+	}
+
+	@Override
 	public void run(final JobContext ctx)
 	{
-		new SampleItem(id, model.currentTransaction().getName());
+		if(isTransactionally)
+		{
+			new SampleItem(id, model.currentTransaction().getName());
+		}
+		else
+		{
+			assertFalse(model.hasCurrentTransaction());
+			try
+			{
+				model.startTransaction("SamplePatch " + id + " run");
+				new SampleItem(id, null);
+				model.commit();
+			}
+			finally
+			{
+				model.rollbackIfNotCommitted();
+			}
+		}
 		if("fail".equals(id))
 			throw new RuntimeException("failed");
 	}

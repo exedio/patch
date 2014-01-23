@@ -66,6 +66,24 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(asList(one), items());
 	}
 
+	@Test public void oneNonTx()
+	{
+		assertEquals(EMPTY_LIST, items());
+		final Patches patches = Patches.byDescending(asList(
+				newSamplePatchNonTx("one")
+		));
+		run(patches, new EmptyJobContext());
+		final SampleItem one;
+		{
+			final Iterator<SampleItem> items = items().iterator();
+			one = assertIt("one", null, items.next());
+			assertFalse(items.hasNext());
+		}
+		run(patches, new EmptyJobContext());
+		assertEquals(asList(one), items());
+	}
+	// TODO test more with nonTx
+
 	@Test public void two()
 	{
 		assertEquals(EMPTY_LIST, items());
@@ -294,7 +312,12 @@ public class PatchTest extends CopeModel4Test
 
 	private SamplePatch newSamplePatch(final String id)
 	{
-		return new SamplePatch(MODEL, id);
+		return new SamplePatch(MODEL, id, true);
+	}
+
+	private SamplePatch newSamplePatchNonTx(final String id)
+	{
+		return new SamplePatch(MODEL, id, false);
 	}
 
 	private List<SampleItem> items()
