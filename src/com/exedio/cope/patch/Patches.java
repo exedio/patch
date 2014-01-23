@@ -88,18 +88,18 @@ public final class Patches
 
 				if(patch.isTransactionally())
 				{
-				model.startTransaction("patch " + id);
-				// TODO faster query
-				if(PatchRun.forPatch(id)==null)
-				{
-					// TODO logging
-					// TODO ctx message
-					// TODO ctx progress
-					final long start = System.nanoTime();
-					patch.run(ctx);
-					new PatchRun(id, toMillies(System.nanoTime(), start));
-				}
-				model.commit();
+					model.startTransaction("patch " + id);
+					// TODO faster query
+					if(PatchRun.forPatch(id)==null)
+					{
+						// TODO logging
+						// TODO ctx message
+						// TODO ctx progress
+						final long start = System.nanoTime();
+						patch.run(ctx);
+						new PatchRun(id, toMillies(System.nanoTime(), start));
+					}
+					model.commit();
 				}
 				else
 				{
