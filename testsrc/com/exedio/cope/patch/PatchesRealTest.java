@@ -24,6 +24,9 @@ import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.EmptyJobContext;
 import org.junit.Test;
 
+/**
+ * This test simulates the usage of patches within the project.
+ */
 public class PatchesRealTest extends CopeModel4Test
 {
 	private static final PatchesBuilder builder = new PatchesBuilder();
@@ -42,6 +45,7 @@ public class PatchesRealTest extends CopeModel4Test
 	}
 
 
+	// here the test specific stuff starts
 
 	public PatchesRealTest()
 	{
