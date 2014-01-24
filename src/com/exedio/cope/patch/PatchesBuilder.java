@@ -34,7 +34,7 @@ public final class PatchesBuilder
 	public void add(final Patch patch)
 	{
 		if(patch==null)
-			throw new IllegalArgumentException("null");
+			throw new NullPointerException("patch");
 
 		final String id = patch.getID();
 		PatchRun.patch.check(id);

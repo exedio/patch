@@ -39,11 +39,9 @@ public class PatchesTest
 			builder.add(null);
 			fail();
 		}
-		catch(final IllegalArgumentException e)
+		catch(final NullPointerException e)
 		{
-			assertEquals(
-					"null",
-					e.getMessage());
+			assertEquals("patch", e.getMessage());
 		}
 	}
 
