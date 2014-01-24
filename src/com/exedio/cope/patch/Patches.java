@@ -135,7 +135,7 @@ public final class Patches
 		return new StalePatch(id);
 	}
 
-	private static class StalePatch implements Patch
+	private static final class StalePatch implements Patch
 	{
 		private final String id;
 
