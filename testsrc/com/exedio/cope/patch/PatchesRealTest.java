@@ -33,6 +33,7 @@ public class PatchesRealTest extends CopeModel4Test
 
 	static
 	{
+		// insert new patches here !!!
 		add(newSamplePatch("other1"));
 		add(newSamplePatch("other2"));
 	}
