@@ -143,23 +143,31 @@ public final class Patches
 		{
 			this.id = id;
 		}
-			@Override public String getID()
-			{
-				return id;
-			}
-			@Override public boolean isTransactionally()
-			{
-				return false;
-			}
-			@Override public void run(final JobContext ctx)
-			{
-				throw new RuntimeException(
-						"stale patch " + id + " is supposed to been run already, " +
-						"therefore cannot be run again.");
-			}
-			@Override public String toString()
-			{
-				return id;
-			}
+
+		@Override
+		public String getID()
+		{
+			return id;
 		}
+
+		@Override
+		public boolean isTransactionally()
+		{
+			return false;
+		}
+
+		@Override
+		public void run(final JobContext ctx)
+		{
+			throw new RuntimeException(
+					"stale patch " + id + " is supposed to been run already, " +
+					"therefore cannot be run again.");
+		}
+
+		@Override
+		public String toString()
+		{
+			return id;
+		}
+	}
 }
