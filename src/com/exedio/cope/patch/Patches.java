@@ -132,6 +132,7 @@ public final class Patches
 
 	public static Patch stale(final String id)
 	{
+		PatchRun.patch.check(id);
 		return new StalePatch(id);
 	}
 
