@@ -47,9 +47,10 @@ public class PatchesTest
 	@Test public void nullID()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
+		final Patch patch = newSamplePatch(null);
 		try
 		{
-			builder.add(newSamplePatch(null));
+			builder.add(patch);
 			fail();
 		}
 		catch(final MandatoryViolationException e)
@@ -63,9 +64,10 @@ public class PatchesTest
 	@Test public void emptyID()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
+		final Patch patch = newSamplePatch("");
 		try
 		{
-			builder.add(newSamplePatch(""));
+			builder.add(patch);
 			fail();
 		}
 		catch(final StringLengthViolationException e)
@@ -81,9 +83,10 @@ public class PatchesTest
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.add(newSamplePatch("duplicate"));
+		final Patch patch = newSamplePatch("duplicate");
 		try
 		{
-			builder.add(newSamplePatch("duplicate"));
+			builder.add(patch);
 			fail();
 		}
 		catch(final IllegalArgumentException e)
