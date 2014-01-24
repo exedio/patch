@@ -34,7 +34,6 @@ public final class Patches
 {
 	private final LinkedHashMap<String,Patch> patches;
 
-	// TODO remove patches safely
 	// TODO stages
 	// TODO concurrency
 
