@@ -18,6 +18,8 @@
 
 package com.exedio.cope.patch;
 
+import static com.exedio.cope.patch.PatchTest.MODEL;
+
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.EmptyJobContext;
 import org.junit.Test;
@@ -36,7 +38,7 @@ public class PatchesRealTest extends CopeModel4Test
 
 	public PatchesRealTest()
 	{
-		super(PatchTest.MODEL);
+		super(MODEL);
 	}
 
 	@Override
@@ -52,6 +54,6 @@ public class PatchesRealTest extends CopeModel4Test
 
 	private static SamplePatch newSamplePatch(final String id)
 	{
-		return new SamplePatch(PatchTest.MODEL, id, true);
+		return new SamplePatch(MODEL, id, true);
 	}
 }
