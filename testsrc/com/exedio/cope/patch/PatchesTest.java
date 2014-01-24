@@ -33,7 +33,6 @@ public class PatchesTest
 	@Test public void nullPatch()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
-		builder.add(newSamplePatch("other1"));
 		try
 		{
 			builder.add(null);
@@ -48,7 +47,6 @@ public class PatchesTest
 	@Test public void nullID()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
-		builder.add(newSamplePatch("other1"));
 		try
 		{
 			builder.add(newSamplePatch(null));
@@ -65,7 +63,6 @@ public class PatchesTest
 	@Test public void emptyID()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
-		builder.add(newSamplePatch("other1"));
 		try
 		{
 			builder.add(newSamplePatch(""));
@@ -83,7 +80,6 @@ public class PatchesTest
 	@Test public void duplicateID()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
-		builder.add(newSamplePatch("other1"));
 		builder.add(newSamplePatch("duplicate"));
 		try
 		{
