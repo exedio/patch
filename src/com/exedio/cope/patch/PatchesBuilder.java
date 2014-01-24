@@ -22,7 +22,7 @@ import java.util.LinkedHashMap;
 
 public final class PatchesBuilder
 {
-	private final LinkedHashMap<String,Patch> patches = new LinkedHashMap<String,Patch>();
+	private LinkedHashMap<String,Patch> patches = new LinkedHashMap<String,Patch>();
 
 	public void insertAtStart(final Patch patch)
 	{
@@ -34,6 +34,8 @@ public final class PatchesBuilder
 		final String id = patch.getID();
 		PatchRun.patch.check(id);
 
+		assertNotExhausted();
+
 		if(patches.containsKey(id))
 			throw new IllegalArgumentException(
 					"duplicate id >" + id + "< " +
@@ -44,6 +46,15 @@ public final class PatchesBuilder
 
 	public Patches build()
 	{
-		return new Patches(patches);
+		assertNotExhausted();
+		final Patches result = new Patches(patches);
+		patches = null;
+		return result;
+	}
+
+	private void assertNotExhausted()
+	{
+		if(patches==null)
+			throw new IllegalStateException("builder is exhausted");
 	}
 }

@@ -98,6 +98,30 @@ public class PatchesTest
 		}
 	}
 
+	@Test public void exhausted()
+	{
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.build();
+		try
+		{
+			builder.insertAtStart(newSamplePatch("id"));
+			fail();
+		}
+		catch(final IllegalStateException e)
+		{
+			assertEquals("builder is exhausted", e.getMessage());
+		}
+		try
+		{
+			builder.build();
+			fail();
+		}
+		catch(final IllegalStateException e)
+		{
+			assertEquals("builder is exhausted", e.getMessage());
+		}
+	}
+
 	@Test public void stale()
 	{
 		final Patch patch = Patches.stale("staleID");
