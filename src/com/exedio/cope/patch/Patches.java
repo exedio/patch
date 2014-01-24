@@ -98,7 +98,7 @@ public final class Patches
 						// TODO ctx progress
 						final long start = nanoTime();
 						patch.run(ctx);
-						new PatchRun(id, toMillies(nanoTime(), start));
+						new PatchRun(id, true, toMillies(nanoTime(), start));
 					}
 					model.commit();
 				}
@@ -117,7 +117,7 @@ public final class Patches
 						final long end = nanoTime();
 
 						model.startTransaction("patch " + id + " log");
-						new PatchRun(id, toMillies(end, start));
+						new PatchRun(id, false, toMillies(end, start));
 						model.commit();
 					}
 				}
