@@ -19,6 +19,7 @@
 package com.exedio.cope.patch;
 
 import static com.exedio.cope.misc.TimeUtil.toMillies;
+import static java.lang.System.nanoTime;
 
 import com.exedio.cope.ConstraintViolationException;
 import com.exedio.cope.Model;
@@ -95,9 +96,9 @@ public final class Patches
 						// TODO logging
 						// TODO ctx message
 						// TODO ctx progress
-						final long start = System.nanoTime();
+						final long start = nanoTime();
 						patch.run(ctx);
-						new PatchRun(id, toMillies(System.nanoTime(), start));
+						new PatchRun(id, toMillies(nanoTime(), start));
 					}
 					model.commit();
 				}
@@ -111,9 +112,9 @@ public final class Patches
 						// TODO logging
 						// TODO ctx message
 						// TODO ctx progress
-						final long start = System.nanoTime();
+						final long start = nanoTime();
 						patch.run(ctx);
-						final long end = System.nanoTime();
+						final long end = nanoTime();
 
 						model.startTransaction("patch " + id + " log");
 						new PatchRun(id, toMillies(end, start));
