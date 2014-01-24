@@ -21,13 +21,11 @@ package com.exedio.cope.patch;
 import static com.exedio.cope.misc.TimeUtil.toMillies;
 import static java.lang.System.nanoTime;
 
-import com.exedio.cope.ConstraintViolationException;
 import com.exedio.cope.Model;
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 public final class Patches
@@ -37,42 +35,11 @@ public final class Patches
 	// TODO remove patches safely
 	// TODO stages
 	// TODO concurrency
-	public static Patches byDescending(
-		final List<? extends Patch> patchesDescending)
-	{
-		return new Patches(patchesDescending);
-	}
 
-	private Patches(
+	Patches(
 			final List<? extends Patch> patchesDescending)
 	{
 		this.patches = new ArrayList<Patch>(patchesDescending);
-		{
-			final HashSet<String> ids = new HashSet<String>();
-			int position = 0;
-			for(final Patch patch : patches)
-			{
-				if(patch==null)
-					throw new IllegalArgumentException(
-							"null at position " + position);
-				final String id = patch.getID();
-				try
-				{
-					PatchRun.patch.check(id);
-				}
-				catch(final ConstraintViolationException e)
-				{
-					throw new IllegalArgumentException(
-							"illegal id at position " + position +
-							" with class " + patch.getClass().getName(), e);
-				}
-				if(!ids.add(id))
-					throw new IllegalArgumentException(
-							"duplicate id >" + id + "< at position " + position +
-							" with class " + patch.getClass().getName());
-				position++;
-			}
-		}
 		Collections.reverse(patches);
 	}
 

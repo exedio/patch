@@ -19,105 +19,83 @@
 package com.exedio.cope.patch;
 
 import static com.exedio.cope.junit.CopeAssert.assertEqualsUnmodifiable;
-import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import com.exedio.cope.MandatoryViolationException;
 import com.exedio.cope.StringLengthViolationException;
 import com.exedio.cope.util.AssertionErrorJobContext;
 import java.util.Arrays;
-import java.util.List;
 import org.junit.Test;
 
 public class PatchesTest
 {
 	@Test public void nullPatch()
 	{
-		final List<SamplePatch> patches = asList(
-			newSamplePatch("other1"),
-			null,
-			newSamplePatch("other2"),
-			newSamplePatch("other3"));
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.add(newSamplePatch("other1"));
 		try
 		{
-			Patches.byDescending(patches);
+			builder.add(null);
 			fail();
 		}
 		catch(final IllegalArgumentException e)
 		{
 			assertEquals(
-					"null at position 1",
+					"null",
 					e.getMessage());
 		}
 	}
 
 	@Test public void nullID()
 	{
-		final List<SamplePatch> patches = asList(
-			newSamplePatch("other1"),
-			newSamplePatch(null),
-			newSamplePatch("other2"),
-			newSamplePatch("other3"));
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.add(newSamplePatch("other1"));
 		try
 		{
-			Patches.byDescending(patches);
+			builder.add(newSamplePatch(null));
 			fail();
 		}
-		catch(final IllegalArgumentException e)
+		catch(final MandatoryViolationException e)
 		{
 			assertEquals(
-					"illegal id at position 1 " +
-					"with class com.exedio.cope.patch.SamplePatch",
-					e.getMessage());
-			assertEquals(
 					"mandatory violation for CopePatchRun.patch",
-					e.getCause().getMessage());
+					e.getMessage());
 		}
 	}
 
 	@Test public void emptyID()
 	{
-		final List<SamplePatch> patches = asList(
-			newSamplePatch("other1"),
-			newSamplePatch(""),
-			newSamplePatch("other2"),
-			newSamplePatch("other3"));
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.add(newSamplePatch("other1"));
 		try
 		{
-			Patches.byDescending(patches);
+			builder.add(newSamplePatch(""));
 			fail();
 		}
-		catch(final IllegalArgumentException e)
+		catch(final StringLengthViolationException e)
 		{
-			assertEquals(
-					"illegal id at position 1 " +
-					"with class com.exedio.cope.patch.SamplePatch",
-					e.getMessage());
 			assertEquals(
 					"length violation, '' is too short for CopePatchRun.patch, " +
 					"must be at least 1 characters, but was 0.",
-					e.getCause().getMessage());
+					e.getMessage());
 		}
 	}
 
 	@Test public void duplicateID()
 	{
-		final List<SamplePatch> patches = asList(
-			newSamplePatch("other1"),
-			newSamplePatch("duplicate"),
-			newSamplePatch("duplicate"),
-			newSamplePatch("other2"),
-			newSamplePatch("other3"));
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.add(newSamplePatch("other1"));
+		builder.add(newSamplePatch("duplicate"));
 		try
 		{
-			Patches.byDescending(patches);
+			builder.add(newSamplePatch("duplicate"));
 			fail();
 		}
 		catch(final IllegalArgumentException e)
 		{
 			assertEquals(
 					"duplicate id >duplicate< " +
-					"at position 2 " +
 					"with class com.exedio.cope.patch.SamplePatch",
 					e.getMessage());
 		}
@@ -158,12 +136,13 @@ public class PatchesTest
 
 	@Test public void getNonStaleIDs()
 	{
-		final Patches patches = Patches.byDescending(asList(
-			newSamplePatch("other1"),
-			Patches.stale ("stale1"),
-			newSamplePatch("other2"),
-			Patches.stale ("stale2"),
-			newSamplePatch("other3")));
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.add(newSamplePatch("other1"));
+		builder.add(Patches.stale ("stale1"));
+		builder.add(newSamplePatch("other2"));
+		builder.add(Patches.stale ("stale2"));
+		builder.add(newSamplePatch("other3"));
+		final Patches patches = builder.build();
 
 		assertEqualsUnmodifiable(
 				Arrays.asList("other1", "other2", "other3"),

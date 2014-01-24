@@ -52,9 +52,9 @@ public class PatchTest extends CopeModel4Test
 	@Test public void one()
 	{
 		assertEquals(EMPTY_LIST, items());
-		final Patches patches = Patches.byDescending(asList(
-				newSamplePatch("one")
-		));
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.add(newSamplePatch("one"));
+		final Patches patches = builder.build();
 		run(patches, new EmptyJobContext());
 		final SampleItem one;
 		{
@@ -69,9 +69,9 @@ public class PatchTest extends CopeModel4Test
 	@Test public void oneNonTx()
 	{
 		assertEquals(EMPTY_LIST, items());
-		final Patches patches = Patches.byDescending(asList(
-				newSamplePatchNonTx("one")
-		));
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.add(newSamplePatchNonTx("one"));
+		final Patches patches = builder.build();
 		run(patches, new EmptyJobContext());
 		final SampleItem one;
 		{
@@ -88,10 +88,10 @@ public class PatchTest extends CopeModel4Test
 	{
 		assertEquals(EMPTY_LIST, items());
 		final JC ctx = new JC();
-		final Patches patches = Patches.byDescending(asList(
-				newSamplePatch("two"),
-				newSamplePatch("one")
-		));
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.add(newSamplePatch("two"));
+		builder.add(newSamplePatch("one"));
+		final Patches patches = builder.build();
 		run(patches, ctx);
 		ctx.assertIt("requestedToStop()"+"requestedToStop()");
 		final SampleItem one;
@@ -105,11 +105,11 @@ public class PatchTest extends CopeModel4Test
 		run(patches, ctx);
 		ctx.assertIt("requestedToStop()"+"requestedToStop()");
 		assertEquals(asList(one, two), items());
-		final Patches patches2 = Patches.byDescending(asList(
-				newSamplePatch("three"),
-				newSamplePatch("two"),
-				newSamplePatch("one")
-		));
+		final PatchesBuilder builder2 = new PatchesBuilder();
+		builder2.add(newSamplePatch("three"));
+		builder2.add(newSamplePatch("two"));
+		builder2.add(newSamplePatch("one"));
+		final Patches patches2 = builder2.build();
 		run(patches2, ctx);
 		ctx.assertIt("requestedToStop()"+"requestedToStop()"+"requestedToStop()");
 		{
@@ -125,9 +125,10 @@ public class PatchTest extends CopeModel4Test
 	@Test public void failure()
 	{
 		assertEquals(EMPTY_LIST, items());
-		final Patches patches = Patches.byDescending(asList(
-			newSamplePatch("fail"),
-			newSamplePatch("ok")));
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.add(newSamplePatch("fail"));
+		builder.add(newSamplePatch("ok"));
+		final Patches patches = builder.build();
 		try
 		{
 			run(patches, new EmptyJobContext());
@@ -160,7 +161,10 @@ public class PatchTest extends CopeModel4Test
 		final String id = "staleID";
 
 		assertEquals(EMPTY_LIST, items());
-		run(Patches.byDescending(asList(newSamplePatch(id))), new EmptyJobContext());
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.add(newSamplePatch(id));
+		final Patches patches = builder.build();
+		run(patches, new EmptyJobContext());
 		final SampleItem one;
 		{
 			final Iterator<SampleItem> items = items().iterator();
@@ -168,7 +172,10 @@ public class PatchTest extends CopeModel4Test
 			assertFalse(items.hasNext());
 		}
 
-		run(Patches.byDescending(asList(Patches.stale(id))), new EmptyJobContext());
+		final PatchesBuilder builder2 = new PatchesBuilder();
+		builder2.add(Patches.stale(id));
+		final Patches patches2 = builder2.build();
+		run(patches2, new EmptyJobContext());
 		{
 			final Iterator<SampleItem> items = items().iterator();
 			assertEquals(one, items.next());
@@ -179,7 +186,9 @@ public class PatchTest extends CopeModel4Test
 	@Test public void staleError()
 	{
 		assertEquals(EMPTY_LIST, items());
-		final Patches patches = Patches.byDescending(asList(Patches.stale("staleID")));
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.add(Patches.stale("staleID"));
+		final Patches patches = builder.build();
 		try
 		{
 			run(patches, new EmptyJobContext());
