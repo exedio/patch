@@ -189,7 +189,7 @@ public class PatchTest extends CopeModel4Test
 		{
 			assertEquals(
 					"stale patch staleID is supposed to been run already, " +
-					"therefore cannot be run again. ",
+					"therefore cannot be run again.",
 					e.getMessage());
 		}
 		assertEquals(EMPTY_LIST, items());

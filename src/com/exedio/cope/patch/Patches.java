@@ -145,7 +145,7 @@ public final class Patches
 			{
 				throw new RuntimeException(
 						"stale patch " + id + " is supposed to been run already, " +
-						"therefore cannot be run again. ");
+						"therefore cannot be run again.");
 			}
 			@Override public String toString()
 			{

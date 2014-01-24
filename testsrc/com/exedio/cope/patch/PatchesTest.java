@@ -22,6 +22,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import com.exedio.cope.util.AssertionErrorJobContext;
 import java.util.List;
 import org.junit.Test;
 
@@ -115,6 +116,24 @@ public class PatchesTest
 					"duplicate id >duplicate< " +
 					"at position 2 " +
 					"with class com.exedio.cope.patch.SamplePatch",
+					e.getMessage());
+		}
+	}
+
+	@Test public void stale()
+	{
+		final Patch patch = Patches.stale("staleID");
+		assertEquals("staleID", patch.getID());
+		assertEquals(false, patch.isTransactionally());
+		try
+		{
+			patch.run(new AssertionErrorJobContext());
+			fail();
+		}
+		catch(final RuntimeException e)
+		{
+			assertEquals(
+					"stale patch staleID is supposed to been run already, therefore cannot be run again.",
 					e.getMessage());
 		}
 	}
