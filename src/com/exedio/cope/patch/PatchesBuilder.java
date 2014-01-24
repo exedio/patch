@@ -39,11 +39,11 @@ public final class PatchesBuilder
 		final String id = patch.getID();
 		PatchRun.patch.check(id);
 
-		// TODO
-		if(!ids.add(id))
+		if(ids.contains(id))
 			throw new IllegalArgumentException(
 					"duplicate id >" + id + "< " +
 					"with class " + patch.getClass().getName());
+		ids.add(id);
 		patches.add(patch);
 	}
 }
