@@ -42,7 +42,7 @@ public class PatchesRealTest extends CopeModel4Test
 
 	private static void add(final Patch patch)
 	{
-		builder.add(patch);
+		builder.insertAtStart(patch);
 	}
 
 

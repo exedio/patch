@@ -29,7 +29,7 @@ public final class PatchesBuilder
 		return new Patches(patches);
 	}
 
-	public void add(final Patch patch)
+	public void insertAtStart(final Patch patch)
 	{
 		if(patch==null)
 			throw new NullPointerException("patch");

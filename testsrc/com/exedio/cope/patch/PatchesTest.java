@@ -35,7 +35,7 @@ public class PatchesTest
 		final PatchesBuilder builder = new PatchesBuilder();
 		try
 		{
-			builder.add(null);
+			builder.insertAtStart(null);
 			fail();
 		}
 		catch(final NullPointerException e)
@@ -50,7 +50,7 @@ public class PatchesTest
 		final Patch patch = newSamplePatch(null);
 		try
 		{
-			builder.add(patch);
+			builder.insertAtStart(patch);
 			fail();
 		}
 		catch(final MandatoryViolationException e)
@@ -67,7 +67,7 @@ public class PatchesTest
 		final Patch patch = newSamplePatch("");
 		try
 		{
-			builder.add(patch);
+			builder.insertAtStart(patch);
 			fail();
 		}
 		catch(final StringLengthViolationException e)
@@ -82,11 +82,11 @@ public class PatchesTest
 	@Test public void duplicateID()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
-		builder.add(newSamplePatch("duplicate"));
+		builder.insertAtStart(newSamplePatch("duplicate"));
 		final Patch patch = newSamplePatch("duplicate");
 		try
 		{
-			builder.add(patch);
+			builder.insertAtStart(patch);
 			fail();
 		}
 		catch(final IllegalArgumentException e)
@@ -134,11 +134,11 @@ public class PatchesTest
 	@Test public void getNonStaleIDs()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
-		builder.add(newSamplePatch("other1"));
-		builder.add(Patches.stale ("stale1"));
-		builder.add(newSamplePatch("other2"));
-		builder.add(Patches.stale ("stale2"));
-		builder.add(newSamplePatch("other3"));
+		builder.insertAtStart(newSamplePatch("other1"));
+		builder.insertAtStart(Patches.stale ("stale1"));
+		builder.insertAtStart(newSamplePatch("other2"));
+		builder.insertAtStart(Patches.stale ("stale2"));
+		builder.insertAtStart(newSamplePatch("other3"));
 		final Patches patches = builder.build();
 
 		assertEqualsUnmodifiable(
