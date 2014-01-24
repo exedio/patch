@@ -33,22 +33,17 @@ public final class PatchesBuilder
 
 	public void add(final Patch patch)
 	{
-		{
-			{
-				if(patch==null)
-					throw new IllegalArgumentException(
-							"null");
-				final String id = patch.getID();
-				{
-					PatchRun.patch.check(id);
-				}
-				// TODO
-				if(!ids.add(id))
-					throw new IllegalArgumentException(
-							"duplicate id >" + id + "< " +
-							"with class " + patch.getClass().getName());
-			}
-		}
+		if(patch==null)
+			throw new IllegalArgumentException("null");
+
+		final String id = patch.getID();
+		PatchRun.patch.check(id);
+
+		// TODO
+		if(!ids.add(id))
+			throw new IllegalArgumentException(
+					"duplicate id >" + id + "< " +
+					"with class " + patch.getClass().getName());
 		patches.add(patch);
 	}
 }
