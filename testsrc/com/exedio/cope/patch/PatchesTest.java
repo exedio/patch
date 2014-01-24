@@ -18,12 +18,14 @@
 
 package com.exedio.cope.patch;
 
+import static com.exedio.cope.junit.CopeAssert.assertEqualsUnmodifiable;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import com.exedio.cope.StringLengthViolationException;
 import com.exedio.cope.util.AssertionErrorJobContext;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
 
@@ -152,6 +154,20 @@ public class PatchesTest
 					"length violation, '' is too short for CopePatchRun.patch, must be at least 1 characters, but was 0.",
 					e.getMessage());
 		}
+	}
+
+	@Test public void getNonStaleIDs()
+	{
+		final Patches patches = Patches.byDescending(asList(
+			newSamplePatch("other1"),
+			Patches.stale ("stale1"),
+			newSamplePatch("other2"),
+			Patches.stale ("stale2"),
+			newSamplePatch("other3")));
+
+		assertEqualsUnmodifiable(
+				Arrays.asList("other1", "other2", "other3"),
+				patches.getNonStaleIDs());
 	}
 
 	private SamplePatch newSamplePatch(final String id)

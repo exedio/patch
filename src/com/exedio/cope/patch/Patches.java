@@ -171,4 +171,15 @@ public final class Patches
 			return id;
 		}
 	}
+
+	public List<String> getNonStaleIDs()
+	{
+		final ArrayList<String> result = new ArrayList<String>();
+		for(final Patch patch : patches)
+			if(!(patch instanceof StalePatch))
+				result.add(patch.getID());
+
+		Collections.reverse(result);
+		return Collections.unmodifiableList(result);
+	}
 }
