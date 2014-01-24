@@ -24,11 +24,6 @@ public final class PatchesBuilder
 {
 	private final LinkedHashMap<String,Patch> patches = new LinkedHashMap<String,Patch>();
 
-	public Patches build()
-	{
-		return new Patches(patches);
-	}
-
 	public void insertAtStart(final Patch patch)
 	{
 		if(patch==null)
@@ -45,5 +40,10 @@ public final class PatchesBuilder
 					"with class " + patch.getClass().getName());
 
 		patches.put(id, patch);
+	}
+
+	public Patches build()
+	{
+		return new Patches(patches);
 	}
 }
