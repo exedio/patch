@@ -30,11 +30,16 @@ public class PatchesRealTest extends CopeModel4Test
 
 	static
 	{
-		builder.add(newSamplePatch("other1"));
-		builder.add(newSamplePatch("other2"));
+		add(newSamplePatch("other1"));
+		add(newSamplePatch("other2"));
 	}
 
 	public static final Patches patches = builder.build();
+
+	private static void add(final Patch patch)
+	{
+		builder.add(patch);
+	}
 
 	public PatchesRealTest()
 	{
