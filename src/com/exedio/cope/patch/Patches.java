@@ -26,29 +26,34 @@ import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class Patches
 {
-	private final ArrayList<Patch> patches;
+	private final LinkedHashMap<String,Patch> patches;
 
 	// TODO remove patches safely
 	// TODO stages
 	// TODO concurrency
 
-	Patches(
-			final List<? extends Patch> patchesDescending)
+	Patches(final LinkedHashMap<String,Patch> patchesDescending)
 	{
-		this.patches = new ArrayList<Patch>(patchesDescending);
-		Collections.reverse(patches);
+		final ArrayList<String> ids = new ArrayList<String>(patchesDescending.keySet());
+		Collections.reverse(ids);
+		this.patches = new LinkedHashMap<String,Patch>();
+		for(final String id : ids)
+			patches.put(id, patchesDescending.get(id));
 	}
 
 	public void run(final JobContext ctx)
 	{
 		final Model model = PatchRun.TYPE.getModel();
-		for(final Patch patch : patches)
+		for(final Map.Entry<String, Patch> entry : patches.entrySet())
 		{
-			final String id = patch.getID();
+			final String id = entry.getKey();
+			final Patch patch = entry.getValue();
 			try
 			{
 				if(ctx.requestedToStop())
@@ -143,9 +148,9 @@ public final class Patches
 	public List<String> getNonStaleIDs()
 	{
 		final ArrayList<String> result = new ArrayList<String>();
-		for(final Patch patch : patches)
-			if(!(patch instanceof StalePatch))
-				result.add(patch.getID());
+		for(final Map.Entry<String, Patch> entry : patches.entrySet())
+			if(!(entry.getValue() instanceof StalePatch))
+				result.add(entry.getKey());
 
 		Collections.reverse(result);
 		return Collections.unmodifiableList(result);

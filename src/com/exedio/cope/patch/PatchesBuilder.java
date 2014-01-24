@@ -18,13 +18,11 @@
 
 package com.exedio.cope.patch;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 
 public final class PatchesBuilder
 {
-	private final ArrayList<Patch> patches = new ArrayList<Patch>();
-	private final HashSet<String> ids = new HashSet<String>();
+	private final LinkedHashMap<String,Patch> patches = new LinkedHashMap<String,Patch>();
 
 	public Patches build()
 	{
@@ -39,11 +37,11 @@ public final class PatchesBuilder
 		final String id = patch.getID();
 		PatchRun.patch.check(id);
 
-		if(ids.contains(id))
+		if(patches.containsKey(id))
 			throw new IllegalArgumentException(
 					"duplicate id >" + id + "< " +
 					"with class " + patch.getClass().getName());
-		ids.add(id);
-		patches.add(patch);
+
+		patches.put(id, patch);
 	}
 }
