@@ -1,5 +1,5 @@
 
-CHANGELOG for cope live editor
+CHANGELOG for cope patch
 
 This file lists all changes relevant for the user - especially all
 API changes and new features recommended for most users. The log may
@@ -7,34 +7,3 @@ omit bug fixes.
 The items are sorted inversely, i.e. latest items are on top
 
 --------------------------------------------------------------------------
-* add TypeSet Drafts.types
-* Session.getHome() get parameter HttpServletRequest,
-	and must return complete url now.
-	This change is not backwards compatible.
-* add AbstractSession
-* LiveServlet.getHome() moves to Session
-	this change is not backwards compatible
-* bugfix: LiveServlet.getHome() is called within a cope transaction in all cases
-* session serialization relies on a serializable model to be edited,
-	use Model.enableSerialization
-* increase z-index of editor bar from 1 to 1000
-* obey @Computed for string and positions
-* bugfix: redirect to home after login
-* remove ThreadLocal usage
-	THIS CHANGE IS NOT BACKWARDS COMPATIBLE, YOU MUST ADJUST YOUR CODE
-	- renamed css classes:
-			contentEditorLink       -> copeLive-edit
-			contentEditorLinkEdited -> copeLive-editActive
-			contentEditorPosition   -> copeLive-swap
-	- change write[Head|Bar] to get[Head|Bar]
-	- rename LiveRequest.edit for IntegerField to swap
-	- remove write[Head|Bar](PrintStream)
-	- remove default button for swapping positions
-		+ remove LiveServlet.getPreviousPositionButtonURL
-		+ remove LiveRequest/LiveFilter.edit(IntegerField, Item)
-	- rename Editor to LiveServlet
-	- remove button urls for border, hide and close, is now delivered with library
-	- move from package com.exedio.cope.editor to com.exedio.cope.live
-	- the filter is now a separate class, you need to adjust your web.xml
-* bugfix: image preview did not work without cookies
-* cope live editor is now it's own project
