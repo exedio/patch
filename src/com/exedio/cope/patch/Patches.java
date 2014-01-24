@@ -132,7 +132,17 @@ public final class Patches
 
 	public static Patch stale(final String id)
 	{
-		return new Patch(){
+		return new StalePatch(id);
+	}
+
+	private static class StalePatch implements Patch
+	{
+		private final String id;
+
+		StalePatch(final String id)
+		{
+			this.id = id;
+		}
 			@Override public String getID()
 			{
 				return id;
@@ -151,6 +161,5 @@ public final class Patches
 			{
 				return id;
 			}
-		};
-	}
+		}
 }
