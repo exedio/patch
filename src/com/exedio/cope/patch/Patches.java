@@ -54,55 +54,55 @@ public final class Patches
 		final Model model = PatchRun.TYPE.getModel();
 		synchronized(runLock)
 		{
-		for(final Map.Entry<String, Patch> entry : patches.entrySet())
-		{
-			final String id = entry.getKey();
-			final Patch patch = entry.getValue();
-			try
+			for(final Map.Entry<String, Patch> entry : patches.entrySet())
 			{
-				if(ctx.requestedToStop())
-					throw new RuntimeException("stop");
-
-				if(patch.isTransactionally())
+				final String id = entry.getKey();
+				final Patch patch = entry.getValue();
+				try
 				{
-					model.startTransaction("patch " + id);
-					// TODO faster query
-					if(PatchRun.forPatch(id)==null)
-					{
-						// TODO ctx message
-						// TODO ctx progress
-						logger.info("patch {} (tx)", id);
-						final long start = nanoTime();
-						patch.run(ctx);
-						new PatchRun(id, true, toMillies(nanoTime(), start));
-					}
-					model.commit();
-				}
-				else
-				{
-					model.startTransaction("patch " + id + " switch");
-					final boolean run = (PatchRun.forPatch(id)==null);
-					model.commit();
-					if(run)
-					{
-						// TODO ctx message
-						// TODO ctx progress
-						logger.info("patch {} (non-tx)", id);
-						final long start = nanoTime();
-						patch.run(ctx);
-						final long end = nanoTime();
+					if(ctx.requestedToStop())
+						throw new RuntimeException("stop");
 
-						model.startTransaction("patch " + id + " log");
-						new PatchRun(id, false, toMillies(end, start));
+					if(patch.isTransactionally())
+					{
+						model.startTransaction("patch " + id);
+						// TODO faster query
+						if(PatchRun.forPatch(id)==null)
+						{
+							// TODO ctx message
+							// TODO ctx progress
+							logger.info("patch {} (tx)", id);
+							final long start = nanoTime();
+							patch.run(ctx);
+							new PatchRun(id, true, toMillies(nanoTime(), start));
+						}
 						model.commit();
 					}
+					else
+					{
+						model.startTransaction("patch " + id + " switch");
+						final boolean run = (PatchRun.forPatch(id)==null);
+						model.commit();
+						if(run)
+						{
+							// TODO ctx message
+							// TODO ctx progress
+							logger.info("patch {} (non-tx)", id);
+							final long start = nanoTime();
+							patch.run(ctx);
+							final long end = nanoTime();
+
+							model.startTransaction("patch " + id + " log");
+							new PatchRun(id, false, toMillies(end, start));
+							model.commit();
+						}
+					}
+				}
+				finally
+				{
+					model.rollbackIfNotCommitted();
 				}
 			}
-			finally
-			{
-				model.rollbackIfNotCommitted();
-			}
-		}
 		}
 	}
 
