@@ -81,17 +81,17 @@ public final class Patches
 
 					if(patch.isTransactionally())
 					{
-						model.startTransaction("patch " + id);
 						if(run)
 						{
 							// TODO ctx message
 							// TODO ctx progress
 							logger.info("patch {} (tx)", id);
+							model.startTransaction("patch " + id);
 							final long start = nanoTime();
 							patch.run(ctx);
 							new PatchRun(id, true, toMillies(nanoTime(), start));
+							model.commit();
 						}
-						model.commit();
 					}
 					else
 					{
