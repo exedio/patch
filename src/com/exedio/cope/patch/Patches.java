@@ -29,9 +29,13 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class Patches
 {
+	private static final Logger logger = LoggerFactory.getLogger(Patches.class);
+
 	private final LinkedHashMap<String,Patch> patches;
 
 	// TODO stages
@@ -64,9 +68,9 @@ public final class Patches
 					// TODO faster query
 					if(PatchRun.forPatch(id)==null)
 					{
-						// TODO logging
 						// TODO ctx message
 						// TODO ctx progress
+						logger.info("patch {} (tx)", id);
 						final long start = nanoTime();
 						patch.run(ctx);
 						new PatchRun(id, true, toMillies(nanoTime(), start));
@@ -80,9 +84,9 @@ public final class Patches
 					model.commit();
 					if(run)
 					{
-						// TODO logging
 						// TODO ctx message
 						// TODO ctx progress
+						logger.info("patch {} (non-tx)", id);
 						final long start = nanoTime();
 						patch.run(ctx);
 						final long end = nanoTime();
