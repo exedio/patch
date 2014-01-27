@@ -78,7 +78,7 @@ public final class Patches
 				ctx.stopIfRequested();
 				// TODO ctx message
 				// TODO ctx progress
-				logger.info("patch {} (tx)", id);
+				logger.info("patch {}", id);
 
 				final Patch patch = entry.getValue();
 				final boolean isTransactionally = patch.isTransactionally();
