@@ -39,7 +39,6 @@ public final class Patches
 	private final LinkedHashMap<String,Patch> patches;
 
 	// TODO stages
-	// TODO concurrency
 
 	Patches(final LinkedHashMap<String,Patch> patchesDescending)
 	{
@@ -53,6 +52,8 @@ public final class Patches
 	public void run(final JobContext ctx)
 	{
 		final Model model = PatchRun.TYPE.getModel();
+		synchronized(runLock)
+		{
 		for(final Map.Entry<String, Patch> entry : patches.entrySet())
 		{
 			final String id = entry.getKey();
@@ -102,7 +103,10 @@ public final class Patches
 				model.rollbackIfNotCommitted();
 			}
 		}
+		}
 	}
+
+	private final Object runLock = new Object();
 
 	public static final TypeSet types = new TypeSet(PatchRun.TYPE);
 
