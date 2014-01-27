@@ -22,10 +22,12 @@ import static com.exedio.cope.misc.TimeUtil.toMillies;
 import static java.lang.System.nanoTime;
 
 import com.exedio.cope.Model;
+import com.exedio.cope.Query;
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,9 +56,23 @@ public final class Patches
 		final Model model = PatchRun.TYPE.getModel();
 		synchronized(runLock)
 		{
+			final HashSet<String> idsDone;
+			try
+			{
+				model.startTransaction("patch query");
+				final List<String> list = new Query<String>(PatchRun.patch).search();
+				model.commit();
+				idsDone = new HashSet<String>(list);
+			}
+			finally
+			{
+				model.rollbackIfNotCommitted();
+			}
+
 			for(final Map.Entry<String, Patch> entry : patches.entrySet())
 			{
 				final String id = entry.getKey();
+				final boolean run = !idsDone.contains(id);
 				final Patch patch = entry.getValue();
 				try
 				{
@@ -66,8 +82,7 @@ public final class Patches
 					if(patch.isTransactionally())
 					{
 						model.startTransaction("patch " + id);
-						// TODO faster query
-						if(PatchRun.forPatch(id)==null)
+						if(run)
 						{
 							// TODO ctx message
 							// TODO ctx progress
@@ -80,9 +95,6 @@ public final class Patches
 					}
 					else
 					{
-						model.startTransaction("patch " + id + " switch");
-						final boolean run = (PatchRun.forPatch(id)==null);
-						model.commit();
 						if(run)
 						{
 							// TODO ctx message
