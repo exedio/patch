@@ -81,10 +81,11 @@ public final class Patches
 				logger.info("patch {} (tx)", id);
 
 				final Patch patch = entry.getValue();
+				final boolean isTransactionally = patch.isTransactionally();
 				try
 				{
 					final long start = nanoTime();
-					if(patch.isTransactionally())
+					if(isTransactionally)
 					{
 						model.startTransaction("patch " + id);
 						patch.run(ctx);
