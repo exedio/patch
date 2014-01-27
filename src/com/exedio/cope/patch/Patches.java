@@ -77,7 +77,6 @@ public final class Patches
 
 				ctx.stopIfRequested();
 				// TODO ctx message
-				// TODO ctx progress
 				logger.info("patch {}", id);
 
 				final Patch patch = entry.getValue();
@@ -102,6 +101,7 @@ public final class Patches
 				{
 					model.rollbackIfNotCommitted();
 				}
+				ctx.incrementProgress();
 			}
 		}
 	}

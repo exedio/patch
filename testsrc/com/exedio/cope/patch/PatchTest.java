@@ -92,7 +92,7 @@ public class PatchTest extends CopeModel4Test
 		builder.insertAtStart(newSamplePatch("one"));
 		final Patches patches = builder.build();
 		run(patches, ctx);
-		ctx.assertIt("requestedToStop()"+"requestedToStop()");
+		ctx.assertIt("requestedToStop()"+"incrementProgress()"+"requestedToStop()"+"incrementProgress()");
 		final SampleItem one;
 		final SampleItem two;
 		{
@@ -110,7 +110,7 @@ public class PatchTest extends CopeModel4Test
 		builder2.insertAtStart(newSamplePatch("one"));
 		final Patches patches2 = builder2.build();
 		run(patches2, ctx);
-		ctx.assertIt("requestedToStop()");
+		ctx.assertIt("requestedToStop()"+"incrementProgress()");
 		{
 			final Iterator<SampleItem> items = items().iterator();
 			assertEquals(one, items.next());
@@ -295,6 +295,12 @@ public class PatchTest extends CopeModel4Test
 		public void stopIfRequested()
 		{
 			actual.append("requestedToStop()");
+		}
+
+		@Override
+		public void incrementProgress()
+		{
+			actual.append("incrementProgress()");
 		}
 
 		void assertIt(final String expected)
