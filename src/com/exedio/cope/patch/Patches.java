@@ -76,16 +76,14 @@ public final class Patches
 					continue;
 
 				ctx.stopIfRequested();
+				// TODO ctx message
+				// TODO ctx progress
+				logger.info("patch {} (tx)", id);
 
 				final Patch patch = entry.getValue();
 				try
 				{
-
 					{
-						// TODO ctx message
-						// TODO ctx progress
-						logger.info("patch {} (tx)", id);
-
 						if(patch.isTransactionally())
 						{
 							model.startTransaction("patch " + id);
