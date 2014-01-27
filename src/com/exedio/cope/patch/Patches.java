@@ -72,14 +72,15 @@ public final class Patches
 			for(final Map.Entry<String, Patch> entry : patches.entrySet())
 			{
 				final String id = entry.getKey();
-				final boolean run = !idsDone.contains(id);
+				if(idsDone.contains(id))
+					continue;
+
 				final Patch patch = entry.getValue();
 				try
 				{
 					if(ctx.requestedToStop())
 						throw new RuntimeException("stop");
 
-					if(run)
 					{
 						// TODO ctx message
 						// TODO ctx progress

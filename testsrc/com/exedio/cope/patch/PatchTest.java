@@ -102,7 +102,7 @@ public class PatchTest extends CopeModel4Test
 			assertFalse(items.hasNext());
 		}
 		run(patches, ctx);
-		ctx.assertIt("requestedToStop()"+"requestedToStop()");
+		ctx.assertIt("");
 		assertEquals(asList(one, two), items());
 		final PatchesBuilder builder2 = new PatchesBuilder();
 		builder2.insertAtStart(newSamplePatch("three"));
@@ -110,7 +110,7 @@ public class PatchTest extends CopeModel4Test
 		builder2.insertAtStart(newSamplePatch("one"));
 		final Patches patches2 = builder2.build();
 		run(patches2, ctx);
-		ctx.assertIt("requestedToStop()"+"requestedToStop()"+"requestedToStop()");
+		ctx.assertIt("requestedToStop()");
 		{
 			final Iterator<SampleItem> items = items().iterator();
 			assertEquals(one, items.next());
