@@ -82,7 +82,6 @@ public class PatchTest extends CopeModel4Test
 		run(patches, new EmptyJobContext());
 		assertEquals(asList(one), items());
 	}
-	// TODO test more with nonTx
 
 	@Test public void two()
 	{
@@ -154,6 +153,48 @@ public class PatchTest extends CopeModel4Test
 			assertEquals("failed", e.getMessage());
 		}
 		assertEquals(asList(ok), items());
+	}
+
+	@Test public void failureNonTx()
+	{
+		assertEquals(EMPTY_LIST, items());
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.insertAtStart(newSamplePatchNonTx("fail"));
+		builder.insertAtStart(newSamplePatchNonTx("ok"));
+		final Patches patches = builder.build();
+		try
+		{
+			run(patches, new EmptyJobContext());
+			fail();
+		}
+		catch(final RuntimeException e)
+		{
+			assertEquals("failed", e.getMessage());
+		}
+		final SampleItem ok;
+		final SampleItem fail1;
+		{
+			final Iterator<SampleItem> items = items().iterator();
+			ok = assertIt("ok", null, items.next());
+			fail1 = assertIt("fail", null, items.next());
+			assertFalse(items.hasNext());
+		}
+		try
+		{
+			run(patches, new EmptyJobContext());
+			fail();
+		}
+		catch(final RuntimeException e)
+		{
+			assertEquals("failed", e.getMessage());
+		}
+		{
+			final Iterator<SampleItem> items = items().iterator();
+			assertEquals(ok, items.next());
+			assertEquals(fail1, items.next());
+			assertFalse(fail1.equals(assertIt("fail", null, items.next())));
+			assertFalse(items.hasNext());
+		}
 	}
 
 	@Test public void stale()
