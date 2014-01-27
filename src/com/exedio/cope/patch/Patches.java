@@ -74,12 +74,12 @@ public final class Patches
 				final String id = entry.getKey();
 				if(idsDone.contains(id))
 					continue;
+				if(ctx.requestedToStop())
+					throw new RuntimeException("stop");
 
 				final Patch patch = entry.getValue();
 				try
 				{
-					if(ctx.requestedToStop())
-						throw new RuntimeException("stop");
 
 					{
 						// TODO ctx message
