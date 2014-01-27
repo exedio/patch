@@ -89,16 +89,13 @@ public final class Patches
 					{
 						model.startTransaction("patch " + id);
 						patch.run(ctx);
-						new PatchRun(id, true, toMillies(nanoTime(), start));
 					}
 					else
 					{
 						patch.run(ctx);
-						final long end = nanoTime();
-
 						model.startTransaction("patch " + id + " log");
-						new PatchRun(id, false, toMillies(end, start));
 					}
+					new PatchRun(id, isTransactionally, toMillies(nanoTime(), start));
 					model.commit();
 				}
 				finally
