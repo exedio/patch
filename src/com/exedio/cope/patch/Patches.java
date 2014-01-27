@@ -83,24 +83,22 @@ public final class Patches
 				final Patch patch = entry.getValue();
 				try
 				{
+					final long start = nanoTime();
 					if(patch.isTransactionally())
 					{
 						model.startTransaction("patch " + id);
-						final long start = nanoTime();
 						patch.run(ctx);
 						new PatchRun(id, true, toMillies(nanoTime(), start));
-						model.commit();
 					}
 					else
 					{
-						final long start = nanoTime();
 						patch.run(ctx);
 						final long end = nanoTime();
 
 						model.startTransaction("patch " + id + " log");
 						new PatchRun(id, false, toMillies(end, start));
-						model.commit();
 					}
+					model.commit();
 				}
 				finally
 				{
