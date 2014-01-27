@@ -79,27 +79,22 @@ public final class Patches
 					if(ctx.requestedToStop())
 						throw new RuntimeException("stop");
 
-					if(patch.isTransactionally())
+					if(run)
 					{
-						if(run)
+						// TODO ctx message
+						// TODO ctx progress
+						logger.info("patch {} (tx)", id);
+
+						if(patch.isTransactionally())
 						{
-							// TODO ctx message
-							// TODO ctx progress
-							logger.info("patch {} (tx)", id);
 							model.startTransaction("patch " + id);
 							final long start = nanoTime();
 							patch.run(ctx);
 							new PatchRun(id, true, toMillies(nanoTime(), start));
 							model.commit();
 						}
-					}
-					else
-					{
-						if(run)
+						else
 						{
-							// TODO ctx message
-							// TODO ctx progress
-							logger.info("patch {} (non-tx)", id);
 							final long start = nanoTime();
 							patch.run(ctx);
 							final long end = nanoTime();
