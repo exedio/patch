@@ -74,8 +74,8 @@ public final class Patches
 				final String id = entry.getKey();
 				if(idsDone.contains(id))
 					continue;
-				if(ctx.requestedToStop())
-					throw new RuntimeException("stop");
+
+				ctx.stopIfRequested();
 
 				final Patch patch = entry.getValue();
 				try

@@ -292,10 +292,9 @@ public class PatchTest extends CopeModel4Test
 		private final StringBuilder actual = new StringBuilder();
 
 		@Override
-		public boolean requestedToStop()
+		public void stopIfRequested()
 		{
 			actual.append("requestedToStop()");
-			return false;
 		}
 
 		void assertIt(final String expected)
