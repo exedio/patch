@@ -41,6 +41,7 @@ public final class Patches
 	private final LinkedHashMap<String,Patch> patches;
 
 	// TODO stages
+	// TODO cluster-proof lock against concurrent execution
 
 	Patches(final LinkedHashMap<String,Patch> patchesDescending)
 	{
