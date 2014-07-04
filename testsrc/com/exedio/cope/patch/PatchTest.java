@@ -30,8 +30,8 @@ import com.exedio.cope.Revisions;
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.AssertionErrorJobContext;
-import com.exedio.cope.util.EmptyJobContext;
 import com.exedio.cope.util.JobContext;
+import com.exedio.cope.util.JobContexts;
 import java.util.Iterator;
 import java.util.List;
 import org.junit.Test;
@@ -55,14 +55,14 @@ public class PatchTest extends CopeModel4Test
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("one"));
 		final Patches patches = builder.build();
-		run(patches, new EmptyJobContext());
+		run(patches, JobContexts.EMPTY);
 		final SampleItem one;
 		{
 			final Iterator<SampleItem> items = items().iterator();
 			one = assertIt("one", "patch one", items.next());
 			assertFalse(items.hasNext());
 		}
-		run(patches, new EmptyJobContext());
+		run(patches, JobContexts.EMPTY);
 		assertEquals(asList(one), items());
 	}
 
@@ -72,14 +72,14 @@ public class PatchTest extends CopeModel4Test
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatchNonTx("one"));
 		final Patches patches = builder.build();
-		run(patches, new EmptyJobContext());
+		run(patches, JobContexts.EMPTY);
 		final SampleItem one;
 		{
 			final Iterator<SampleItem> items = items().iterator();
 			one = assertIt("one", null, items.next());
 			assertFalse(items.hasNext());
 		}
-		run(patches, new EmptyJobContext());
+		run(patches, JobContexts.EMPTY);
 		assertEquals(asList(one), items());
 	}
 
@@ -130,7 +130,7 @@ public class PatchTest extends CopeModel4Test
 		final Patches patches = builder.build();
 		try
 		{
-			run(patches, new EmptyJobContext());
+			run(patches, JobContexts.EMPTY);
 			fail();
 		}
 		catch(final RuntimeException e)
@@ -145,7 +145,7 @@ public class PatchTest extends CopeModel4Test
 		}
 		try
 		{
-			run(patches, new EmptyJobContext());
+			run(patches, JobContexts.EMPTY);
 			fail();
 		}
 		catch(final RuntimeException e)
@@ -164,7 +164,7 @@ public class PatchTest extends CopeModel4Test
 		final Patches patches = builder.build();
 		try
 		{
-			run(patches, new EmptyJobContext());
+			run(patches, JobContexts.EMPTY);
 			fail();
 		}
 		catch(final RuntimeException e)
@@ -181,7 +181,7 @@ public class PatchTest extends CopeModel4Test
 		}
 		try
 		{
-			run(patches, new EmptyJobContext());
+			run(patches, JobContexts.EMPTY);
 			fail();
 		}
 		catch(final RuntimeException e)
@@ -205,7 +205,7 @@ public class PatchTest extends CopeModel4Test
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch(id));
 		final Patches patches = builder.build();
-		run(patches, new EmptyJobContext());
+		run(patches, JobContexts.EMPTY);
 		final SampleItem one;
 		{
 			final Iterator<SampleItem> items = items().iterator();
@@ -216,7 +216,7 @@ public class PatchTest extends CopeModel4Test
 		final PatchesBuilder builder2 = new PatchesBuilder();
 		builder2.insertAtStart(Patches.stale(id));
 		final Patches patches2 = builder2.build();
-		run(patches2, new EmptyJobContext());
+		run(patches2, JobContexts.EMPTY);
 		{
 			final Iterator<SampleItem> items = items().iterator();
 			assertEquals(one, items.next());
@@ -232,7 +232,7 @@ public class PatchTest extends CopeModel4Test
 		final Patches patches = builder.build();
 		try
 		{
-			run(patches, new EmptyJobContext());
+			run(patches, JobContexts.EMPTY);
 			fail();
 		}
 		catch(final RuntimeException e)

@@ -21,7 +21,7 @@ package com.exedio.cope.patch;
 import static com.exedio.cope.patch.PatchTest.MODEL;
 
 import com.exedio.cope.patch.cope.CopeModel4Test;
-import com.exedio.cope.util.EmptyJobContext;
+import com.exedio.cope.util.JobContexts;
 import org.junit.Test;
 
 /**
@@ -61,7 +61,7 @@ public class PatchesRealTest extends CopeModel4Test
 
 	@Test public void run()
 	{
-		patches.run(new EmptyJobContext());
+		patches.run(JobContexts.EMPTY);
 	}
 
 	private static SamplePatch newSamplePatch(final String id)
