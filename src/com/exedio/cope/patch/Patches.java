@@ -53,6 +53,9 @@ public final class Patches
 
 	public void run(final JobContext ctx)
 	{
+		if(ctx==null)
+			throw new NullPointerException("ctx");
+
 		final Model model = PatchRun.TYPE.getModel();
 		synchronized(runLock)
 		{

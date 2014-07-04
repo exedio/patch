@@ -245,6 +245,20 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(EMPTY_LIST, items());
 	}
 
+	@Test public void nullCtx()
+	{
+		final Patches patches = new PatchesBuilder().build();
+		try
+		{
+			run(patches, null);
+			fail();
+		}
+		catch(final NullPointerException e)
+		{
+			assertEquals("ctx", e.getMessage());
+		}
+	}
+
 	private static void run(
 			final Patches patches,
 			final JobContext ctx)
