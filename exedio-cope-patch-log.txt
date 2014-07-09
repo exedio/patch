@@ -7,6 +7,7 @@ omit bug fixes.
 The items are sorted inversely, i.e. latest items are on top
 
 --------------------------------------------------------------------------
+* SchemaPatch added
 * Patch#getStage() added
 	This breaks backwards API compatibility, causes compiler error.
 	This affects database schema, requires a new column.
