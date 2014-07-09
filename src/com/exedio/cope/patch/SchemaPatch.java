@@ -26,6 +26,7 @@ import com.exedio.cope.Model;
 import com.exedio.cope.SchemaInfo;
 import com.exedio.cope.util.JobContext;
 import com.exedio.dsmf.SQLRuntimeException;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -94,6 +95,7 @@ public abstract class SchemaPatch implements Patch
 		}
 	}
 
+	@SuppressFBWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE") // OK
 	private static final int execute(
 			final Connection connection,
 			final String sql)
