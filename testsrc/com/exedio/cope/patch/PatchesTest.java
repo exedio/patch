@@ -79,6 +79,21 @@ public class PatchesTest
 		}
 	}
 
+	@Test public void check()
+	{
+		final PatchesBuilder builder = new PatchesBuilder();
+		final Patch patch = newSamplePatchCheck("id");
+		try
+		{
+			builder.insertAtStart(patch);
+			fail();
+		}
+		catch(final RuntimeException e)
+		{
+			assertEquals("check exception message", e.getMessage());
+		}
+	}
+
 	@Test public void duplicateID()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
@@ -172,6 +187,11 @@ public class PatchesTest
 
 	private static SamplePatch newSamplePatch(final String id)
 	{
-		return new SamplePatch(null, id, true);
+		return new SamplePatch(null, id, null, true);
+	}
+
+	private SamplePatch newSamplePatchCheck(final String id)
+	{
+		return new SamplePatch(null, id, "check exception message", true);
 	}
 }

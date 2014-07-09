@@ -23,6 +23,7 @@ import com.exedio.cope.util.JobContext;
 public interface Patch
 {
 	String getID();
+	void check();
 
 	/**
 	 * Specifies, whether the framework shall manage

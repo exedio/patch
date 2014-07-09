@@ -167,6 +167,12 @@ public final class Patches
 		}
 
 		@Override
+		public void check()
+		{
+			// empty
+		}
+
+		@Override
 		public boolean isTransactionally()
 		{
 			return false;

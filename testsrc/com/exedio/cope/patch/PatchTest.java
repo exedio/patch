@@ -363,12 +363,12 @@ public class PatchTest extends CopeModel4Test
 
 	private static SamplePatch newSamplePatch(final String id)
 	{
-		return new SamplePatch(MODEL, id, true);
+		return new SamplePatch(MODEL, id, null, true);
 	}
 
 	private static SamplePatch newSamplePatchNonTx(final String id)
 	{
-		return new SamplePatch(MODEL, id, false);
+		return new SamplePatch(MODEL, id, null, false);
 	}
 
 	private static List<SampleItem> items()

@@ -33,6 +33,7 @@ public final class PatchesBuilder
 		// this should be the only place in production code, where getID is called.
 		final String id = patch.getID();
 		PatchRun.patch.check(id);
+		patch.check();
 
 		assertNotExhausted();
 
