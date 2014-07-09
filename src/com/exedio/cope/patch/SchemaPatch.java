@@ -63,7 +63,7 @@ public abstract class SchemaPatch implements Patch
 			if(body[i]==null)
 				throw new NullPointerException("body" + '[' + i + ']');
 			if(body[i].isEmpty())
-				throw new IllegalArgumentException("must not be empty: body" + '[' + i + ']');
+				throw new IllegalArgumentException("body[" + i + "] must not be empty");
 		}
 	}
 

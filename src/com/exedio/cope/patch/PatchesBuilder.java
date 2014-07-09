@@ -37,7 +37,7 @@ public final class PatchesBuilder
 
 		if(patch instanceof SchemaPatch)
 		{
-			// TODO
+			((SchemaPatch)patch).checkBody(((SchemaPatch)patch).getBody());
 		}
 
 		assertNotExhausted();
