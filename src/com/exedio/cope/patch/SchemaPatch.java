@@ -45,15 +45,9 @@ public abstract class SchemaPatch implements Patch
 	}
 
 	@Override
-	public final boolean isTransactionally()
+	public void check()
 	{
-		return false;
-	}
-
-	protected abstract String[] getBody();
-
-	public final void checkBody(final String[] body)
-	{
+		final String[] body = getBody();
 		if(body==null)
 			throw new NullPointerException("body");
 		if(body.length==0)
@@ -68,12 +62,19 @@ public abstract class SchemaPatch implements Patch
 	}
 
 	@Override
+	public final boolean isTransactionally()
+	{
+		return false;
+	}
+
+	protected abstract String[] getBody();
+
+	@Override
 	public final void run(final JobContext ctx)
 	{
 		final String id = getID();
 
 		final String[] body = getBody();
-		checkBody(body);
 
 		try(Connection connection = SchemaInfo.newConnection(model))
 		{
