@@ -58,6 +58,27 @@ public class SchemaPatchTest extends CopeModel4Test
 		assertEquals(asList(one), items());
 	}
 
+	@Test public void more()
+	{
+		assertEquals(EMPTY_LIST, items());
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.insertAtStart(patch("one", "two", "three"));
+		final Patches patches = builder.build();
+		run(patches, JobContexts.EMPTY);
+		final SchemaSampleItem one;
+		final SchemaSampleItem two;
+		final SchemaSampleItem three;
+		{
+			final Iterator<SchemaSampleItem> items = items().iterator();
+			one   = assertIt("one", items.next());
+			two   = assertIt("two", items.next());
+			three = assertIt("three", items.next());
+			assertFalse(items.hasNext());
+		}
+		run(patches, JobContexts.EMPTY);
+		assertEquals(asList(one, two, three), items());
+	}
+
 	private static void run(
 			final Patches patches,
 			final JobContext ctx)
@@ -74,7 +95,7 @@ public class SchemaPatchTest extends CopeModel4Test
 		}
 	}
 
-	private static SchemaPatch patch(final String content)
+	private static SchemaPatch patch(final String... contents)
 	{
 		return new SchemaPatch(MODEL)
 		{
@@ -87,7 +108,10 @@ public class SchemaPatchTest extends CopeModel4Test
 			@Override
 			protected String[] getBody()
 			{
-				return new String[]{SchemaSampleItem.create(content)};
+				final String[] result = new String[contents.length];
+				for(int i = 0; i<contents.length; i++)
+					result[i] = SchemaSampleItem.create(contents[i]);
+				return result;
 			}
 		};
 	}
