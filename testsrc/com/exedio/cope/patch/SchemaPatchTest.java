@@ -50,6 +50,9 @@ public class SchemaPatchTest extends CopeModel4Test
 		final Iterator<SchemaSampleItem> items = items().iterator();
 		assertIt("one", items.next());
 		assertFalse(items.hasNext());
+		final Iterator<SchemaPatchRun> runs = runs().iterator();
+		assertIt(0, runs.next());
+		assertFalse(runs.hasNext());
 	}
 
 	@Test public void more()
@@ -64,6 +67,11 @@ public class SchemaPatchTest extends CopeModel4Test
 		assertIt("two", items.next());
 		assertIt("three", items.next());
 		assertFalse(items.hasNext());
+		final Iterator<SchemaPatchRun> runs = runs().iterator();
+		assertIt(0, runs.next());
+		assertIt(1, runs.next());
+		assertIt(2, runs.next());
+		assertFalse(runs.hasNext());
 	}
 
 	private static void run(
@@ -110,11 +118,28 @@ public class SchemaPatchTest extends CopeModel4Test
 		return q.search();
 	}
 
+	private List<SchemaPatchRun> runs()
+	{
+		final Query<SchemaPatchRun> q = SchemaPatchRun.TYPE.newQuery();
+		q.setOrderByThis(true);
+		return q.search();
+	}
+
 	private SchemaSampleItem assertIt(
 			final String content,
 			final SchemaSampleItem actual)
 	{
 		assertEquals("content", content, actual.getContent());
+		return actual;
+	}
+
+	private SchemaPatchRun assertIt(
+			final int position,
+			final SchemaPatchRun actual)
+	{
+		assertEquals("id", "id", actual.getPatch());
+		assertEquals("position", position, actual.getPosition());
+		assertEquals("rows", 1, actual.getRows());
 		return actual;
 	}
 }
