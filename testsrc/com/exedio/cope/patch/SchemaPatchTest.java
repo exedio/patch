@@ -109,7 +109,7 @@ public class SchemaPatchTest extends CopeModel4Test
 			}
 
 			@Override
-			protected String[] getBody()
+			protected String[] computeBody()
 			{
 				assertFalse("gotBody", gotBody);
 				gotBody = true;

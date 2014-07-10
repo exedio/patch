@@ -119,7 +119,7 @@ public class SchemaPatchesTest
 			}
 
 			@Override
-			protected String[] getBody()
+			protected String[] computeBody()
 			{
 				return body;
 			}

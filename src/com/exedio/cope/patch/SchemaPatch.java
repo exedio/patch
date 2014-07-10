@@ -52,7 +52,7 @@ public abstract class SchemaPatch implements Patch
 		if(body!=null)
 			return body;
 
-		final String[] body = getBody();
+		final String[] body = computeBody();
 		if(body==null)
 			throw new NullPointerException("body");
 		if(body.length==0)
@@ -88,7 +88,11 @@ public abstract class SchemaPatch implements Patch
 		return false;
 	}
 
-	protected abstract String[] getBody();
+	/**
+	 * This method is guaranteed to be called once only
+	 * for each instance of SchemaPatch.
+	 */
+	protected abstract String[] computeBody();
 
 	@Override
 	public final void run(final JobContext ctx)
