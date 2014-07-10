@@ -138,7 +138,7 @@ public class SchemaPatchesTest
 
 	private static SchemaPatch patch(final String... body)
 	{
-		return new SchemaPatch(MODEL)
+		return new SchemaPatch()
 		{
 			boolean gotBody = false;
 

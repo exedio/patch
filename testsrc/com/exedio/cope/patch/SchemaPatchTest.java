@@ -98,7 +98,7 @@ public class SchemaPatchTest extends CopeModel4Test
 		for(int i = 0; i<contents.length; i++)
 			body[i] = SchemaSampleItem.create(contents[i]);
 
-		return new SchemaPatch(MODEL)
+		return new SchemaPatch()
 		{
 			boolean gotBody = false;
 

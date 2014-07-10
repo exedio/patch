@@ -20,7 +20,6 @@ package com.exedio.cope.patch;
 
 import static com.exedio.cope.misc.TimeUtil.toMillies;
 import static java.lang.System.nanoTime;
-import static java.util.Objects.requireNonNull;
 
 import com.exedio.cope.ConstraintViolationException;
 import com.exedio.cope.Model;
@@ -38,13 +37,6 @@ import org.slf4j.LoggerFactory;
 public abstract class SchemaPatch implements Patch
 {
 	private static final Logger logger = LoggerFactory.getLogger(SchemaPatch.class);
-
-	private final Model model;
-
-	SchemaPatch(final Model model)
-	{
-		this.model = requireNonNull(model, "model");
-	}
 
 	@Override
 	public void check()
@@ -104,8 +96,8 @@ public abstract class SchemaPatch implements Patch
 	public final void run(final JobContext ctx)
 	{
 		final String id = getID();
-
 		final String[] body = getBodyInternal();
+		final Model model = SchemaPatchRun.TYPE.getModel();
 
 		try(Connection connection = SchemaInfo.newConnection(model))
 		{
