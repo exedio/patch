@@ -25,6 +25,7 @@ import static java.util.Objects.requireNonNull;
 import com.exedio.cope.ConstraintViolationException;
 import com.exedio.cope.Model;
 import com.exedio.cope.SchemaInfo;
+import com.exedio.cope.misc.Arrays;
 import com.exedio.cope.util.JobContext;
 import com.exedio.dsmf.SQLRuntimeException;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -63,9 +64,14 @@ public abstract class SchemaPatch implements Patch
 	 */
 	protected abstract String[] computeBody();
 
+	public final String[] getBody()
+	{
+		return Arrays.copyOf(getBodyInternal());
+	}
+
 	private String[] body = null;
 
-	final String[] getBodyInternal()
+	private final String[] getBodyInternal()
 	{
 		if(body!=null)
 			return body;
