@@ -45,6 +45,24 @@ public abstract class SchemaPatch implements Patch
 		this.model = requireNonNull(model, "model");
 	}
 
+	@Override
+	public void check()
+	{
+		getBodyInternal();
+	}
+
+	@Override
+	public final boolean isTransactionally()
+	{
+		return false;
+	}
+
+	/**
+	 * This method is guaranteed to be called once only
+	 * for each instance of SchemaPatch.
+	 */
+	protected abstract String[] computeBody();
+
 	private String[] body = null;
 
 	final String[] getBodyInternal()
@@ -75,24 +93,6 @@ public abstract class SchemaPatch implements Patch
 		this.body = result;
 		return result;
 	}
-
-	@Override
-	public void check()
-	{
-		getBodyInternal();
-	}
-
-	@Override
-	public final boolean isTransactionally()
-	{
-		return false;
-	}
-
-	/**
-	 * This method is guaranteed to be called once only
-	 * for each instance of SchemaPatch.
-	 */
-	protected abstract String[] computeBody();
 
 	@Override
 	public final void run(final JobContext ctx)
