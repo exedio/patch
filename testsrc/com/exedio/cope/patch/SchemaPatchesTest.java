@@ -46,6 +46,20 @@ public class SchemaPatchesTest
 		assertNotSame(patch.getBody(), patch.getBody());
 	}
 
+	@Test public void getBodyNull()
+	{
+		final SchemaPatch patch = patch((String[])null);
+		try
+		{
+			patch.getBody();
+			fail();
+		}
+		catch(final NullPointerException e)
+		{
+			assertEquals("body", e.getMessage());
+		}
+	}
+
 	@Test public void nullBody()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
