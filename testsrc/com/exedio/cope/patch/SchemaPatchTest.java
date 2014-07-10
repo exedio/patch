@@ -97,7 +97,7 @@ public class SchemaPatchTest extends CopeModel4Test
 			@Override
 			public String getID()
 			{
-				return "id";
+				return "patchId";
 			}
 
 			@Override
@@ -137,7 +137,7 @@ public class SchemaPatchTest extends CopeModel4Test
 			final int position,
 			final SchemaPatchRun actual)
 	{
-		assertEquals("id", "id", actual.getPatch());
+		assertEquals("id", "patchId", actual.getPatch());
 		assertEquals("position", position, actual.getPosition());
 		assertEquals("rows", 1, actual.getRows());
 		return actual;
