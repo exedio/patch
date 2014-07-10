@@ -18,7 +18,6 @@
 
 package com.exedio.cope.patch;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_LIST;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -48,14 +47,9 @@ public class SchemaPatchTest extends CopeModel4Test
 		builder.insertAtStart(patch("one"));
 		final Patches patches = builder.build();
 		run(patches, JobContexts.EMPTY);
-		final SchemaSampleItem one;
-		{
-			final Iterator<SchemaSampleItem> items = items().iterator();
-			one = assertIt("one", items.next());
-			assertFalse(items.hasNext());
-		}
-		run(patches, JobContexts.EMPTY);
-		assertEquals(asList(one), items());
+		final Iterator<SchemaSampleItem> items = items().iterator();
+		assertIt("one", items.next());
+		assertFalse(items.hasNext());
 	}
 
 	@Test public void more()
@@ -65,18 +59,11 @@ public class SchemaPatchTest extends CopeModel4Test
 		builder.insertAtStart(patch("one", "two", "three"));
 		final Patches patches = builder.build();
 		run(patches, JobContexts.EMPTY);
-		final SchemaSampleItem one;
-		final SchemaSampleItem two;
-		final SchemaSampleItem three;
-		{
-			final Iterator<SchemaSampleItem> items = items().iterator();
-			one   = assertIt("one", items.next());
-			two   = assertIt("two", items.next());
-			three = assertIt("three", items.next());
-			assertFalse(items.hasNext());
-		}
-		run(patches, JobContexts.EMPTY);
-		assertEquals(asList(one, two, three), items());
+		final Iterator<SchemaSampleItem> items = items().iterator();
+		assertIt("one", items.next());
+		assertIt("two", items.next());
+		assertIt("three", items.next());
+		assertFalse(items.hasNext());
 	}
 
 	private static void run(
