@@ -45,14 +45,20 @@ public abstract class SchemaPatch implements Patch
 		this.model = requireNonNull(model, "model");
 	}
 
-	@Override
-	public void check()
+	private String[] body = null;
+
+	final String[] getBodyInternal()
 	{
+		if(body!=null)
+			return body;
+
 		final String[] body = getBody();
 		if(body==null)
 			throw new NullPointerException("body");
 		if(body.length==0)
 			throw new IllegalArgumentException("body must not be empty");
+
+		final String[] result = new String[body.length];
 		for(int i = 0; i<body.length; i++)
 		{
 			try
@@ -63,7 +69,17 @@ public abstract class SchemaPatch implements Patch
 			{
 				throw new IllegalArgumentException("body[" + i + "]: " + e.getMessageWithoutFeature(), e);
 			}
+			result[i] = body[i];
 		}
+
+		this.body = result;
+		return result;
+	}
+
+	@Override
+	public void check()
+	{
+		getBodyInternal();
 	}
 
 	@Override
@@ -79,7 +95,7 @@ public abstract class SchemaPatch implements Patch
 	{
 		final String id = getID();
 
-		final String[] body = getBody();
+		final String[] body = getBodyInternal();
 
 		try(Connection connection = SchemaInfo.newConnection(model))
 		{

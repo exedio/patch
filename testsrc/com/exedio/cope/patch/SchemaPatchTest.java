@@ -52,7 +52,7 @@ public class SchemaPatchTest extends CopeModel4Test
 		assertIt("one", items.next());
 		assertFalse(items.hasNext());
 		final Iterator<SchemaPatchRun> runs = runs().iterator();
-		assertIt(0, patch.getBody()[0], runs.next());
+		assertIt(0, patch.getBodyInternal()[0], runs.next());
 		assertFalse(runs.hasNext());
 	}
 
@@ -70,9 +70,9 @@ public class SchemaPatchTest extends CopeModel4Test
 		assertIt("three", items.next());
 		assertFalse(items.hasNext());
 		final Iterator<SchemaPatchRun> runs = runs().iterator();
-		assertIt(0, patch.getBody()[0], runs.next());
-		assertIt(1, patch.getBody()[1], runs.next());
-		assertIt(2, patch.getBody()[2], runs.next());
+		assertIt(0, patch.getBodyInternal()[0], runs.next());
+		assertIt(1, patch.getBodyInternal()[1], runs.next());
+		assertIt(2, patch.getBodyInternal()[2], runs.next());
 		assertFalse(runs.hasNext());
 	}
 
@@ -100,6 +100,8 @@ public class SchemaPatchTest extends CopeModel4Test
 
 		return new SchemaPatch(MODEL)
 		{
+			boolean gotBody = false;
+
 			@Override
 			public String getID()
 			{
@@ -109,6 +111,9 @@ public class SchemaPatchTest extends CopeModel4Test
 			@Override
 			protected String[] getBody()
 			{
+				assertFalse("gotBody", gotBody);
+				gotBody = true;
+
 				return body;
 			}
 		};
