@@ -87,7 +87,16 @@ public abstract class SchemaPatch implements Patch
 				final int rows = execute(connection, sql);
 				final long elapsed = toMillies(nanoTime(), start);
 
-				new SchemaPatchRun(id, position, rows, elapsed);
+				try
+				{
+					model.startTransaction();
+					new SchemaPatchRun(id, position, rows, elapsed);
+					model.commit();
+				}
+				finally
+				{
+					model.rollbackIfNotCommitted();
+				}
 			}
 		}
 		catch(final SQLException e)

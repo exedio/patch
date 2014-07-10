@@ -42,7 +42,8 @@ public class PatchTest extends CopeModel4Test
 	static final Model MODEL = new Model(
 			(Revisions.Factory)null,
 			new TypeSet[]{Patches.types},
-			SampleItem.TYPE
+			SampleItem.TYPE,
+			SchemaSampleItem.TYPE
 	);
 
 	public PatchTest()
