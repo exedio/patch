@@ -20,15 +20,15 @@
 		<artifact name="exedio-cope-patch" type="log" ext="txt" />
 	</publications>
 	<dependencies>
-		<dependency org="junit" name="junit" rev="4.9" conf="build->default">
-			<exclude org="org.hamcrest" module="hamcrest-core" />
-		</dependency>
-		<dependency org="findbugs-x" name="findbugs" rev="2.0.1" conf="build->default" />
 		<dependency org="com.exedio" name="cope" rev="7497">
 			<conf name="runtime" mapped="runtime" />
 			<conf name="build" mapped="hsqldb,junit,sources" />
 		</dependency>
 		<!-- build dependencies -->
 		<dependency org="ch.qos.logback" name="logback-classic" rev="1.0.4" conf="build->default" />
+		<dependency org="junit" name="junit" rev="4.9" conf="build->default">
+			<exclude org="org.hamcrest" module="hamcrest-core" />
+		</dependency>
+		<dependency org="findbugs-x" name="findbugs" rev="2.0.1" conf="build->default" />
 	</dependencies>
 </ivy-module>
