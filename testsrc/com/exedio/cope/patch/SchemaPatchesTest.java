@@ -18,8 +18,10 @@
 
 package com.exedio.cope.patch;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.fail;
 
 import com.exedio.cope.ActivationParameters;
@@ -36,6 +38,14 @@ import org.junit.Test;
 
 public class SchemaPatchesTest
 {
+	@Test public void getBody()
+	{
+		final SchemaPatch patch = patch("one", "two");
+		assertEquals(asList("one", "two"), asList(patch.getBody()));
+		assertEquals(asList("one", "two"), asList(patch.getBody()));
+		assertNotSame(patch.getBody(), patch.getBody());
+	}
+
 	@Test public void nullBody()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
