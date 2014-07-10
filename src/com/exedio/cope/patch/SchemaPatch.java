@@ -112,7 +112,7 @@ public abstract class SchemaPatch implements Patch
 
 				try
 				{
-					model.startTransaction();
+					model.startTransaction(SchemaPatch.class.getName() + ' ' + id + ' ' + (position+1) + '/' + body.length);
 					new SchemaPatchRun(id, position, sql, rows, elapsed);
 					model.commit();
 				}
