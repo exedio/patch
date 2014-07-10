@@ -90,7 +90,7 @@ public abstract class SchemaPatch implements Patch
 				try
 				{
 					model.startTransaction();
-					new SchemaPatchRun(id, position, rows, elapsed);
+					new SchemaPatchRun(id, position, sql, rows, elapsed);
 					model.commit();
 				}
 				finally

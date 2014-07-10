@@ -44,14 +44,15 @@ public class SchemaPatchTest extends CopeModel4Test
 	{
 		assertEquals(EMPTY_LIST, items());
 		final PatchesBuilder builder = new PatchesBuilder();
-		builder.insertAtStart(patch("one"));
+		final SchemaPatch patch = patch("one");
+		builder.insertAtStart(patch);
 		final Patches patches = builder.build();
 		run(patches, JobContexts.EMPTY);
 		final Iterator<SchemaSampleItem> items = items().iterator();
 		assertIt("one", items.next());
 		assertFalse(items.hasNext());
 		final Iterator<SchemaPatchRun> runs = runs().iterator();
-		assertIt(0, runs.next());
+		assertIt(0, patch.getBody()[0], runs.next());
 		assertFalse(runs.hasNext());
 	}
 
@@ -59,7 +60,8 @@ public class SchemaPatchTest extends CopeModel4Test
 	{
 		assertEquals(EMPTY_LIST, items());
 		final PatchesBuilder builder = new PatchesBuilder();
-		builder.insertAtStart(patch("one", "two", "three"));
+		final SchemaPatch patch = patch("one", "two", "three");
+		builder.insertAtStart(patch);
 		final Patches patches = builder.build();
 		run(patches, JobContexts.EMPTY);
 		final Iterator<SchemaSampleItem> items = items().iterator();
@@ -68,9 +70,9 @@ public class SchemaPatchTest extends CopeModel4Test
 		assertIt("three", items.next());
 		assertFalse(items.hasNext());
 		final Iterator<SchemaPatchRun> runs = runs().iterator();
-		assertIt(0, runs.next());
-		assertIt(1, runs.next());
-		assertIt(2, runs.next());
+		assertIt(0, patch.getBody()[0], runs.next());
+		assertIt(1, patch.getBody()[1], runs.next());
+		assertIt(2, patch.getBody()[2], runs.next());
 		assertFalse(runs.hasNext());
 	}
 
@@ -92,6 +94,10 @@ public class SchemaPatchTest extends CopeModel4Test
 
 	private static SchemaPatch patch(final String... contents)
 	{
+		final String[] body = new String[contents.length];
+		for(int i = 0; i<contents.length; i++)
+			body[i] = SchemaSampleItem.create(contents[i]);
+
 		return new SchemaPatch(MODEL)
 		{
 			@Override
@@ -103,10 +109,7 @@ public class SchemaPatchTest extends CopeModel4Test
 			@Override
 			protected String[] getBody()
 			{
-				final String[] result = new String[contents.length];
-				for(int i = 0; i<contents.length; i++)
-					result[i] = SchemaSampleItem.create(contents[i]);
-				return result;
+				return body;
 			}
 		};
 	}
@@ -135,10 +138,12 @@ public class SchemaPatchTest extends CopeModel4Test
 
 	private SchemaPatchRun assertIt(
 			final int position,
+			final String sql,
 			final SchemaPatchRun actual)
 	{
 		assertEquals("id", "patchId", actual.getPatch());
 		assertEquals("position", position, actual.getPosition());
+		assertEquals("sql", sql, actual.getSql());
 		assertEquals("rows", 1, actual.getRows());
 		return actual;
 	}
