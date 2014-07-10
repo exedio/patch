@@ -22,6 +22,7 @@ import static com.exedio.cope.misc.TimeUtil.toMillies;
 import static java.lang.System.nanoTime;
 import static java.util.Objects.requireNonNull;
 
+import com.exedio.cope.ConstraintViolationException;
 import com.exedio.cope.Model;
 import com.exedio.cope.SchemaInfo;
 import com.exedio.cope.util.JobContext;
@@ -54,10 +55,14 @@ public abstract class SchemaPatch implements Patch
 			throw new IllegalArgumentException("body must not be empty");
 		for(int i = 0; i<body.length; i++)
 		{
-			if(body[i]==null)
-				throw new NullPointerException("body" + '[' + i + ']');
-			if(body[i].isEmpty())
-				throw new IllegalArgumentException("body[" + i + "] must not be empty");
+			try
+			{
+				SchemaPatchRun.sql.check(body[i]);
+			}
+			catch(final ConstraintViolationException e)
+			{
+				throw new IllegalArgumentException("body[" + i + "]: " + e.getMessageWithoutFeature(), e);
+			}
 		}
 	}
 

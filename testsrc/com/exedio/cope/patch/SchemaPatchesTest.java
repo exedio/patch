@@ -23,9 +23,11 @@ import static org.junit.Assert.fail;
 
 import com.exedio.cope.ActivationParameters;
 import com.exedio.cope.Item;
+import com.exedio.cope.MandatoryViolationException;
 import com.exedio.cope.Model;
 import com.exedio.cope.Revisions;
 import com.exedio.cope.StringField;
+import com.exedio.cope.StringLengthViolationException;
 import com.exedio.cope.Type;
 import com.exedio.cope.TypesBound;
 import org.junit.Test;
@@ -71,9 +73,15 @@ public class SchemaPatchesTest
 			builder.insertAtStart(patch);
 			fail();
 		}
-		catch(final NullPointerException e)
+		catch(final IllegalArgumentException e)
 		{
-			assertEquals("body[1]", e.getMessage());
+			assertEquals(
+					"body[1]: mandatory violation",
+					e.getMessage());
+			final MandatoryViolationException cause = (MandatoryViolationException)e.getCause();
+			assertEquals(
+					"mandatory violation for CopePatchSchemaRun.sql",
+					cause.getMessage());
 		}
 	}
 
@@ -88,7 +96,15 @@ public class SchemaPatchesTest
 		}
 		catch(final IllegalArgumentException e)
 		{
-			assertEquals("body[1] must not be empty", e.getMessage());
+			assertEquals(
+					"body[1]: length violation, " +
+					"'' is too short, must be at least 1 characters, but was 0.",
+					e.getMessage());
+			final StringLengthViolationException cause = (StringLengthViolationException)e.getCause();
+			assertEquals(
+					"length violation, '' is too short for CopePatchSchemaRun.sql, " +
+					"must be at least 1 characters, but was 0.",
+					cause.getMessage());
 		}
 	}
 
