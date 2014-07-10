@@ -19,14 +19,14 @@
 package com.exedio.cope.patch;
 
 import com.exedio.cope.BooleanField;
-import com.exedio.cope.CopeID;
+import com.exedio.cope.CopeName;
 import com.exedio.cope.DateField;
 import com.exedio.cope.Item;
 import com.exedio.cope.LongField;
 import com.exedio.cope.StringField;
 import com.exedio.cope.misc.Computed;
 
-@CopeID("CopePatchRun")
+@CopeName("CopePatchRun")
 @Computed()
 final class PatchRun extends Item
 {
