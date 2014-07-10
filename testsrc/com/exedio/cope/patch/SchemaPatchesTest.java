@@ -31,6 +31,7 @@ import com.exedio.cope.StringField;
 import com.exedio.cope.StringLengthViolationException;
 import com.exedio.cope.Type;
 import com.exedio.cope.TypesBound;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Test;
 
 public class SchemaPatchesTest
@@ -65,6 +66,7 @@ public class SchemaPatchesTest
 		}
 	}
 
+	@SuppressFBWarnings("BC_UNCONFIRMED_CAST_OF_RETURN_VALUE")
 	@Test public void nullBodyElement()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
@@ -86,6 +88,7 @@ public class SchemaPatchesTest
 		}
 	}
 
+	@SuppressFBWarnings("BC_UNCONFIRMED_CAST_OF_RETURN_VALUE")
 	@Test public void emptyBodyElement()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
