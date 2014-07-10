@@ -23,6 +23,7 @@ import static java.lang.System.nanoTime;
 
 import com.exedio.cope.Model;
 import com.exedio.cope.Query;
+import com.exedio.cope.TransactionTry;
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
 import java.util.ArrayList;
@@ -61,16 +62,11 @@ public final class Patches
 		synchronized(runLock)
 		{
 			final HashSet<String> idsDone;
-			try
+			try(TransactionTry tx = model.startTransactionTry("patch query"))
 			{
-				model.startTransaction("patch query");
 				final List<String> list = new Query<String>(PatchRun.patch).search();
-				model.commit();
+				tx.commit();
 				idsDone = new HashSet<String>(list);
-			}
-			finally
-			{
-				model.rollbackIfNotCommitted();
 			}
 
 			for(final Map.Entry<String, Patch> entry : patches.entrySet())

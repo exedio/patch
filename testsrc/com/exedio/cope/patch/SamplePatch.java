@@ -21,6 +21,7 @@ package com.exedio.cope.patch;
 import static org.junit.Assert.assertFalse;
 
 import com.exedio.cope.Model;
+import com.exedio.cope.TransactionTry;
 import com.exedio.cope.util.JobContext;
 
 public class SamplePatch implements Patch
@@ -58,15 +59,10 @@ public class SamplePatch implements Patch
 		else
 		{
 			assertFalse(model.hasCurrentTransaction());
-			try
+			try(TransactionTry tx = model.startTransactionTry("SamplePatch " + id + " run"))
 			{
-				model.startTransaction("SamplePatch " + id + " run");
 				new SampleItem(id, null);
-				model.commit();
-			}
-			finally
-			{
-				model.rollbackIfNotCommitted();
+				tx.commit();
 			}
 		}
 		if("fail".equals(id))
