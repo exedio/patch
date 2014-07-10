@@ -28,5 +28,7 @@
 			<conf name="runtime" mapped="runtime" />
 			<conf name="build" mapped="hsqldb,junit,sources" />
 		</dependency>
+		<!-- build dependencies -->
+		<dependency org="ch.qos.logback" name="logback-classic" rev="1.0.4" conf="build->default" />
 	</dependencies>
 </ivy-module>

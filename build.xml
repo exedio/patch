@@ -73,6 +73,8 @@
 				<pathelement location="lib/exedio-cope.jar" />
 				<pathelement location="lib/exedio-cope-junit.jar" />
 				<pathelement location="lib/slf4j-api.jar" />
+				<pathelement location="lib/logback-classic.jar" />
+				<pathelement location="lib/logback-core.jar" />
 			</classpath>
 			<test name="${test}" todir="build/testresults" outfile="copepatch" />
 			<sysproperty key="java.io.tmpdir" value="${basedir}/build/testtmpdir" />
