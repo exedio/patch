@@ -19,6 +19,7 @@
 package com.exedio.cope.patch;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import com.exedio.cope.ActivationParameters;
@@ -112,6 +113,8 @@ public class SchemaPatchesTest
 	{
 		return new SchemaPatch(MODEL)
 		{
+			boolean gotBody = false;
+
 			@Override
 			public String getID()
 			{
@@ -121,6 +124,9 @@ public class SchemaPatchesTest
 			@Override
 			protected String[] computeBody()
 			{
+				assertFalse("gotBody", gotBody);
+				gotBody = true;
+
 				return body;
 			}
 		};
