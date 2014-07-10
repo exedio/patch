@@ -20,7 +20,7 @@
 		<artifact name="exedio-cope-patch" type="log" ext="txt" />
 	</publications>
 	<dependencies>
-		<dependency org="com.exedio" name="cope" rev="7497">
+		<dependency org="com.exedio" name="cope" rev="8016">
 			<conf name="runtime" mapped="runtime" />
 			<conf name="build" mapped="hsqldb,junit,sources" />
 		</dependency>

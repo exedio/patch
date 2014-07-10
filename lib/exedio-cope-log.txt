@@ -7,6 +7,234 @@ omit bug fixes.
 The items are sorted inversely, i.e. latest items are on top
 
 --------------------------------------------------------------------------
+* Model#getSchemaSavepoint() and RevisionInfo#getSavepoint() added.
+* Model#removeAllChangeListeners added.
+* ConnectProperties: option cluster.log replaced by slf4j logging
+* MediaRequestLog#getRemoteAddr added
+* Use database sequence for IntegerField#defaultToNext.
+	This affects database schema when using #defaultToNext and
+	schema.primaryKeyGenerator=memory.
+* TransactionTry#commit([R|int]) added.
+* @WrapFeature added
+	You may remove @cope.ignore from CheckConstraint.
+	Add @WrapFeature to your own patterns, as @WrapFeature will be removed
+	from Pattern somewhere in the future.
+* MxSampler is no longer supported.
+	Use project mxsampler instead.
+	MxSampler#getModel and #connect will fail with a NoSuchMethodError.
+	This breaks backwards API compatibility for API that was deprecated for
+	quite some time.
+* ModificationListener is no longer supported.
+	Model#addModificationListener will fail with a NoSuchMethodError.
+	This breaks backwards API compatibility for API that was deprecated for
+	a long time.
+* bugfix: Schedule does not cover date ranges twice when changing interval,
+	timezone, or locale.
+* @MysqlExtendedVarchar added
+* Settable#getInitialType() un-deprecated, with slightly different semantics:
+	* Mandatory fields will return wrapper instead of primitive
+		(Double.class instead of double.class).
+	* com.exedio.cope.instrument.Wrapper.ClassVariable/TypeVariableN not used
+		anymore.
+	This breaks backwards API compatibility for API that was deprecated for 
+	a long time.
+* TextUrlFilter fails on empty supportedContentType.
+	This breaks backwards API compatibility, causes model initialization to fail.
+* bugfix: Schedule executes all remaining runs, not just the last one.
+* [Price|Money]#[less@greater]Than[OrEqual]Zero added
+* Money / MoneyField added
+* PriceField#minZero added
+* Schedule supports typed getter for parent.
+	Affects instrumented code.
+* DayField#touch requires TimeZone.
+	Deprecated old API.
+	Affects instrumented code.
+* StringField#charSet does fail with non-ASCII CharSets.
+	Did not work anyway, but now an exception is thrown.
+* Media.contentType() methods added
+* Model#startTransactionTry added
+* @CopeID added again as deprecated equivalent of @CopeName.
+	This restores backwards API compatibility lost when @CopeID was renamed
+	to @CopeName.
+	BEWARE:
+		This may affect database schema, media urls etc. especially for types
+		within libraries.
+
+* DynamicModel.FieldGroup removed again
+	This affects database schema, drop a column and a table.
+* DrivebyHashMigration added
+* DynamicModel.FieldGroup added
+	This affects database schema, requires a new column and a new table.
+* CopeAssert#listg removed
+	This breaks backwards API compatibility, causes compiler error.
+* requires JDK 1.7u6
+* HashInterface#getHash(Item) added
+	This breaks backwards API compatibility, causes compiler error.
+* HashInterface#set added
+	This breaks backwards API compatibility, causes compiler error.
+* TypeSet#getExplicitTypes() added
+* RevisionStatistics added
+* Price#divide(double) added.
+* Revision table gets primary key instead of unique constraint.
+	BEWARE: This affects database schema.
+	The following revision is needed:
+
+		new Revision(nnn, "Revision table gets primary key instead of unique constraint",
+			"ALTER TABLE `while` DROP INDEX `protected`",
+			"ALTER TABLE `while` MODIFY `v` int PRIMARY KEY")
+
+* Revision constructor forbids empty comment and body strings.
+	This breaks backwards API compatibility, but probably will not cause problems.
+* bugfix: exception when deleting items with DeletePolicy.FORBID
+* <instrument hidingWarningSuppressor="hiding" ... supported
+* UniqueHashedMedia added
+* ConnectProperties: option cache.item.invalidateLast renamed to cache.stamps
+
+* bugfix: reworked invalidateLast mechanism to use AtomicLong instead of System.nanoTime
+	- removed connect property cache.item.invalidateLast.margin
+	- fixes rare failure of copetest:
+		Testcase: testOverlappingTwice(com.exedio.cope.ItemCacheInvalidateLastPurgeTest): FAILED
+		junit.framework.AssertionFailedError: invalidateLastSize expected:<0> but was:<2>
+			at com.exedio.cope.ItemCacheInvalidateLastPurgeTest.assertCache(ItemCacheInvalidateLastPurgeTest.java:225)
+			at com.exedio.cope.ItemCacheInvalidateLastPurgeTest.testOverlappingTwice(ItemCacheInvalidateLastPurgeTest.java:177)
+
+* copetest bugfix: "EmptyItem-[0]> but was:<EmptyItem-[1]" in ItemTest line 228/62
+* bugfix: Price#valueOf(double) sometimes did wrong rounding in equidistant case
+* ConnectionFactory#isValidOnPut logs failures.
+* DataField parts become none-public:
+	- constructor Value()
+	- class ArrayValue
+	- method ArrayValue#asArray
+	This breaks backwards API compatibility, causes compiler error.
+* EnumSetField.toFinal() supported
+* final Media and MediaFilter do get an Expires time of one year
+	instead of the value configured by media.offsetExpires.
+	This breaks backwards API compatibility, but probably will not cause problems.
+* Model.purgeSchema added.
+	It is recommended to call this method once a day to give cope the chance
+	to purge sequence tables on MySQL.
+* MediaPath.Locator supports getContentType
+* MediaPath.Locator supports equals/hashCode
+* fix deadlock in copetest on JDK 1.7
+* Extend MediaType 
+	allow multiple extentions; first is default
+		MIGRATION	MediaType.getExtension()->MediaType.getDefaultExtension() or MediaType.getExtensions()
+	add ".jpeg" to JPG extensions
+	new constants for JAR and fonts
+	change default mime for TTF font/ttf->application/x-font-ttf
+	change default mime for WOFF application/font-woff->application/x-font-woff
+	add DOCX mediatype
+* MediaRequestLog#isSecure() added
+* HashInterface#isNull(Item) added
+	This breaks backwards API compatibility, causes compiler error.
+* Schedule archives interval for each run.
+	BEWARE: This affects database schema. A new column is required, and must
+	be initialized with meaningful values.
+
+		alter table `SomeItem_schedule_Run` add column `interval` int not null
+		update `SomeItem_schedule_Run` r join `SomeItem` s on s.`this`=r.`parent` set r.`interval`=s.`schedule_interval`
+
+* dropped support for MySQL 5.0 and 5.1, new minimum requirement is MySQL 5.5
+* Price supports toStringShort()
+* MediaPath supports MediaRequestLog
+* @CopeID renamed to @CopeName
+	This breaks backwards API compatibility, causes compiler error.
+* PriceField supports convenience methods for conditions:
+	is[Not]Null, [not]Equal, less[OrEqual], greater[OrEqual], between
+* ColorField added
+* instrumentor omits MediaFilter#getURLWithFallbackToSource, if it makes
+	no sense to call this method, because it behaves equally to #getURL.
+* "batchedSequence" primary key generation mode added
+  activate with schema.primaryKeyGenerator=batchedSequence
+* Hash applies a default limit of 150 characters for plain texts.
+	This is a precaution against DOS attacks with very long plain texts.
+
+	BEWARE:
+	This renders all passwords in your database longer than 150 characters useless.
+	If you don't want this, set a higher limit via Hash#limit(int).
+
+* @UrlFingerPrinting added
+* Conditions helper class added
+* MediaType.SVG added
+* instrumentor removes support for old code layout of Activation Constructors.
+	In build.xml, the following parameter:
+		<instrument activationConstructorOnBottom="false" ...
+	is no longer supported.
+	The instrumentor now behaves as specified by the default (true) of the option.
+* bugfix: This#checkTypeColumn did report false positives in certain
+	cases of type inheritance.
+* NestedHashMigration and NestedHashAlgorithm added
+* ConnectProperties: option for updateCounter removed:
+
+	schema.updateCounter (defaulted to true)
+
+	The framework now behaves as specified by the default of the option.
+
+* ConnectProperties: options for transactionIsolation removed:
+
+	connection.transactionIsolation.readCommitted  (defaulted to false)
+	connection.transactionIsolation.repeatableRead (defaulted to true)
+
+	The framework now behaves as specified by the defaults of both options.
+
+* PasswordRecovery.getPassword() and PasswordLimiter.getPassword() return
+	HashInterface instead of Hash.
+	This breaks backwards API compatibility, causes compiler error.
+* Hash#validate and #newRandomPassword do become final.
+	This breaks backwards API compatibility, causes compiler error.
+* Model#deleteSchemaForTest added
+* innodb_strict_mode on MySQL enabled
+* DynamicModel.Field#as(Enum<?>) added
+* DoubleField throws DoubleNaNException for NaN
+	instead of RuntimeException
+* DoubleField throws DoubleRangeViolationException for Infinity
+	instead of RuntimeException
+* class TransactionCounters becomes final.
+	This breaks backwards API compatibility, causes compiler error.
+* @PreventUrlGuessing causes response to carry Cache-Control: private
+* MediaUtil added
+* Media API Refactoring
+	
+	This massivly breaks backwards API compatibility. You MUST update
+	exedio-cope-im4java.jar and exedio-cope-console.jar, if used.
+	Affects instrumented code.
+	
+	BEWARE !!!
+	Implementors of MediaPath#doGetAndCommit MUST commit the transaction
+	on normal termination. Using MediaPath#commit() is recommended.
+
+	Do the following replacements in your code:
+
+		extends CachedMedia       -->  extends MediaPath
+		Log doGet(..)             -->  void doGetAndCommit(..)
+		Log doGetIfModified(..)   -->  void doGetAndCommit(..)
+		return isNull;            -->  throw notFoundIsNull();
+		return notComputable;     -->  throw notFoundNotComputable();
+		return delivered;         -->  <nothing>
+		long getLastModified      -->  Date getLastModified
+
+* DispatchDeferrable added
+* @RedirectFrom does not support ElementType.TYPE anymore, did not work properly anyway.
+	This breaks backwards API compatibility, causes compiler error.
+* JavaView supports private getter method
+* Sampler collects differences instead of absolute values
+* Type#asExtends added
+* ItemField#asExtends added
+* Model#deleteSchema() accelerated on hsqldb
+* hsqldb 2.2.9 required, instead of 2.1.0
+* bugfix: CheckConstraints referring to super class supported
+* instrumentor supports referring to features of super class
+* cluster network can be enabled via source of ConnectProperties as well,
+	if context is null, up to now this was possible via context only.
+	You need the folowing two properties:
+
+			cluster=true
+			cluster.secret=nnn
+
+* nested properties supported by adding:
+	- ConnectProperties#factory()
+	- DispatcherProperties
+	- SamplerProperties
 * LongField#defaultToRandom added
 	- supports simple value ranges only: [MIN_VALUE,MAX_VALUE] and [0,MAX_VALUE]
 * PasswordRecovery constructor accepts SecureRandom
