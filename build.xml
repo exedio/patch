@@ -168,7 +168,7 @@
 		</findbugs>
 	</target>
 	
-	<target name="all" depends="build, jar.src, findbugs" />
+	<target name="all" depends="build, jar.src, api, findbugs" />
 	
 	<target name="jenkins" depends="all">
 		<copy todir="${basedir}/build/success">
