@@ -20,7 +20,6 @@ package com.exedio.cope.patch;
 
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -51,7 +50,6 @@ public final class Patches
 		}
 	}
 
-	@SuppressFBWarnings("NP_LOAD_OF_KNOWN_NULL_VALUE")
 	public void run(final JobContext ctx)
 	{
 		if(ctx==null)
@@ -61,8 +59,7 @@ public final class Patches
 
 		for(final Map.Entry<Integer,Stage> entry : stages.entrySet())
 		{
-			if(envelope==null)
-				envelope = entry.getValue().run(envelope, ctx);
+			envelope = entry.getValue().run(envelope, ctx);
 		}
 
 		if(envelope!=null)
