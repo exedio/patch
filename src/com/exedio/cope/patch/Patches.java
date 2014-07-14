@@ -67,8 +67,6 @@ public final class Patches
 				tx.commit();
 				patches.keySet().removeAll(idsDone);
 			}
-			if(patches.isEmpty())
-				return;
 
 			Envelope envelope = null;
 
