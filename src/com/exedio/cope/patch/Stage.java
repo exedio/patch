@@ -74,7 +74,7 @@ final class Stage
 				final String id = entry.getKey();
 
 				ctx.stopIfRequested();
-				logger.info("patch {}", id);
+				logger.info("patch s{} {}", stageNumber, id);
 				if(ctx.supportsMessage())
 					ctx.setMessage("run " + id);
 
