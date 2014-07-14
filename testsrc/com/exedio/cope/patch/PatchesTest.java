@@ -170,7 +170,7 @@ public class PatchesTest
 				patches.getNonStaleIDs());
 	}
 
-	private SamplePatch newSamplePatch(final String id)
+	private static SamplePatch newSamplePatch(final String id)
 	{
 		return new SamplePatch(null, id, true);
 	}

@@ -332,24 +332,24 @@ public class PatchTest extends CopeModel4Test
 		}
 	}
 
-	private SamplePatch newSamplePatch(final String id)
+	private static SamplePatch newSamplePatch(final String id)
 	{
 		return new SamplePatch(MODEL, id, true);
 	}
 
-	private SamplePatch newSamplePatchNonTx(final String id)
+	private static SamplePatch newSamplePatchNonTx(final String id)
 	{
 		return new SamplePatch(MODEL, id, false);
 	}
 
-	private List<SampleItem> items()
+	private static List<SampleItem> items()
 	{
 		final Query<SampleItem> q = SampleItem.TYPE.newQuery();
 		q.setOrderBy(SampleItem.number, true);
 		return q.search();
 	}
 
-	private SampleItem assertIt(
+	private static SampleItem assertIt(
 			final String id,
 			final String transactionName,
 			final SampleItem actual)
@@ -359,14 +359,14 @@ public class PatchTest extends CopeModel4Test
 		return actual;
 	}
 
-	private List<PatchRun> runs()
+	private static List<PatchRun> runs()
 	{
 		final Query<PatchRun> q = PatchRun.TYPE.newQuery();
 		q.setOrderByThis(true);
 		return q.search();
 	}
 
-	private PatchRun assertIt(
+	private static PatchRun assertIt(
 			final String id,
 			final boolean isTransactionally,
 			final PatchRun actual)
