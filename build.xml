@@ -133,6 +133,7 @@
 				version="on"
 				windowtitle="exedio cope"
 				splitindex="on"
+				failonerror="true"
 			>
 			<fileset dir="src" includes="**/*.java" />
 			<classpath>
