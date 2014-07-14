@@ -26,6 +26,7 @@ import com.exedio.cope.Query;
 import com.exedio.cope.TransactionTry;
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -69,11 +70,21 @@ public final class Patches
 				idsDone = new HashSet<String>(list);
 			}
 
+			boolean savepointDone = false;
+			String savepoint = null;
+
 			for(final Map.Entry<String, Patch> entry : patches.entrySet())
 			{
 				final String id = entry.getKey();
 				if(idsDone.contains(id))
 					continue;
+
+				if(!savepointDone)
+				{
+					ctx.stopIfRequested();
+					savepoint = getSavepoint(model);
+					savepointDone = true;
+				}
 
 				ctx.stopIfRequested();
 				// TODO ctx message
@@ -94,7 +105,7 @@ public final class Patches
 						patch.run(ctx);
 						model.startTransaction("patch " + id + " log");
 					}
-					new PatchRun(id, isTransactionally, toMillies(nanoTime(), start));
+					new PatchRun(id, isTransactionally, savepoint, toMillies(nanoTime(), start));
 					model.commit();
 				}
 				finally
@@ -107,6 +118,23 @@ public final class Patches
 	}
 
 	private final Object runLock = new Object();
+
+	private static String getSavepoint(final Model model)
+	{
+		final String result;
+		try
+		{
+			result = model.getSchemaSavepoint();
+		}
+		catch(final SQLException e)
+		{
+			logger.error("savepoint", e);
+			return "FAILURE: " + e.getMessage();
+		}
+		logger.info("savepoint {}", result);
+		return result;
+	}
+
 
 	public static final TypeSet types = new TypeSet(PatchRun.TYPE);
 

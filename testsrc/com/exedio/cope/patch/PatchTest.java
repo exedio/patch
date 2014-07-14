@@ -109,7 +109,7 @@ public class PatchTest extends CopeModel4Test
 		builder.insertAtStart(newSamplePatch("one"));
 		final Patches patches = builder.build();
 		run(patches, ctx);
-		ctx.assertIt("requestedToStop()"+"incrementProgress()"+"requestedToStop()"+"incrementProgress()");
+		ctx.assertIt("requestedToStop()"+"requestedToStop()"+"incrementProgress()"+"requestedToStop()"+"incrementProgress()");
 		final SampleItem one;
 		final SampleItem two;
 		{
@@ -136,7 +136,7 @@ public class PatchTest extends CopeModel4Test
 		builder2.insertAtStart(newSamplePatch("one"));
 		final Patches patches2 = builder2.build();
 		run(patches2, ctx);
-		ctx.assertIt("requestedToStop()"+"incrementProgress()");
+		ctx.assertIt("requestedToStop()"+"requestedToStop()"+"incrementProgress()");
 		{
 			final Iterator<SampleItem> items = items().iterator();
 			assertEquals(one, items.next());
@@ -368,6 +368,7 @@ public class PatchTest extends CopeModel4Test
 	{
 		assertEquals("id", id, actual.getPatch());
 		assertEquals("isTransactionally", isTransactionally, actual.getIsTransactionally());
+		assertEquals("savepoint", "FAILURE: not supported", actual.getSavepoint());
 		return actual;
 	}
 
