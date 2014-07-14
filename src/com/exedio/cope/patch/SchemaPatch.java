@@ -24,6 +24,7 @@ import static java.lang.System.nanoTime;
 import com.exedio.cope.ConstraintViolationException;
 import com.exedio.cope.Model;
 import com.exedio.cope.SchemaInfo;
+import com.exedio.cope.TransactionTry;
 import com.exedio.cope.misc.Arrays;
 import com.exedio.cope.util.JobContext;
 import com.exedio.dsmf.SQLRuntimeException;
@@ -110,15 +111,10 @@ public abstract class SchemaPatch implements Patch
 				final int rows = execute(connection, sql);
 				final long elapsed = toMillies(nanoTime(), start);
 
-				try
+				try(TransactionTry tx = model.startTransactionTry(SchemaPatch.class.getName() + ' ' + id + ' ' + (position+1) + '/' + body.length))
 				{
-					model.startTransaction(SchemaPatch.class.getName() + ' ' + id + ' ' + (position+1) + '/' + body.length);
 					new SchemaPatchRun(id, position, sql, rows, elapsed);
-					model.commit();
-				}
-				finally
-				{
-					model.rollbackIfNotCommitted();
+					tx.commit();
 				}
 			}
 		}
