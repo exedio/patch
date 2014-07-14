@@ -29,7 +29,6 @@ import com.exedio.cope.util.JobContext;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,12 +60,13 @@ public final class Patches
 		final Model model = PatchRun.TYPE.getModel();
 		synchronized(runLock)
 		{
-			final HashSet<String> idsDone;
+			final LinkedHashMap<String,Patch> patches = new LinkedHashMap<>(this.patches);
+
 			try(TransactionTry tx = model.startTransactionTry("patch query"))
 			{
-				final List<String> list = new Query<>(PatchRun.patch).search();
+				final List<String> idsDone = new Query<>(PatchRun.patch).search();
 				tx.commit();
-				idsDone = new HashSet<>(list);
+				patches.keySet().removeAll(idsDone);
 			}
 
 			boolean savepointDone = false;
@@ -76,8 +76,6 @@ public final class Patches
 			for(final Map.Entry<String, Patch> entry : patches.entrySet())
 			{
 				final String id = entry.getKey();
-				if(idsDone.contains(id))
-					continue;
 
 				if(!savepointDone)
 				{
