@@ -52,6 +52,7 @@ public class PatchTest extends CopeModel4Test
 	@Test public void one()
 	{
 		assertEquals(EMPTY_LIST, items());
+		assertEquals(EMPTY_LIST, runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("one"));
 		final Patches patches = builder.build();
@@ -62,13 +63,21 @@ public class PatchTest extends CopeModel4Test
 			one = assertIt("one", "patch one", items.next());
 			assertFalse(items.hasNext());
 		}
+		final PatchRun runOne;
+		{
+			final Iterator<PatchRun> runs = runs().iterator();
+			runOne = assertIt("one", true, runs.next());
+			assertFalse(runs.hasNext());
+		}
 		run(patches, JobContexts.EMPTY);
 		assertEquals(asList(one), items());
+		assertEquals(asList(runOne), runs());
 	}
 
 	@Test public void oneNonTx()
 	{
 		assertEquals(EMPTY_LIST, items());
+		assertEquals(EMPTY_LIST, runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatchNonTx("one"));
 		final Patches patches = builder.build();
@@ -79,13 +88,21 @@ public class PatchTest extends CopeModel4Test
 			one = assertIt("one", null, items.next());
 			assertFalse(items.hasNext());
 		}
+		final PatchRun runOne;
+		{
+			final Iterator<PatchRun> runs = runs().iterator();
+			runOne = assertIt("one", false, runs.next());
+			assertFalse(runs.hasNext());
+		}
 		run(patches, JobContexts.EMPTY);
 		assertEquals(asList(one), items());
+		assertEquals(asList(runOne), runs());
 	}
 
 	@Test public void two()
 	{
 		assertEquals(EMPTY_LIST, items());
+		assertEquals(EMPTY_LIST, runs());
 		final JC ctx = new JC();
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("two"));
@@ -101,9 +118,18 @@ public class PatchTest extends CopeModel4Test
 			two = assertIt("two", "patch two", items.next());
 			assertFalse(items.hasNext());
 		}
+		final PatchRun runOne;
+		final PatchRun runTwo;
+		{
+			final Iterator<PatchRun> runs = runs().iterator();
+			runOne = assertIt("one", true, runs.next());
+			runTwo = assertIt("two", true, runs.next());
+			assertFalse(runs.hasNext());
+		}
 		run(patches, ctx);
 		ctx.assertIt("");
 		assertEquals(asList(one, two), items());
+		assertEquals(asList(runOne, runTwo), runs());
 		final PatchesBuilder builder2 = new PatchesBuilder();
 		builder2.insertAtStart(newSamplePatch("three"));
 		builder2.insertAtStart(newSamplePatch("two"));
@@ -118,12 +144,20 @@ public class PatchTest extends CopeModel4Test
 			assertIt("three", "patch three", items.next());
 			assertFalse(items.hasNext());
 		}
+		{
+			final Iterator<PatchRun> runs = runs().iterator();
+			assertEquals(runOne, runs.next());
+			assertEquals(runTwo, runs.next());
+			assertIt("three", true, runs.next());
+			assertFalse(runs.hasNext());
+		}
 		ctx.assertIt("");
 	}
 
 	@Test public void failure()
 	{
 		assertEquals(EMPTY_LIST, items());
+		assertEquals(EMPTY_LIST, runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("fail"));
 		builder.insertAtStart(newSamplePatch("ok"));
@@ -143,6 +177,12 @@ public class PatchTest extends CopeModel4Test
 			ok = assertIt("ok", "patch ok", items.next());
 			assertFalse(items.hasNext());
 		}
+		final PatchRun runOk;
+		{
+			final Iterator<PatchRun> runs = runs().iterator();
+			runOk = assertIt("ok", true, runs.next());
+			assertFalse(runs.hasNext());
+		}
 		try
 		{
 			run(patches, JobContexts.EMPTY);
@@ -153,11 +193,13 @@ public class PatchTest extends CopeModel4Test
 			assertEquals("failed", e.getMessage());
 		}
 		assertEquals(asList(ok), items());
+		assertEquals(asList(runOk), runs());
 	}
 
 	@Test public void failureNonTx()
 	{
 		assertEquals(EMPTY_LIST, items());
+		assertEquals(EMPTY_LIST, runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatchNonTx("fail"));
 		builder.insertAtStart(newSamplePatchNonTx("ok"));
@@ -179,6 +221,12 @@ public class PatchTest extends CopeModel4Test
 			fail1 = assertIt("fail", null, items.next());
 			assertFalse(items.hasNext());
 		}
+		final PatchRun runOk;
+		{
+			final Iterator<PatchRun> runs = runs().iterator();
+			runOk = assertIt("ok", false, runs.next());
+			assertFalse(runs.hasNext());
+		}
 		try
 		{
 			run(patches, JobContexts.EMPTY);
@@ -194,6 +242,11 @@ public class PatchTest extends CopeModel4Test
 			assertEquals(fail1, items.next());
 			assertFalse(fail1.equals(assertIt("fail", null, items.next())));
 			assertFalse(items.hasNext());
+		}
+		{
+			final Iterator<PatchRun> runs = runs().iterator();
+			assertEquals(runOk, runs.next());
+			assertFalse(runs.hasNext());
 		}
 	}
 
@@ -298,6 +351,23 @@ public class PatchTest extends CopeModel4Test
 	{
 		assertEquals("id", id, actual.getPatch());
 		assertEquals("transactionName", transactionName, actual.getTransactionName());
+		return actual;
+	}
+
+	private List<PatchRun> runs()
+	{
+		final Query<PatchRun> q = PatchRun.TYPE.newQuery();
+		q.setOrderByThis(true);
+		return q.search();
+	}
+
+	private PatchRun assertIt(
+			final String id,
+			final boolean isTransactionally,
+			final PatchRun actual)
+	{
+		assertEquals("id", id, actual.getPatch());
+		assertEquals("isTransactionally", isTransactionally, actual.getIsTransactionally());
 		return actual;
 	}
 
