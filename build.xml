@@ -138,6 +138,7 @@
 			<classpath>
 				<pathelement location="lib/exedio-cope.jar" />
 			</classpath>
+			<tag name="cope.generated" enabled="true" />
 		</javadoc>
 	</target>
 	
