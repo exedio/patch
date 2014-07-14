@@ -68,31 +68,23 @@ public final class Patches
 				tx.commit();
 				patches.keySet().removeAll(idsDone);
 			}
+			if(patches.isEmpty())
+				return;
 
-			boolean savepointDone = false;
-			String savepoint = null;
-			PatchMutex mutex = null;
+			ctx.stopIfRequested();
+			final String savepoint = getSavepoint(model);
+
+			logger.info("mutex");
+			final PatchMutex mutex;
+			try(TransactionTry tx = model.startTransactionTry("patch mutex seize"))
+			{
+				mutex = new PatchMutex(savepoint);
+				tx.commit();
+			}
 
 			for(final Map.Entry<String, Patch> entry : patches.entrySet())
 			{
 				final String id = entry.getKey();
-
-				if(!savepointDone)
-				{
-					ctx.stopIfRequested();
-					savepoint = getSavepoint(model);
-					savepointDone = true;
-				}
-
-				if(mutex==null)
-				{
-					logger.info("mutex");
-					try(TransactionTry tx = model.startTransactionTry("patch mutex seize"))
-					{
-						mutex = new PatchMutex(savepoint);
-						tx.commit();
-					}
-				}
 
 				ctx.stopIfRequested();
 				logger.info("patch {}", id);
@@ -124,13 +116,10 @@ public final class Patches
 				ctx.incrementProgress();
 			}
 
-			if(mutex!=null)
+			try(TransactionTry tx = model.startTransactionTry("patch mutex release"))
 			{
-				try(TransactionTry tx = model.startTransactionTry("patch mutex release"))
-				{
-					mutex.deleteCopeItem();
-					tx.commit();
-				}
+				mutex.deleteCopeItem();
+				tx.commit();
 			}
 		}
 	}
