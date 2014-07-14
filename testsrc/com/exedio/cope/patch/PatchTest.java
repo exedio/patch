@@ -359,6 +359,7 @@ public class PatchTest extends CopeModel4Test
 		{
 			MODEL.startTransaction(PatchTest.class.getName());
 		}
+		assertEquals(0, PatchMutex.TYPE.newQuery().total());
 	}
 
 	private static SamplePatch newSamplePatch(final String id)
