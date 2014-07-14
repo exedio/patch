@@ -50,6 +50,12 @@ public class SamplePatch implements Patch
 	}
 
 	@Override
+	public int getStage()
+	{
+		return 0;
+	}
+
+	@Override
 	public void check()
 	{
 		if(checkExceptionMessage!=null)

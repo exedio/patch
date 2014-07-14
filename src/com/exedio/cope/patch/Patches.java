@@ -18,12 +18,6 @@
 
 package com.exedio.cope.patch;
 
-import static com.exedio.cope.misc.TimeUtil.toMillies;
-import static java.lang.System.nanoTime;
-
-import com.exedio.cope.Model;
-import com.exedio.cope.Query;
-import com.exedio.cope.TransactionTry;
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
 import java.util.ArrayList;
@@ -31,24 +25,29 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.TreeMap;
 
 public final class Patches
 {
-	private static final Logger logger = LoggerFactory.getLogger(Patches.class);
-
-	private final LinkedHashMap<String,Patch> patches;
-
-	// TODO stages
+	private final TreeMap<Integer,Stage> stages;
 
 	Patches(final LinkedHashMap<String,Patch> patchesDescending)
 	{
 		final ArrayList<String> ids = new ArrayList<>(patchesDescending.keySet());
 		Collections.reverse(ids);
-		this.patches = new LinkedHashMap<>();
+		this.stages = new TreeMap<>();
 		for(final String id : ids)
-			patches.put(id, patchesDescending.get(id));
+		{
+			final Patch patch = patchesDescending.get(id);
+			final int stageNumber = patch.getStage();
+			Stage stage = stages.get(stageNumber);
+			if(stage==null)
+			{
+				stage = new Stage(stageNumber);
+				stages.put(stageNumber, stage);
+			}
+			stage.put(id, patch);
+		}
 	}
 
 	public void run(final JobContext ctx)
@@ -56,63 +55,17 @@ public final class Patches
 		if(ctx==null)
 			throw new NullPointerException("ctx");
 
-		final Model model = PatchRun.TYPE.getModel();
-		synchronized(runLock)
+		Envelope envelope = null;
+
+		for(final Map.Entry<Integer,Stage> entry : stages.entrySet())
 		{
-			final LinkedHashMap<String,Patch> patches = new LinkedHashMap<>(this.patches);
-
-			try(TransactionTry tx = model.startTransactionTry("patch query"))
-			{
-				final List<String> idsDone = new Query<>(PatchRun.patch).search();
-				tx.commit();
-				patches.keySet().removeAll(idsDone);
-			}
-
-			Envelope envelope = null;
-
-			for(final Map.Entry<String, Patch> entry : patches.entrySet())
-			{
-				if(envelope==null)
-					envelope = new Envelope(model, patches.size(), ctx);
-
-				final String id = entry.getKey();
-
-				ctx.stopIfRequested();
-				logger.info("patch {}", id);
-				if(ctx.supportsMessage())
-					ctx.setMessage("run " + id);
-
-				final Patch patch = entry.getValue();
-				final boolean isTransactionally = patch.isTransactionally();
-				try
-				{
-					final long start = nanoTime();
-					if(isTransactionally)
-					{
-						model.startTransaction("patch " + id);
-						patch.run(ctx);
-					}
-					else
-					{
-						patch.run(ctx);
-						model.startTransaction("patch " + id + " log");
-					}
-					new PatchRun(id, isTransactionally, envelope.savepoint, toMillies(nanoTime(), start));
-					model.commit();
-				}
-				finally
-				{
-					model.rollbackIfNotCommitted();
-				}
-				ctx.incrementProgress();
-			}
-
-			if(envelope!=null)
-				envelope.close();
+			if(envelope==null)
+				envelope = entry.getValue().run(envelope, ctx);
 		}
-	}
 
-	private final Object runLock = new Object();
+		if(envelope!=null)
+			envelope.close();
+	}
 
 
 	public static final TypeSet types = new TypeSet(PatchRun.TYPE, PatchMutex.TYPE);
@@ -136,6 +89,12 @@ public final class Patches
 		public String getID()
 		{
 			return id;
+		}
+
+		@Override
+		public int getStage()
+		{
+			return Integer.MIN_VALUE;
 		}
 
 		@Override
@@ -168,9 +127,10 @@ public final class Patches
 	public List<String> getNonStaleIDs()
 	{
 		final ArrayList<String> result = new ArrayList<>();
-		for(final Map.Entry<String, Patch> entry : patches.entrySet())
-			if(!(entry.getValue() instanceof StalePatch))
-				result.add(entry.getKey());
+		for(final Stage stage : stages.values())
+			for(final Map.Entry<String, Patch> entry : stage.getPatches().entrySet())
+				if(!(entry.getValue() instanceof StalePatch))
+					result.add(entry.getKey());
 
 		Collections.reverse(result);
 		return Collections.unmodifiableList(result);
