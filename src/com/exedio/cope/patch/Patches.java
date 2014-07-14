@@ -26,7 +26,6 @@ import com.exedio.cope.Query;
 import com.exedio.cope.TransactionTry;
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -71,19 +70,13 @@ public final class Patches
 			if(patches.isEmpty())
 				return;
 
-			ctx.stopIfRequested();
-			final String savepoint = getSavepoint(model);
-
-			logger.info("mutex");
-			final PatchMutex mutex;
-			try(TransactionTry tx = model.startTransactionTry("patch mutex seize"))
-			{
-				mutex = new PatchMutex(savepoint, patches.size());
-				tx.commit();
-			}
+			Envelope envelope = null;
 
 			for(final Map.Entry<String, Patch> entry : patches.entrySet())
 			{
+				if(envelope==null)
+					envelope = new Envelope(model, patches.size(), ctx);
+
 				final String id = entry.getKey();
 
 				ctx.stopIfRequested();
@@ -106,7 +99,7 @@ public final class Patches
 						patch.run(ctx);
 						model.startTransaction("patch " + id + " log");
 					}
-					new PatchRun(id, isTransactionally, savepoint, toMillies(nanoTime(), start));
+					new PatchRun(id, isTransactionally, envelope.savepoint, toMillies(nanoTime(), start));
 					model.commit();
 				}
 				finally
@@ -116,31 +109,12 @@ public final class Patches
 				ctx.incrementProgress();
 			}
 
-			try(TransactionTry tx = model.startTransactionTry("patch mutex release"))
-			{
-				mutex.deleteCopeItem();
-				tx.commit();
-			}
+			if(envelope!=null)
+				envelope.close();
 		}
 	}
 
 	private final Object runLock = new Object();
-
-	private static String getSavepoint(final Model model)
-	{
-		final String result;
-		try
-		{
-			result = model.getSchemaSavepoint();
-		}
-		catch(final SQLException e)
-		{
-			logger.error("savepoint", e);
-			return "FAILURE: " + e.getMessage();
-		}
-		logger.info("savepoint {}", result);
-		return result;
-	}
 
 
 	public static final TypeSet types = new TypeSet(PatchRun.TYPE, PatchMutex.TYPE);
