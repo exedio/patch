@@ -120,21 +120,21 @@ public class SchemaPatchTest extends CopeModel4Test
 		};
 	}
 
-	private List<SchemaSampleItem> items()
+	private static List<SchemaSampleItem> items()
 	{
 		final Query<SchemaSampleItem> q = SchemaSampleItem.TYPE.newQuery();
 		q.setOrderByThis(true);
 		return q.search();
 	}
 
-	private List<SchemaPatchRun> runs()
+	private static List<SchemaPatchRun> runs()
 	{
 		final Query<SchemaPatchRun> q = SchemaPatchRun.TYPE.newQuery();
 		q.setOrderByThis(true);
 		return q.search();
 	}
 
-	private SchemaSampleItem assertIt(
+	private static SchemaSampleItem assertIt(
 			final String content,
 			final SchemaSampleItem actual)
 	{
@@ -142,7 +142,7 @@ public class SchemaPatchTest extends CopeModel4Test
 		return actual;
 	}
 
-	private SchemaPatchRun assertIt(
+	private static SchemaPatchRun assertIt(
 			final int position,
 			final String sql,
 			final SchemaPatchRun actual)
