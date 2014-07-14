@@ -405,6 +405,7 @@ public class PatchTest extends CopeModel4Test
 			final PatchRun actual)
 	{
 		assertEquals("id", id, actual.getPatch());
+		assertEquals("stage", 0, actual.getStage());
 		assertEquals("isTransactionally", isTransactionally, actual.getIsTransactionally());
 		assertEquals("savepoint", "FAILURE: not supported", actual.getSavepoint());
 		return actual;
