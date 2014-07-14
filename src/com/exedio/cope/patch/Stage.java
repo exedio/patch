@@ -76,7 +76,7 @@ final class Stage
 				ctx.stopIfRequested();
 				logger.info("patch s{} {}", stageNumber, id);
 				if(ctx.supportsMessage())
-					ctx.setMessage("run " + id);
+					ctx.setMessage("run s" + stageNumber + ' ' + id);
 
 				final Patch patch = entry.getValue();
 				final boolean isTransactionally = patch.isTransactionally();

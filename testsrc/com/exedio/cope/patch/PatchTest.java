@@ -112,8 +112,8 @@ public class PatchTest extends CopeModel4Test
 		run(patches, ctx);
 		ctx.assertIt(
 				"requestedToStop()" +
-				"requestedToStop()" + "setMessage(run one)" + "incrementProgress()" +
-				"requestedToStop()" + "setMessage(run two)" + "incrementProgress()" );
+				"requestedToStop()" + "setMessage(run s0 one)" + "incrementProgress()" +
+				"requestedToStop()" + "setMessage(run s0 two)" + "incrementProgress()" );
 		final SampleItem one;
 		final SampleItem two;
 		{
@@ -142,7 +142,7 @@ public class PatchTest extends CopeModel4Test
 		run(patches2, ctx);
 		ctx.assertIt(
 				"requestedToStop()" +
-				"requestedToStop()" + "setMessage(run three)" + "incrementProgress()");
+				"requestedToStop()" + "setMessage(run s0 three)" + "incrementProgress()");
 		{
 			final Iterator<SampleItem> items = items().iterator();
 			assertEquals(one, items.next());
