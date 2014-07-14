@@ -61,7 +61,7 @@ public class PatchTest extends CopeModel4Test
 		final SampleItem one;
 		{
 			final Iterator<SampleItem> items = items().iterator();
-			one = assertIt("one", "patch one", items.next());
+			one = assertIt("one", "patch one", 1, items.next());
 			assertFalse(items.hasNext());
 		}
 		final PatchRun runOne;
@@ -86,7 +86,7 @@ public class PatchTest extends CopeModel4Test
 		final SampleItem one;
 		{
 			final Iterator<SampleItem> items = items().iterator();
-			one = assertIt("one", null, items.next());
+			one = assertIt("one", null, 1, items.next());
 			assertFalse(items.hasNext());
 		}
 		final PatchRun runOne;
@@ -118,8 +118,8 @@ public class PatchTest extends CopeModel4Test
 		final SampleItem two;
 		{
 			final Iterator<SampleItem> items = items().iterator();
-			one = assertIt("one", "patch one", items.next());
-			two = assertIt("two", "patch two", items.next());
+			one = assertIt("one", "patch one", 2, items.next());
+			two = assertIt("two", "patch two", 2, items.next());
 			assertFalse(items.hasNext());
 		}
 		final PatchRun runOne;
@@ -147,7 +147,7 @@ public class PatchTest extends CopeModel4Test
 			final Iterator<SampleItem> items = items().iterator();
 			assertEquals(one, items.next());
 			assertEquals(two, items.next());
-			assertIt("three", "patch three", items.next());
+			assertIt("three", "patch three", 1, items.next());
 			assertFalse(items.hasNext());
 		}
 		{
@@ -180,7 +180,7 @@ public class PatchTest extends CopeModel4Test
 		final SampleItem ok;
 		{
 			final Iterator<SampleItem> items = items().iterator();
-			ok = assertIt("ok", "patch ok", items.next());
+			ok = assertIt("ok", "patch ok", 2, items.next());
 			assertFalse(items.hasNext());
 		}
 		final PatchRun runOk;
@@ -237,8 +237,8 @@ public class PatchTest extends CopeModel4Test
 		final SampleItem fail1;
 		{
 			final Iterator<SampleItem> items = items().iterator();
-			ok = assertIt("ok", null, items.next());
-			fail1 = assertIt("fail", null, items.next());
+			ok    = assertIt("ok"  , null, 2, items.next());
+			fail1 = assertIt("fail", null, 2, items.next());
 			assertFalse(items.hasNext());
 		}
 		final PatchRun runOk;
@@ -274,7 +274,7 @@ public class PatchTest extends CopeModel4Test
 			final Iterator<SampleItem> items = items().iterator();
 			assertEquals(ok, items.next());
 			assertEquals(fail1, items.next());
-			assertFalse(fail1.equals(assertIt("fail", null, items.next())));
+			assertFalse(fail1.equals(assertIt("fail", null, 1, items.next())));
 			assertFalse(items.hasNext());
 		}
 		{
@@ -296,7 +296,7 @@ public class PatchTest extends CopeModel4Test
 		final SampleItem one;
 		{
 			final Iterator<SampleItem> items = items().iterator();
-			one = assertIt(id, "patch " + id, items.next());
+			one = assertIt(id, "patch " + id, 1, items.next());
 			assertFalse(items.hasNext());
 		}
 
@@ -381,10 +381,13 @@ public class PatchTest extends CopeModel4Test
 	private static SampleItem assertIt(
 			final String id,
 			final String transactionName,
+			final int mutexNumberOfPatches,
 			final SampleItem actual)
 	{
 		assertEquals("id", id, actual.getPatch());
 		assertEquals("transactionName", transactionName, actual.getTransactionName());
+		assertEquals("mutexSavepoint", "FAILURE: not supported", actual.getMutexSavepoint());
+		assertEquals("mutexNumberOfPatches", mutexNumberOfPatches, actual.getMutexNumberOfPatches());
 		return actual;
 	}
 

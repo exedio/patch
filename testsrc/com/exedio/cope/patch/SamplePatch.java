@@ -67,14 +67,22 @@ public class SamplePatch implements Patch
 	{
 		if(isTransactionally)
 		{
-			new SampleItem(id, model.currentTransaction().getName());
+			final PatchMutex mutex = PatchMutex.TYPE.newQuery().searchSingletonStrict();
+			new SampleItem(id,
+					model.currentTransaction().getName(),
+					mutex.getSavepoint(),
+					mutex.getNumberOfPatches());
 		}
 		else
 		{
 			assertFalse(model.hasCurrentTransaction());
 			try(TransactionTry tx = model.startTransactionTry("SamplePatch " + id + " run"))
 			{
-				new SampleItem(id, null);
+				final PatchMutex mutex = PatchMutex.TYPE.newQuery().searchSingletonStrict();
+				new SampleItem(id,
+						null,
+						mutex.getSavepoint(),
+						mutex.getNumberOfPatches());
 				tx.commit();
 			}
 		}
