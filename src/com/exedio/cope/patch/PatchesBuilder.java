@@ -22,7 +22,7 @@ import java.util.LinkedHashMap;
 
 public final class PatchesBuilder
 {
-	private LinkedHashMap<String,Patch> patches = new LinkedHashMap<String,Patch>();
+	private LinkedHashMap<String,Patch> patches = new LinkedHashMap<>();
 
 	public void insertAtStart(final Patch patch)
 	{

@@ -47,9 +47,9 @@ public final class Patches
 
 	Patches(final LinkedHashMap<String,Patch> patchesDescending)
 	{
-		final ArrayList<String> ids = new ArrayList<String>(patchesDescending.keySet());
+		final ArrayList<String> ids = new ArrayList<>(patchesDescending.keySet());
 		Collections.reverse(ids);
-		this.patches = new LinkedHashMap<String,Patch>();
+		this.patches = new LinkedHashMap<>();
 		for(final String id : ids)
 			patches.put(id, patchesDescending.get(id));
 	}
@@ -65,9 +65,9 @@ public final class Patches
 			final HashSet<String> idsDone;
 			try(TransactionTry tx = model.startTransactionTry("patch query"))
 			{
-				final List<String> list = new Query<String>(PatchRun.patch).search();
+				final List<String> list = new Query<>(PatchRun.patch).search();
 				tx.commit();
-				idsDone = new HashSet<String>(list);
+				idsDone = new HashSet<>(list);
 			}
 
 			boolean savepointDone = false;
@@ -183,7 +183,7 @@ public final class Patches
 
 	public List<String> getNonStaleIDs()
 	{
-		final ArrayList<String> result = new ArrayList<String>();
+		final ArrayList<String> result = new ArrayList<>();
 		for(final Map.Entry<String, Patch> entry : patches.entrySet())
 			if(!(entry.getValue() instanceof StalePatch))
 				result.add(entry.getKey());
