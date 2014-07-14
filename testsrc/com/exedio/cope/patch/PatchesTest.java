@@ -190,7 +190,7 @@ public class PatchesTest
 		return new SamplePatch(null, id, null, true);
 	}
 
-	private SamplePatch newSamplePatchCheck(final String id)
+	private static SamplePatch newSamplePatchCheck(final String id)
 	{
 		return new SamplePatch(null, id, "check exception message", true);
 	}
