@@ -28,6 +28,7 @@ import com.exedio.cope.Model;
 import com.exedio.cope.Query;
 import com.exedio.cope.Revisions;
 import com.exedio.cope.TypeSet;
+import com.exedio.cope.UniqueViolationException;
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.AssertionErrorJobContext;
 import com.exedio.cope.util.JobContext;
@@ -188,6 +189,20 @@ public class PatchTest extends CopeModel4Test
 			runOk = assertIt("ok", true, runs.next());
 			assertFalse(runs.hasNext());
 		}
+
+		try
+		{
+			run(patches, JobContexts.EMPTY);
+			fail();
+		}
+		catch(final UniqueViolationException e)
+		{
+			assertEquals("unique violation for CopePatchMutex.idImplicitUnique", e.getMessage());
+		}
+		assertEquals(asList(ok), items());
+		assertEquals(asList(runOk), runs());
+
+		PatchMutex.release();
 		try
 		{
 			run(patches, JobContexts.EMPTY);
@@ -232,6 +247,20 @@ public class PatchTest extends CopeModel4Test
 			runOk = assertIt("ok", false, runs.next());
 			assertFalse(runs.hasNext());
 		}
+
+		try
+		{
+			run(patches, JobContexts.EMPTY);
+			fail();
+		}
+		catch(final UniqueViolationException e)
+		{
+			assertEquals("unique violation for CopePatchMutex.idImplicitUnique", e.getMessage());
+		}
+		assertEquals(asList(ok, fail1), items());
+		assertEquals(asList(runOk), runs());
+
+		PatchMutex.release();
 		try
 		{
 			run(patches, JobContexts.EMPTY);

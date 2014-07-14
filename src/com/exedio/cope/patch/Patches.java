@@ -43,7 +43,6 @@ public final class Patches
 	private final LinkedHashMap<String,Patch> patches;
 
 	// TODO stages
-	// TODO cluster-proof lock against concurrent execution
 
 	Patches(final LinkedHashMap<String,Patch> patchesDescending)
 	{
@@ -72,6 +71,7 @@ public final class Patches
 
 			boolean savepointDone = false;
 			String savepoint = null;
+			PatchMutex mutex = null;
 
 			for(final Map.Entry<String, Patch> entry : patches.entrySet())
 			{
@@ -84,6 +84,16 @@ public final class Patches
 					ctx.stopIfRequested();
 					savepoint = getSavepoint(model);
 					savepointDone = true;
+				}
+
+				if(mutex==null)
+				{
+					logger.info("mutex");
+					try(TransactionTry tx = model.startTransactionTry("patch mutex seize"))
+					{
+						mutex = new PatchMutex(savepoint);
+						tx.commit();
+					}
 				}
 
 				ctx.stopIfRequested();
@@ -115,6 +125,15 @@ public final class Patches
 				}
 				ctx.incrementProgress();
 			}
+
+			if(mutex!=null)
+			{
+				try(TransactionTry tx = model.startTransactionTry("patch mutex release"))
+				{
+					mutex.deleteCopeItem();
+					tx.commit();
+				}
+			}
 		}
 	}
 
@@ -137,7 +156,7 @@ public final class Patches
 	}
 
 
-	public static final TypeSet types = new TypeSet(PatchRun.TYPE);
+	public static final TypeSet types = new TypeSet(PatchRun.TYPE, PatchMutex.TYPE);
 
 	public static Patch stale(final String id)
 	{
