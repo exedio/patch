@@ -137,6 +137,9 @@
 			<fileset dir="src" includes="**/*.java" />
 			<classpath>
 				<pathelement location="lib/exedio-cope.jar" />
+				<pathelement location="lib/exedio-cope-instrument-annotations.jar" />
+				<pathelement location="lib/slf4j-api.jar" />
+				<pathelement location="lib/findbugs-annotations.jar" />
 			</classpath>
 			<tag name="cope.generated" enabled="true" />
 		</javadoc>
