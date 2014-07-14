@@ -35,11 +35,6 @@ public final class PatchesBuilder
 		PatchRun.patch.check(id);
 		patch.check();
 
-		if(patch instanceof SchemaPatch)
-		{
-			((SchemaPatch)patch).checkBody(((SchemaPatch)patch).getBody());
-		}
-
 		assertNotExhausted();
 
 		if(patches.containsKey(id))
