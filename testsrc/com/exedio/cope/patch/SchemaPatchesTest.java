@@ -149,6 +149,12 @@ public class SchemaPatchesTest
 			}
 
 			@Override
+			public int getStage()
+			{
+				return 0;
+			}
+
+			@Override
 			protected String[] computeBody()
 			{
 				assertFalse("gotBody", gotBody);

@@ -110,6 +110,12 @@ public class SchemaPatchTest extends CopeModel4Test
 			}
 
 			@Override
+			public int getStage()
+			{
+				return 0;
+			}
+
+			@Override
 			protected String[] computeBody()
 			{
 				assertFalse("gotBody", gotBody);
