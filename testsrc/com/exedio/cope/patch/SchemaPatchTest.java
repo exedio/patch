@@ -29,6 +29,7 @@ import com.exedio.cope.util.JobContext;
 import com.exedio.cope.util.JobContexts;
 import java.util.Iterator;
 import java.util.List;
+import org.junit.Before;
 import org.junit.Test;
 
 public class SchemaPatchTest extends CopeModel4Test
@@ -151,5 +152,25 @@ public class SchemaPatchTest extends CopeModel4Test
 		assertEquals("sql", sql, actual.getSql());
 		assertEquals("rows", 1, actual.getRows());
 		return actual;
+	}
+
+	/**
+	 * This method is needed because creation of SchemaSampleItem
+	 * bypasses (therefore corrupt) cope item cache.
+	 */
+	@Before
+	public void deleteItems()
+	{
+		MODEL.commit();
+		try
+		{
+			MODEL.clearCache();
+		}
+		finally
+		{
+			MODEL.startTransaction(SchemaPatchTest.class.getName());
+		}
+		for(final SchemaSampleItem item : items())
+			item.deleteCopeItem();
 	}
 }
