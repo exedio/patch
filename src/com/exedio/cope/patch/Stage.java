@@ -85,13 +85,13 @@ final class Stage
 					final long start = nanoTime();
 					if(isTransactionally)
 					{
-						model.startTransaction("patch " + id);
+						model.startTransaction("patch s" + stageNumber + ' ' + id);
 						patch.run(ctx);
 					}
 					else
 					{
 						patch.run(ctx);
-						model.startTransaction("patch " + id + " log");
+						model.startTransaction("patch s" + stageNumber + ' ' + id + " log");
 					}
 					new PatchRun(id, stageNumber, isTransactionally, envelope.savepoint, toMillies(nanoTime(), start));
 					model.commit();
