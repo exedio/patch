@@ -109,7 +109,10 @@ public class PatchTest extends CopeModel4Test
 		builder.insertAtStart(newSamplePatch("one"));
 		final Patches patches = builder.build();
 		run(patches, ctx);
-		ctx.assertIt("requestedToStop()"+"requestedToStop()"+"incrementProgress()"+"requestedToStop()"+"incrementProgress()");
+		ctx.assertIt(
+				"requestedToStop()" +
+				"requestedToStop()" + "setMessage(run one)" + "incrementProgress()" +
+				"requestedToStop()" + "setMessage(run two)" + "incrementProgress()" );
 		final SampleItem one;
 		final SampleItem two;
 		{
@@ -136,7 +139,9 @@ public class PatchTest extends CopeModel4Test
 		builder2.insertAtStart(newSamplePatch("one"));
 		final Patches patches2 = builder2.build();
 		run(patches2, ctx);
-		ctx.assertIt("requestedToStop()"+"requestedToStop()"+"incrementProgress()");
+		ctx.assertIt(
+				"requestedToStop()" +
+				"requestedToStop()" + "setMessage(run three)" + "incrementProgress()");
 		{
 			final Iterator<SampleItem> items = items().iterator();
 			assertEquals(one, items.next());
@@ -380,6 +385,18 @@ public class PatchTest extends CopeModel4Test
 		public void stopIfRequested()
 		{
 			actual.append("requestedToStop()");
+		}
+
+		@Override
+		public boolean supportsMessage()
+		{
+			return true;
+		}
+
+		@Override
+		public void setMessage(final String message)
+		{
+			actual.append("setMessage(" + message + ")");
 		}
 
 		@Override

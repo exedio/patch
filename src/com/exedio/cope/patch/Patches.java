@@ -87,8 +87,9 @@ public final class Patches
 				}
 
 				ctx.stopIfRequested();
-				// TODO ctx message
 				logger.info("patch {}", id);
+				if(ctx.supportsMessage())
+					ctx.setMessage("run " + id);
 
 				final Patch patch = entry.getValue();
 				final boolean isTransactionally = patch.isTransactionally();
