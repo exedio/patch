@@ -23,6 +23,21 @@ import com.exedio.cope.util.JobContext;
 public interface Patch
 {
 	String getID();
+
+	/**
+	 * Specifies, whether the framework shall manage
+	 * {@link com.exedio.cope.Transaction transactions}
+	 * for the patch.
+	 *
+	 * If returns true, the framework
+	 * {@link com.exedio.cope.Model#startTransaction(String) starts}
+	 * a transaction for the patch, commits the transaction on normal termination of
+	 * {@link #run(JobContext) run} or rolls back the transaction on failure.
+	 *
+	 * If returns false, no transaction is started or committed,
+	 * but transaction is rolled back on failure.
+	 */
 	boolean isTransactionally();
+
 	void run(JobContext ctx);
 }
