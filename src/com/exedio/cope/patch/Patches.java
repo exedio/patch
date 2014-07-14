@@ -78,7 +78,7 @@ public final class Patches
 			final PatchMutex mutex;
 			try(TransactionTry tx = model.startTransactionTry("patch mutex seize"))
 			{
-				mutex = new PatchMutex(savepoint);
+				mutex = new PatchMutex(savepoint, patches.size());
 				tx.commit();
 			}
 
