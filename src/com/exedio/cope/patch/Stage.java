@@ -57,7 +57,7 @@ final class Stage
 		{
 			final LinkedHashMap<String,Patch> patches = new LinkedHashMap<>(this.patches);
 
-			try(TransactionTry tx = model.startTransactionTry("patch query"))
+			try(TransactionTry tx = model.startTransactionTry("patch query stage " + stageNumber))
 			{
 				final List<String> idsDone = new Query<>(PatchRun.patch).search();
 				tx.commit();
