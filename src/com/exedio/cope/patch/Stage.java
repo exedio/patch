@@ -25,6 +25,7 @@ import com.exedio.cope.Model;
 import com.exedio.cope.Query;
 import com.exedio.cope.TransactionTry;
 import com.exedio.cope.util.JobContext;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -50,7 +51,7 @@ final class Stage
 		patches.put(id, patch);
 	}
 
-	Envelope run(final Envelope envelopeInitially, final JobContext ctx)
+	void run(final JobContext ctx)
 	{
 		final Model model = PatchRun.TYPE.getModel();
 		synchronized(runLock)
@@ -63,14 +64,23 @@ final class Stage
 				tx.commit();
 				patches.keySet().removeAll(idsDone);
 			}
+			if(patches.isEmpty())
+				return;
 
-			Envelope envelope = envelopeInitially;
+			ctx.stopIfRequested();
+			final String savepoint = getSavepoint(model);
+
+			final int numberOfPatches = patches.size();
+			logger.info("mutex");
+			final PatchMutex mutex;
+			try(TransactionTry tx = model.startTransactionTry("patch mutex seize"))
+			{
+				mutex = new PatchMutex(savepoint, numberOfPatches);
+				tx.commit();
+			}
 
 			for(final Map.Entry<String, Patch> entry : patches.entrySet())
 			{
-				if(envelope==null)
-					envelope = new Envelope(model, patches.size(), ctx);
-
 				final String id = entry.getKey();
 
 				ctx.stopIfRequested();
@@ -93,7 +103,7 @@ final class Stage
 						patch.run(ctx);
 						model.startTransaction("patch s" + stageNumber + ' ' + id + " log");
 					}
-					new PatchRun(id, stageNumber, isTransactionally, envelope.savepoint, toMillies(nanoTime(), start));
+					new PatchRun(id, stageNumber, isTransactionally, savepoint, toMillies(nanoTime(), start));
 					model.commit();
 				}
 				finally
@@ -103,11 +113,31 @@ final class Stage
 				ctx.incrementProgress();
 			}
 
-			return envelope;
+			try(TransactionTry tx = model.startTransactionTry("patch mutex release"))
+			{
+				mutex.deleteCopeItem();
+				tx.commit();
+			}
 		}
 	}
 
 	private final Object runLock = new Object();
+
+	private static String getSavepoint(final Model model)
+	{
+		final String result;
+		try
+		{
+			result = model.getSchemaSavepoint();
+		}
+		catch(final SQLException e)
+		{
+			logger.error("savepoint", e);
+			return "FAILURE: " + e.getMessage();
+		}
+		logger.info("savepoint {}", result);
+		return result;
+	}
 
 
 	Map<String,Patch> getPatches()

@@ -55,15 +55,10 @@ public final class Patches
 		if(ctx==null)
 			throw new NullPointerException("ctx");
 
-		Envelope envelope = null;
-
 		for(final Map.Entry<Integer,Stage> entry : stages.entrySet())
 		{
-			envelope = entry.getValue().run(envelope, ctx);
+			entry.getValue().run(ctx);
 		}
-
-		if(envelope!=null)
-			envelope.close();
 	}
 
 
