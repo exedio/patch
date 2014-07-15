@@ -85,7 +85,6 @@ public class SchemaPatchTest extends CopeModel4Test
 		try
 		{
 			patches.run(ctx);
-			MODEL.clearCache();
 		}
 		finally
 		{

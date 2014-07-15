@@ -123,7 +123,7 @@ public abstract class SchemaPatch implements Patch
 			throw new RuntimeException(e);
 		}
 
-		// TODO maybe model.clearCache() ?
+		model.clearCache();
 	}
 
 	@SuppressFBWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE") // OK
