@@ -23,6 +23,7 @@ import com.exedio.cope.util.JobContext;
 public interface Patch
 {
 	String getID();
+	int getStage();
 	void check();
 
 	/**
