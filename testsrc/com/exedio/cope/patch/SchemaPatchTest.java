@@ -166,15 +166,6 @@ public class SchemaPatchTest extends CopeModel4Test
 	@Before
 	public void deleteItems()
 	{
-		MODEL.commit();
-		try
-		{
-			MODEL.clearCache();
-		}
-		finally
-		{
-			MODEL.startTransaction(SchemaPatchTest.class.getName());
-		}
 		for(final SchemaSampleItem item : items())
 			item.deleteCopeItem();
 	}
