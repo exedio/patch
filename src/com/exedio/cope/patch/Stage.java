@@ -71,7 +71,7 @@ final class Stage
 			final String savepoint = getSavepoint(model);
 
 			final int numberOfPatches = patches.size();
-			logger.info("mutex");
+			logger.info("s{} mutex seize for {} patches", stageNumber, numberOfPatches);
 			final PatchMutex mutex;
 			try(TransactionTry tx = model.startTransactionTry("patch mutex seize"))
 			{
@@ -84,7 +84,7 @@ final class Stage
 				final String id = entry.getKey();
 
 				ctx.stopIfRequested();
-				logger.info("patch s{} {}", stageNumber, id);
+				logger.info("s{} run {}", stageNumber, id);
 				if(ctx.supportsMessage())
 					ctx.setMessage("run s" + stageNumber + ' ' + id);
 
@@ -113,6 +113,7 @@ final class Stage
 				ctx.incrementProgress();
 			}
 
+			logger.info("s{} mutex release", stageNumber);
 			try(TransactionTry tx = model.startTransactionTry("patch mutex release"))
 			{
 				mutex.deleteCopeItem();
@@ -123,7 +124,7 @@ final class Stage
 
 	private final Object runLock = new Object();
 
-	private static String getSavepoint(final Model model)
+	private String getSavepoint(final Model model)
 	{
 		final String result;
 		try
@@ -135,7 +136,7 @@ final class Stage
 			logger.error("savepoint", e);
 			return "FAILURE: " + e.getMessage();
 		}
-		logger.info("savepoint {}", result);
+		logger.info("s{} savepoint {}", stageNumber, result);
 		return result;
 	}
 
