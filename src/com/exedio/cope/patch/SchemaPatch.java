@@ -100,13 +100,16 @@ public abstract class SchemaPatch implements Patch
 		final String[] body = getBodyInternal();
 		final Model model = SchemaPatchRun.TYPE.getModel();
 
+		if(logger.isInfoEnabled())
+			logger.info("executing {} statements for {}", body.length, id);
+
 		try(Connection connection = SchemaInfo.newConnection(model))
 		{
 			for(int position = 0; position<body.length; position++)
 			{
 				final String sql = body[position];
 				if(logger.isInfoEnabled())
-					logger.info("{} {}/{}: {}", new Object[]{id, position+1, body.length, sql});
+					logger.info("{}/{}: {}", new Object[]{position+1, body.length, sql});
 				final long start = nanoTime();
 				final int rows = execute(connection, sql);
 				final long elapsed = toMillies(nanoTime(), start);
