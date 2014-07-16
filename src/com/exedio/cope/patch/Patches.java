@@ -62,7 +62,7 @@ public final class Patches
 	}
 
 
-	public static final TypeSet types = new TypeSet(PatchRun.TYPE, PatchMutex.TYPE);
+	public static final TypeSet types = new TypeSet(PatchRun.TYPE, PatchMutex.TYPE, SchemaPatchRun.TYPE);
 
 	public static Patch stale(final String id)
 	{
