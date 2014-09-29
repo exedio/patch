@@ -75,7 +75,7 @@ final class Stage
 			final PatchMutex mutex;
 			try(TransactionTry tx = model.startTransactionTry("patch stage " + stageNumber + " mutex seize"))
 			{
-				mutex = new PatchMutex(savepoint, numberOfPatches);
+				mutex = new PatchMutex(stageNumber, savepoint, numberOfPatches);
 				tx.commit();
 			}
 
