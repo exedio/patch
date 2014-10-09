@@ -38,6 +38,17 @@ final class PatchRun extends Item
 	static final DateField finished = new DateField().toFinal().defaultToNow();
 	static final LongField elapsed = new LongField().toFinal();
 
+	/**
+	 * for {@link Patches#preempt()} only
+	 */
+	PatchRun(
+			final String patch,
+			final int stage,
+			final boolean isTransactionally)
+	{
+		this(patch, stage, isTransactionally, "preempted", 0);
+	}
+
 
 	/**
 

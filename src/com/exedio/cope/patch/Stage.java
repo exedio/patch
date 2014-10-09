@@ -140,6 +140,15 @@ final class Stage
 		return result;
 	}
 
+	void preempt()
+	{
+		for(final Map.Entry<String, Patch> entry : patches.entrySet())
+		{
+			final Patch patch = entry.getValue();
+			new PatchRun(entry.getKey(), stageNumber, patch.isTransactionally());
+		}
+	}
+
 
 	Map<String,Patch> getPatches()
 	{

@@ -18,6 +18,7 @@
 
 package com.exedio.cope.patch;
 
+import com.exedio.cope.TransactionTry;
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
 import java.util.ArrayList;
@@ -26,9 +27,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class Patches
 {
+	private static final Logger logger = LoggerFactory.getLogger(Patches.class);
+
 	private final TreeMap<Integer,Stage> stages;
 
 	Patches(final LinkedHashMap<String,Patch> patchesDescending)
@@ -58,6 +63,23 @@ public final class Patches
 		for(final Map.Entry<Integer,Stage> entry : stages.entrySet())
 		{
 			entry.getValue().run(ctx);
+		}
+	}
+
+	/**
+	 * Marks all patches as run, without actually running them.
+	 * Is useful when you
+	 * {@link com.exedio.cope.Model#createSchema() created}
+	 * an empty schema.
+	 */
+	public void preempt()
+	{
+		logger.info("preempt");
+		try(TransactionTry tx = PatchRun.TYPE.getModel().startTransactionTry("preempt"))
+		{
+			for(final Map.Entry<Integer,Stage> entry : stages.entrySet())
+				entry.getValue().preempt();
+			tx.commit();
 		}
 	}
 

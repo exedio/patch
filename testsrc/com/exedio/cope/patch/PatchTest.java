@@ -161,6 +161,43 @@ public class PatchTest extends CopeModel4Test
 		ctx.assertIt("");
 	}
 
+	@Test public void preempt()
+	{
+		assertEquals(EMPTY_LIST, runs());
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.insertAtStart(newSamplePatchNonTx("nonTx"));
+		builder.insertAtStart(newSamplePatch("two"));
+		builder.insertAtStart(newSamplePatch("one"));
+		final Patches patches = builder.build();
+
+		preempt(patches);
+		final PatchRun runOne, runTwo, runNonTx;
+		{
+			final Iterator<PatchRun> runs = runs().iterator();
+			runOne   = assertPreempt("one"  , true , runs.next());
+			runTwo   = assertPreempt("two"  , true , runs.next());
+			runNonTx = assertPreempt("nonTx", false, runs.next());
+			assertFalse(runs.hasNext());
+		}
+
+		try
+		{
+			preempt(patches);
+			fail();
+		}
+		catch(final UniqueViolationException e)
+		{
+			assertEquals("unique violation for CopePatchRun.patchImplicitUnique", e.getMessage());
+		}
+		{
+			final Iterator<PatchRun> runs = runs().iterator();
+			assertEquals(runOne  , runs.next());
+			assertEquals(runTwo  , runs.next());
+			assertEquals(runNonTx, runs.next());
+			assertFalse(runs.hasNext());
+		}
+	}
+
 	@Test public void failure()
 	{
 		assertEquals(EMPTY_LIST, items());
@@ -363,6 +400,20 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(0, PatchMutex.TYPE.newQuery().total());
 	}
 
+	private static void preempt(final Patches patches)
+	{
+		MODEL.commit();
+		try
+		{
+			patches.preempt();
+		}
+		finally
+		{
+			MODEL.startTransaction(PatchTest.class.getName());
+		}
+		assertEquals(0, PatchMutex.TYPE.newQuery().total());
+	}
+
 	private static SamplePatch newSamplePatch(final String id)
 	{
 		return new SamplePatch(MODEL, id, null, true);
@@ -409,6 +460,19 @@ public class PatchTest extends CopeModel4Test
 		assertEquals("stage", 0, actual.getStage());
 		assertEquals("isTransactionally", isTransactionally, actual.getIsTransactionally());
 		assertEquals("savepoint", "FAILURE: not supported", actual.getSavepoint());
+		return actual;
+	}
+
+	private static PatchRun assertPreempt(
+			final String id,
+			final boolean isTransactionally,
+			final PatchRun actual)
+	{
+		assertEquals("id", id, actual.getPatch());
+		assertEquals("stage", 0, actual.getStage());
+		assertEquals("isTransactionally", isTransactionally, actual.getIsTransactionally());
+		assertEquals("savepoint", "preempted", actual.getSavepoint());
+		assertEquals("elapsed", 0, actual.getElapsed());
 		return actual;
 	}
 
