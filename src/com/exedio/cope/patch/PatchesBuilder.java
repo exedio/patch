@@ -74,9 +74,9 @@ public final class PatchesBuilder
 
 			try(
 				InputStreamReader reader = new InputStreamReader(stream, CharsetName.UTF8);
-				BufferedReader r = new BufferedReader(reader))
+				BufferedReader bufferedReader = new BufferedReader(reader))
 			{
-				for(String line = r.readLine(); line!=null; line = r.readLine())
+				for(String line = bufferedReader.readLine(); line!=null; line = bufferedReader.readLine())
 				{
 					insertAtStart(Patches.stale(line));
 				}
