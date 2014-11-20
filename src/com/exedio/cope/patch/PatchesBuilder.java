@@ -67,14 +67,14 @@ public final class PatchesBuilder
 	public void insertStaleFromResource(final Class<?> clazz) throws IOException
 	{
 		final String name = "stale-patch-ids.txt";
-		try(final InputStream stream = clazz.getResourceAsStream(name))
+		try(InputStream stream = clazz.getResourceAsStream(name))
 		{
 			if(stream==null)
 				throw new IllegalArgumentException("does not exist: " + name);
 
 			try(
-				final InputStreamReader reader = new InputStreamReader(stream, CharsetName.UTF8);
-				final BufferedReader r = new BufferedReader(reader))
+				InputStreamReader reader = new InputStreamReader(stream, CharsetName.UTF8);
+				BufferedReader r = new BufferedReader(reader))
 			{
 				for(String line = r.readLine(); line!=null; line = r.readLine())
 				{
