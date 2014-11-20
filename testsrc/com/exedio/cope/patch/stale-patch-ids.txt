@@ -1,0 +1,3 @@
+staleFromResource1
+staleFromResource2
+staleFromResource3

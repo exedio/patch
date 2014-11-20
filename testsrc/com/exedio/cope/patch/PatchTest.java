@@ -33,6 +33,7 @@ import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.AssertionErrorJobContext;
 import com.exedio.cope.util.JobContext;
 import com.exedio.cope.util.JobContexts;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import org.junit.Test;
@@ -381,6 +382,22 @@ public class PatchTest extends CopeModel4Test
 		catch(final NullPointerException e)
 		{
 			assertEquals("ctx", e.getMessage());
+		}
+	}
+
+	@Test public void insertStaleFromResource() throws IOException
+	{
+		assertEquals(EMPTY_LIST, runs());
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.insertStaleFromResource(PatchTest.class);
+		final Patches patches = builder.build();
+		preempt(patches);
+		{
+			final Iterator<PatchRun> runs = runs().iterator();
+			assertEquals("staleFromResource3", runs.next().getPatch());
+			assertEquals("staleFromResource2", runs.next().getPatch());
+			assertEquals("staleFromResource1", runs.next().getPatch());
+			assertFalse(runs.hasNext());
 		}
 	}
 

@@ -18,6 +18,10 @@
 
 package com.exedio.cope.patch;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 
 public final class PatchesBuilder
@@ -57,5 +61,25 @@ public final class PatchesBuilder
 	{
 		if(patches==null)
 			throw new IllegalStateException("builder is exhausted");
+	}
+
+	public void insertStaleFromResource(final Class<?> clazz) throws IOException
+	{
+		final String name = "stale-patch-ids.txt";
+		try(final InputStream stream = clazz.getResourceAsStream(name))
+		{
+			if(stream==null)
+				throw new IllegalArgumentException("does not exist: " + name);
+
+			try(
+				final InputStreamReader reader = new InputStreamReader(stream);
+				final BufferedReader r = new BufferedReader(reader))
+			{
+				for(String line = r.readLine(); line!=null; line = r.readLine())
+				{
+					insertAtStart(Patches.stale(line));
+				}
+			}
+		}
 	}
 }
