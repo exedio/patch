@@ -25,6 +25,7 @@ import static org.junit.Assert.fail;
 import com.exedio.cope.MandatoryViolationException;
 import com.exedio.cope.StringLengthViolationException;
 import com.exedio.cope.util.AssertionErrorJobContext;
+import java.io.IOException;
 import java.util.Arrays;
 import org.junit.Test;
 
@@ -193,5 +194,19 @@ public class PatchesTest
 	private static SamplePatch newSamplePatchCheck(final String id)
 	{
 		return new SamplePatch(null, id, "check exception message", true);
+	}
+
+	@Test public void insertStaleFromResourceNotFound() throws IOException
+	{
+		final PatchesBuilder builder = new PatchesBuilder();
+		try
+		{
+			builder.insertStaleFromResource(Object.class);
+			fail();
+		}
+		catch(final IllegalArgumentException e)
+		{
+			assertEquals("does not exist: stale-patch-ids.txt", e.getMessage());
+		}
 	}
 }
