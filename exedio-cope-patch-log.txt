@@ -11,6 +11,12 @@ The items are sorted inversely, i.e. latest items are on top
 	Is useful when working with an empty schema.
 * PatchMutex#stage added
 	This affects database schema, requires a new column.
+	On MySQL you may use the following revision:
+
+		new Revision(NNN, "PatchMutex#stage added",
+			"ALTER TABLE `CopePatchMutex` ADD COLUMN `stage` int",
+			"UPDATE      `CopePatchMutex` SET `stage` = -2147483648")
+
 * SchemaPatch added
 	This affects database schema, requires a new table.
 * Patch#getStage() added
