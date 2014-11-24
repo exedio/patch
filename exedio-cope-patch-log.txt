@@ -7,6 +7,7 @@ omit bug fixes.
 The items are sorted inversely, i.e. latest items are on top
 
 --------------------------------------------------------------------------
+* Patches#getIDs() added
 * PatchesBuilder#insertStaleFromResource added
 * Patches#preempt added
 	Is useful when working with an empty schema.
