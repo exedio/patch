@@ -64,6 +64,13 @@ public final class PatchesBuilder
 			throw new IllegalStateException("builder is exhausted");
 	}
 
+	/**
+	 * Inserts stale patches with {@link Patch#getID() ids} taken from
+	 * class resource stale-patch-ids.txt.
+	 * This file is typically the result of
+	 * <p>
+	 * {@code select patch from CopePatchRun order by this desc}
+	 */
 	public void insertStaleFromResource(final Class<?> clazz) throws IOException
 	{
 		final String name = "stale-patch-ids.txt";
