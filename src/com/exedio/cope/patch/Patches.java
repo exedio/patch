@@ -142,21 +142,20 @@ public final class Patches
 
 	public List<String> getIDs()
 	{
-		final ArrayList<String> result = new ArrayList<>();
-		for(final Stage stage : stages.values())
-			for(final Map.Entry<String, Patch> entry : stage.getPatches().entrySet())
-				result.add(entry.getKey());
-
-		Collections.reverse(result);
-		return Collections.unmodifiableList(result);
+		return getIDs(false);
 	}
 
 	public List<String> getNonStaleIDs()
 	{
+		return getIDs(true);
+	}
+
+	private List<String> getIDs(final boolean staleOnly)
+	{
 		final ArrayList<String> result = new ArrayList<>();
 		for(final Stage stage : stages.values())
 			for(final Map.Entry<String, Patch> entry : stage.getPatches().entrySet())
-				if(!(entry.getValue() instanceof StalePatch))
+				if(!staleOnly || !(entry.getValue() instanceof StalePatch))
 					result.add(entry.getKey());
 
 		Collections.reverse(result);
