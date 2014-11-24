@@ -140,6 +140,17 @@ public final class Patches
 		}
 	}
 
+	public List<String> getIDs()
+	{
+		final ArrayList<String> result = new ArrayList<>();
+		for(final Stage stage : stages.values())
+			for(final Map.Entry<String, Patch> entry : stage.getPatches().entrySet())
+				result.add(entry.getKey());
+
+		Collections.reverse(result);
+		return Collections.unmodifiableList(result);
+	}
+
 	public List<String> getNonStaleIDs()
 	{
 		final ArrayList<String> result = new ArrayList<>();

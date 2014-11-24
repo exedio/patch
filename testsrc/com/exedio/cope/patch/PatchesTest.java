@@ -171,7 +171,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void getNonStaleIDs()
+	@Test public void getIDs()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("other1"));
@@ -181,6 +181,9 @@ public class PatchesTest
 		builder.insertAtStart(newSamplePatch("other3"));
 		final Patches patches = builder.build();
 
+		assertEqualsUnmodifiable(
+				Arrays.asList("other1", "other2", "other3", "stale1", "stale2"),
+				patches.getIDs());
 		assertEqualsUnmodifiable(
 				Arrays.asList("other1", "other2", "other3"),
 				patches.getNonStaleIDs());
