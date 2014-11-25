@@ -401,6 +401,21 @@ public class PatchTest extends CopeModel4Test
 		}
 	}
 
+	@Test public void withStaleFromResource()
+	{
+		assertEquals(EMPTY_LIST, runs());
+		final PatchesBuilder builder = new PatchesBuilder().withStaleFromResource(PatchTest.class);
+		final Patches patches = builder.build();
+		preempt(patches);
+		{
+			final Iterator<PatchRun> runs = runs().iterator();
+			assertEquals("staleFromResource3", runs.next().getPatch());
+			assertEquals("staleFromResource2", runs.next().getPatch());
+			assertEquals("staleFromResource1", runs.next().getPatch());
+			assertFalse(runs.hasNext());
+		}
+	}
+
 	private static void run(
 			final Patches patches,
 			final JobContext ctx)

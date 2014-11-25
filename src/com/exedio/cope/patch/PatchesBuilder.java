@@ -70,6 +70,30 @@ public final class PatchesBuilder
 	 * This file is typically the result of
 	 * <p>
 	 * {@code select patch from CopePatchRun order by this desc}
+	 *
+	 * @see #insertStaleFromResource(Class)
+	 */
+	public PatchesBuilder withStaleFromResource(final Class<?> clazz)
+	{
+		try
+		{
+			insertStaleFromResource(clazz);
+		}
+		catch(final IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+		return this;
+	}
+
+	/**
+	 * Inserts stale patches with {@link Patch#getID() ids} taken from
+	 * class resource stale-patch-ids.txt.
+	 * This file is typically the result of
+	 * <p>
+	 * {@code select patch from CopePatchRun order by this desc}
+	 *
+	 * @see #withStaleFromResource(Class)
 	 */
 	public void insertStaleFromResource(final Class<?> clazz) throws IOException
 	{
