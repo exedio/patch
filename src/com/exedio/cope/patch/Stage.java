@@ -54,11 +54,13 @@ final class Stage
 	void run(final JobContext ctx)
 	{
 		final Model model = PatchRun.TYPE.getModel();
+		final String txName = "patch stage " + stageNumber + ' ';
+
 		synchronized(runLock)
 		{
 			final LinkedHashMap<String,Patch> patches = new LinkedHashMap<>(this.patches);
 
-			try(TransactionTry tx = model.startTransactionTry("patch stage " + stageNumber + " query"))
+			try(TransactionTry tx = model.startTransactionTry(txName + "query"))
 			{
 				final List<String> idsDone = new Query<>(PatchRun.patch).search();
 				tx.commit();
@@ -73,7 +75,7 @@ final class Stage
 			final int numberOfPatches = patches.size();
 			logger.info("s{} mutex seize for {} patches", stageNumber, numberOfPatches);
 			final PatchMutex mutex;
-			try(TransactionTry tx = model.startTransactionTry("patch stage " + stageNumber + " mutex seize"))
+			try(TransactionTry tx = model.startTransactionTry(txName + "mutex seize"))
 			{
 				mutex = new PatchMutex(stageNumber, savepoint, numberOfPatches);
 				tx.commit();
@@ -95,13 +97,13 @@ final class Stage
 					final long start = nanoTime();
 					if(isTransactionally)
 					{
-						model.startTransaction("patch stage " + stageNumber + ' ' + id);
+						model.startTransaction(txName + id);
 						patch.run(ctx);
 					}
 					else
 					{
 						patch.run(ctx);
-						model.startTransaction("patch stage " + stageNumber + ' ' + id + " log");
+						model.startTransaction(txName + id + " log");
 					}
 					new PatchRun(id, stageNumber, isTransactionally, savepoint, toMillies(nanoTime(), start));
 					model.commit();
@@ -114,7 +116,7 @@ final class Stage
 			}
 
 			logger.info("s{} mutex release", stageNumber);
-			try(TransactionTry tx = model.startTransactionTry("patch stage " + stageNumber + " mutex release"))
+			try(TransactionTry tx = model.startTransactionTry(txName + "mutex release"))
 			{
 				mutex.deleteCopeItem();
 				tx.commit();
