@@ -23,6 +23,7 @@ import static java.lang.System.nanoTime;
 
 import com.exedio.cope.ConstraintViolationException;
 import com.exedio.cope.Model;
+import com.exedio.cope.Revision;
 import com.exedio.cope.SchemaInfo;
 import com.exedio.cope.TransactionTry;
 import com.exedio.cope.misc.Arrays;
@@ -52,6 +53,19 @@ public abstract class SchemaPatch implements Patch
 	}
 
 	/**
+	 * The statements listed here
+	 * are guaranteed to be executed subsequently
+	 * in the order specified by the list
+	 * by one single {@link java.sql.Connection connection}.
+	 * So you may use connection states within a revision.
+	 * <p>
+	 * For each revision a new {@link java.sql.Connection connection} is created.
+	 * That connection is not used for any other purpose afterwards
+	 * so you don't have to cleanup connection state at the end of each revision.
+	 * This is for minimizing effects between revisions.
+	 * <p>
+	 * This behaviour is consistent to {@link Revision#getBody()}.
+	 * <p>
 	 * This method is guaranteed to be called once only
 	 * for each instance of SchemaPatch.
 	 */
