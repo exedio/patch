@@ -81,12 +81,13 @@ final class Stage
 				tx.commit();
 			}
 
+			int numberOfPatch = 1;
 			for(final Map.Entry<String, Patch> entry : patches.entrySet())
 			{
 				final String id = entry.getKey();
 
 				ctx.stopIfRequested();
-				logger.info("s{} run {}", stageNumber, id);
+				logger.info("s{} run {}/{} {}", new Object[]{stageNumber, numberOfPatch++, numberOfPatches, id});
 				if(ctx.supportsMessage())
 					ctx.setMessage("run s" + stageNumber + ' ' + id);
 
