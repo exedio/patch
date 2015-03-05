@@ -64,6 +64,8 @@ public final class Patches
 		{
 			entry.getValue().run(ctx);
 		}
+
+		logger.info("run finished");
 	}
 
 	/**
