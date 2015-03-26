@@ -23,6 +23,7 @@
 		<dependency org="com.exedio" name="cope" rev="8016">
 			<conf name="runtime" mapped="runtime" />
 			<conf name="build" mapped="hsqldb,junit,sources" />
+			<exclude org="com.exedio" module="copeservletutil" />
 		</dependency>
 		<!-- build dependencies -->
 		<dependency org="ch.qos.logback" name="logback-classic" rev="1.0.4" conf="build->default" />

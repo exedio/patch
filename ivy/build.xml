@@ -14,9 +14,6 @@
 				<exclude name="servlet-api-jar.jar" />
 				<exclude name="servlet-api-source.jar" />
 				<exclude name="trove-src.jar" />
-				<exclude name="exedio-cope-servletutil-log.txt" />
-				<exclude name="exedio-cope-servletutil-src.zip" />
-				<exclude name="exedio-cope-servletutil-jar.jar" />
 			</fileset>
 		</copy>
 
