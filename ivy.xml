@@ -31,5 +31,6 @@
 			<exclude org="org.hamcrest" module="hamcrest-core" />
 		</dependency>
 		<dependency org="findbugs-x" name="findbugs" rev="2.0.1" conf="build->default" />
+		<dependency org="cpsuite" name="cpsuite" rev="1.2.6" conf="build->default" />
 	</dependencies>
 </ivy-module>
