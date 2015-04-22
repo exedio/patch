@@ -50,7 +50,7 @@ public class StageTest extends CopeModel4Test
 		builder.insertAtStart(patch("twoA", 2));
 		builder.insertAtStart(patch("oneA", 1));
 		final Patches patches = builder.build();
-		run(patches, JobContexts.EMPTY);
+		assertEquals(4, run(patches, JobContexts.EMPTY));
 		final PatchRun oneA;
 		final PatchRun oneB;
 		final PatchRun twoA;
@@ -63,7 +63,7 @@ public class StageTest extends CopeModel4Test
 			twoB = assertIt("twoB", 2, runs.next());
 			assertFalse(runs.hasNext());
 		}
-		run(patches, JobContexts.EMPTY);
+		assertEquals(0, run(patches, JobContexts.EMPTY));
 		assertEquals(asList(oneA, oneB, twoA, twoB), runs());
 		final PatchesBuilder builder2 = new PatchesBuilder();
 		builder2.insertAtStart(patch("twoC", 2));
@@ -74,7 +74,7 @@ public class StageTest extends CopeModel4Test
 		builder2.insertAtStart(patch("twoA", 2));
 		builder2.insertAtStart(patch("oneA", 1));
 		final Patches patches2 = builder2.build();
-		run(patches2, JobContexts.EMPTY);
+		assertEquals(3, run(patches2, JobContexts.EMPTY));
 		{
 			final Iterator<PatchRun> runs = runs().iterator();
 			assertEquals(oneA, runs.next());
@@ -88,20 +88,22 @@ public class StageTest extends CopeModel4Test
 		}
 	}
 
-	private static void run(
+	private static int run(
 			final Patches patches,
 			final JobContext ctx)
 	{
 		MODEL.commit();
+		int result;
 		try
 		{
-			patches.run(ctx);
+			result = patches.run(ctx);
 		}
 		finally
 		{
 			MODEL.startTransaction(StageTest.class.getName());
 		}
 		assertEquals(0, PatchMutex.TYPE.newQuery().total());
+		return result;
 	}
 
 	private static Patch patch(final String id, final int stage)

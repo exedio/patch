@@ -59,7 +59,7 @@ public class PatchTest extends CopeModel4Test
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("one"));
 		final Patches patches = builder.build();
-		run(patches, JobContexts.EMPTY);
+		assertEquals(1, run(patches, JobContexts.EMPTY));
 		final SampleItem one;
 		{
 			final Iterator<SampleItem> items = items().iterator();
@@ -72,7 +72,7 @@ public class PatchTest extends CopeModel4Test
 			runOne = assertIt("one", true, runs.next());
 			assertFalse(runs.hasNext());
 		}
-		run(patches, JobContexts.EMPTY);
+		assertEquals(0, run(patches, JobContexts.EMPTY));
 		assertEquals(asList(one), items());
 		assertEquals(asList(runOne), runs());
 	}
@@ -84,7 +84,7 @@ public class PatchTest extends CopeModel4Test
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatchNonTx("one"));
 		final Patches patches = builder.build();
-		run(patches, JobContexts.EMPTY);
+		assertEquals(1, run(patches, JobContexts.EMPTY));
 		final SampleItem one;
 		{
 			final Iterator<SampleItem> items = items().iterator();
@@ -97,7 +97,7 @@ public class PatchTest extends CopeModel4Test
 			runOne = assertIt("one", false, runs.next());
 			assertFalse(runs.hasNext());
 		}
-		run(patches, JobContexts.EMPTY);
+		assertEquals(0, run(patches, JobContexts.EMPTY));
 		assertEquals(asList(one), items());
 		assertEquals(asList(runOne), runs());
 	}
@@ -111,7 +111,7 @@ public class PatchTest extends CopeModel4Test
 		builder.insertAtStart(newSamplePatch("two"));
 		builder.insertAtStart(newSamplePatch("one"));
 		final Patches patches = builder.build();
-		run(patches, ctx);
+		assertEquals(2, run(patches, ctx));
 		ctx.assertIt(
 				"requestedToStop()" +
 				"requestedToStop()" + "setMessage(run s0 one)" + "incrementProgress()" +
@@ -132,7 +132,7 @@ public class PatchTest extends CopeModel4Test
 			runTwo = assertIt("two", true, runs.next());
 			assertFalse(runs.hasNext());
 		}
-		run(patches, ctx);
+		assertEquals(0, run(patches, ctx));
 		ctx.assertIt("");
 		assertEquals(asList(one, two), items());
 		assertEquals(asList(runOne, runTwo), runs());
@@ -141,7 +141,7 @@ public class PatchTest extends CopeModel4Test
 		builder2.insertAtStart(newSamplePatch("two"));
 		builder2.insertAtStart(newSamplePatch("one"));
 		final Patches patches2 = builder2.build();
-		run(patches2, ctx);
+		assertEquals(1, run(patches2, ctx));
 		ctx.assertIt(
 				"requestedToStop()" +
 				"requestedToStop()" + "setMessage(run s0 three)" + "incrementProgress()");
@@ -331,7 +331,7 @@ public class PatchTest extends CopeModel4Test
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch(id));
 		final Patches patches = builder.build();
-		run(patches, JobContexts.EMPTY);
+		assertEquals(1, run(patches, JobContexts.EMPTY));
 		final SampleItem one;
 		{
 			final Iterator<SampleItem> items = items().iterator();
@@ -342,7 +342,7 @@ public class PatchTest extends CopeModel4Test
 		final PatchesBuilder builder2 = new PatchesBuilder();
 		builder2.insertAtStart(Patches.stale(id));
 		final Patches patches2 = builder2.build();
-		run(patches2, JobContexts.EMPTY);
+		assertEquals(0, run(patches2, JobContexts.EMPTY));
 		{
 			final Iterator<SampleItem> items = items().iterator();
 			assertEquals(one, items.next());
@@ -416,20 +416,22 @@ public class PatchTest extends CopeModel4Test
 		}
 	}
 
-	private static void run(
+	private static int run(
 			final Patches patches,
 			final JobContext ctx)
 	{
 		MODEL.commit();
+		int result;
 		try
 		{
-			patches.run(ctx);
+			result = patches.run(ctx);
 		}
 		finally
 		{
 			MODEL.startTransaction(PatchTest.class.getName());
 		}
 		assertEquals(0, PatchMutex.TYPE.newQuery().total());
+		return result;
 	}
 
 	private static void preempt(final Patches patches)

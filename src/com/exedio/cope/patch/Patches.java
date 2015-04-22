@@ -55,17 +55,21 @@ public final class Patches
 		}
 	}
 
-	public void run(final JobContext ctx)
+	public int run(final JobContext ctx)
 	{
 		if(ctx==null)
 			throw new NullPointerException("ctx");
 
+		int result = 0;
 		for(final Map.Entry<Integer,Stage> entry : stages.entrySet())
 		{
-			entry.getValue().run(ctx);
+			result += entry.getValue().run(ctx);
 		}
 
-		logger.info("run finished");
+		if(result>0)
+			logger.info("run finished after {} patches", result);
+
+		return result;
 	}
 
 	/**

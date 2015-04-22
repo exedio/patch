@@ -19,6 +19,7 @@
 package com.exedio.cope.patch;
 
 import static com.exedio.cope.patch.PatchTest.MODEL;
+import static org.junit.Assert.assertEquals;
 
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.JobContexts;
@@ -61,7 +62,7 @@ public class PatchesRealTest extends CopeModel4Test
 
 	@Test public void run()
 	{
-		patches.run(JobContexts.EMPTY);
+		assertEquals(2, patches.run(JobContexts.EMPTY));
 	}
 
 	private static SamplePatch newSamplePatch(final String id)

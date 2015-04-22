@@ -51,7 +51,7 @@ final class Stage
 		patches.put(id, patch);
 	}
 
-	void run(final JobContext ctx)
+	int run(final JobContext ctx)
 	{
 		final Model model = PatchRun.TYPE.getModel();
 		final String txName = "patch stage " + stageNumber + ' ';
@@ -67,7 +67,7 @@ final class Stage
 				patches.keySet().removeAll(idsDone);
 			}
 			if(patches.isEmpty())
-				return;
+				return 0;
 
 			ctx.stopIfRequested();
 			final String savepoint = getSavepoint(model);
@@ -82,6 +82,7 @@ final class Stage
 			}
 
 			int numberOfPatch = 1;
+			int result = 0;
 			for(final Map.Entry<String, Patch> entry : patches.entrySet())
 			{
 				final String id = entry.getKey();
@@ -108,6 +109,7 @@ final class Stage
 					}
 					new PatchRun(id, stageNumber, isTransactionally, savepoint, toMillies(nanoTime(), start));
 					model.commit();
+					result++;
 				}
 				finally
 				{
@@ -122,6 +124,8 @@ final class Stage
 				mutex.deleteCopeItem();
 				tx.commit();
 			}
+
+			return result;
 		}
 	}
 

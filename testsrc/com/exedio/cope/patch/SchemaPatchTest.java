@@ -48,7 +48,7 @@ public class SchemaPatchTest extends CopeModel4Test
 		final SchemaPatch patch = patch("one");
 		builder.insertAtStart(patch);
 		final Patches patches = builder.build();
-		run(patches, JobContexts.EMPTY);
+		assertEquals(1, run(patches, JobContexts.EMPTY));
 		final Iterator<SchemaSampleItem> items = items().iterator();
 		assertIt("one", items.next());
 		assertFalse(items.hasNext());
@@ -64,7 +64,7 @@ public class SchemaPatchTest extends CopeModel4Test
 		final SchemaPatch patch = patch("one", "two", "three");
 		builder.insertAtStart(patch);
 		final Patches patches = builder.build();
-		run(patches, JobContexts.EMPTY);
+		assertEquals(1, run(patches, JobContexts.EMPTY));
 		final Iterator<SchemaSampleItem> items = items().iterator();
 		assertIt("one", items.next());
 		assertIt("two", items.next());
@@ -77,14 +77,14 @@ public class SchemaPatchTest extends CopeModel4Test
 		assertFalse(runs.hasNext());
 	}
 
-	private static void run(
+	private static int run(
 			final Patches patches,
 			final JobContext ctx)
 	{
 		MODEL.commit();
 		try
 		{
-			patches.run(ctx);
+			return patches.run(ctx);
 		}
 		finally
 		{
