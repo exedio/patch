@@ -127,29 +127,17 @@
 	<target name="compile" depends="src.compile, testsrc.compile" />
 	
 	<target name="api">
-
-		<javadoc
-				destdir="build/api"
-				maxmemory="60m"
-				source="1.7"
-				private="true"
-				author="on"
-				use="on"
-				version="on"
-				windowtitle="exedio cope"
-				splitindex="on"
-				failonerror="true"
-			>
-			<fileset dir="src" includes="**/*.java" />
-			<classpath>
+		<api title="cope patch">
+			<src>
+				<fileset dir="src" includes="**/*.java" />
+			</src>
+			<myClasspath>
 				<pathelement location="lib/exedio-cope.jar" />
 				<pathelement location="lib/exedio-cope-instrument-annotations.jar" />
 				<pathelement location="lib/slf4j-api.jar" />
 				<pathelement location="lib/findbugs-annotations.jar" />
-			</classpath>
-			<tag name="cope.generated" enabled="true" />
-			<tag name="cope.get" enabled="true" />
-		</javadoc>
+			</myClasspath>
+		</api>
 	</target>
 	
 	<target name="build"

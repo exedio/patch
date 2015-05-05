@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<project name="api" default="fail" basedir=".">
+
+	<macrodef name="api">
+		<attribute name="title" />
+		<element name="src" />
+		<element name="myClasspath" />
+		<sequential>
+
+			<delete dir="build/api" />
+			<mkdir  dir="build/api" />
+
+			<condition property="api.doclint" value="-Xdoclint:all,-missing" else="-nosince"> <!-- nosince is just a dummy -->
+				<available classname="java.util.Optional" /> <!-- available since JDK 1.8 -->
+			</condition>
+			<echo message="doclint //${api.doclint}//" />
+
+			<javadoc
+					destdir="build/api"
+					maxmemory="100m"
+					private="on"
+					author="on"
+					use="on"
+					version="on"
+					windowtitle="@{title}"
+					splitindex="on"
+					failonerror="true"
+				>
+				<sourcefiles>
+					<src />
+				</sourcefiles>
+				<doctitle><![CDATA[@{title}]]></doctitle>
+				<header><![CDATA[@{title}]]></header>
+				<footer><![CDATA[@{title}]]></footer>
+				<bottom><![CDATA[Copyright &copy; 2004-2015 <a href="http://www.exedio.com/" target="_top">exedio</a> Gesellschaft f&uuml;r Softwareentwicklung mbH. All rights reserved.<br>${build.tag}]]></bottom>
+				<classpath>
+					<myClasspath />
+				</classpath>
+				<tag name="cope.generated" enabled="true" />
+				<tag name="cope.get" enabled="true" />
+				<arg value="${api.doclint}" />
+				<arg value="-Xmaxerrs"  /><arg value="10000" />
+				<arg value="-Xmaxwarns" /><arg value="10000" />
+			</javadoc>
+
+		</sequential>
+	</macrodef>
+
+	<target name="fail">
+		<fail message="This file contains helper macros only. There are no targets." />
+	</target>
+
+</project>
