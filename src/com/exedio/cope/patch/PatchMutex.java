@@ -51,11 +51,11 @@ final class PatchMutex extends Item
 	}
 
 
-	static final IntegerField stage = new IntegerField().toFinal();
-	static final StringField host      = new StringField().toFinal().optional().lengthMax(10000);
-	static final StringField savepoint = new StringField().toFinal().optional().lengthMax(10000);
+	static final IntegerField stage    = PatchRun.stage.copy();
+	static final StringField host      = PatchRun.host.copy();
+	static final StringField savepoint = PatchRun.savepoint.copy();
 	static final IntegerField numberOfPatches = new IntegerField().toFinal().min(1);
-	static final DateField finished = new DateField().toFinal().defaultToNow();
+	static final DateField finished    = PatchRun.finished.copy();
 
 
 	/**
