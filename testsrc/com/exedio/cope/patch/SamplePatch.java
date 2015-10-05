@@ -76,9 +76,7 @@ public class SamplePatch implements Patch
 			final PatchMutex mutex = PatchMutex.TYPE.newQuery().searchSingletonStrict();
 			new SampleItem(id,
 					model.currentTransaction().getName(),
-					mutex.getHost(),
-					mutex.getSavepoint(),
-					mutex.getNumberOfPatches());
+					mutex);
 		}
 		else
 		{
@@ -88,9 +86,7 @@ public class SamplePatch implements Patch
 				final PatchMutex mutex = PatchMutex.TYPE.newQuery().searchSingletonStrict();
 				new SampleItem(id,
 						null,
-						mutex.getHost(),
-						mutex.getSavepoint(),
-						mutex.getNumberOfPatches());
+						mutex);
 				tx.commit();
 			}
 		}
