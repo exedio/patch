@@ -34,6 +34,8 @@ import com.exedio.cope.util.AssertionErrorJobContext;
 import com.exedio.cope.util.JobContext;
 import com.exedio.cope.util.JobContexts;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.List;
 import org.junit.Test;
@@ -473,6 +475,7 @@ public class PatchTest extends CopeModel4Test
 	{
 		assertEquals("id", id, actual.getPatch());
 		assertEquals("transactionName", transactionName, actual.getTransactionName());
+		assertEquals("mutexHost", getHost(), actual.getMutexHost());
 		assertEquals("mutexSavepoint", "FAILURE: not supported", actual.getMutexSavepoint());
 		assertEquals("mutexNumberOfPatches", mutexNumberOfPatches, actual.getMutexNumberOfPatches());
 		return actual;
@@ -493,6 +496,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals("id", id, actual.getPatch());
 		assertEquals("stage", 0, actual.getStage());
 		assertEquals("isTransactionally", isTransactionally, actual.getIsTransactionally());
+		assertEquals("host", getHost(), actual.getHost());
 		assertEquals("savepoint", "FAILURE: not supported", actual.getSavepoint());
 		return actual;
 	}
@@ -505,6 +509,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals("id", id, actual.getPatch());
 		assertEquals("stage", 0, actual.getStage());
 		assertEquals("isTransactionally", isTransactionally, actual.getIsTransactionally());
+		assertEquals("host", getHost(), actual.getHost());
 		assertEquals("savepoint", "preempted", actual.getSavepoint());
 		assertEquals("elapsed", 0, actual.getElapsed());
 		return actual;
@@ -542,6 +547,18 @@ public class PatchTest extends CopeModel4Test
 		{
 			assertEquals(expected, actual.toString());
 			actual.setLength(0);
+		}
+	}
+
+	private static String getHost()
+	{
+		try
+		{
+			return InetAddress.getLocalHost().getHostName();
+		}
+		catch(final UnknownHostException e)
+		{
+			throw new RuntimeException(e);
 		}
 	}
 }

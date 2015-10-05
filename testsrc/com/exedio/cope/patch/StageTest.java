@@ -28,6 +28,8 @@ import com.exedio.cope.Query;
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.JobContext;
 import com.exedio.cope.util.JobContexts;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.List;
 import org.junit.Test;
@@ -157,7 +159,20 @@ public class StageTest extends CopeModel4Test
 		assertEquals("id", id, actual.getPatch());
 		assertEquals("stage", stage, actual.getStage());
 		assertEquals("isTransactionally", true, actual.getIsTransactionally());
+		assertEquals("host", getHost(), actual.getHost());
 		assertEquals("savepoint", "FAILURE: not supported", actual.getSavepoint());
 		return actual;
+	}
+
+	private static String getHost()
+	{
+		try
+		{
+			return InetAddress.getLocalHost().getHostName();
+		}
+		catch(final UnknownHostException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 }

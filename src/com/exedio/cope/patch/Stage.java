@@ -25,6 +25,8 @@ import com.exedio.cope.Model;
 import com.exedio.cope.Query;
 import com.exedio.cope.TransactionTry;
 import com.exedio.cope.util.JobContext;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -70,6 +72,7 @@ final class Stage
 				return 0;
 
 			ctx.stopIfRequested();
+			final String host = getHost();
 			final String savepoint = getSavepoint(model);
 
 			final int numberOfPatches = patches.size();
@@ -77,7 +80,7 @@ final class Stage
 			final PatchMutex mutex;
 			try(TransactionTry tx = model.startTransactionTry(txName + "mutex seize"))
 			{
-				mutex = new PatchMutex(stageNumber, savepoint, numberOfPatches);
+				mutex = new PatchMutex(stageNumber, host, savepoint, numberOfPatches);
 				tx.commit();
 			}
 
@@ -107,7 +110,7 @@ final class Stage
 						patch.run(ctx);
 						model.startTransaction(txName + id + " log");
 					}
-					new PatchRun(id, stageNumber, isTransactionally, savepoint, toMillies(nanoTime(), start));
+					new PatchRun(id, stageNumber, isTransactionally, host, savepoint, toMillies(nanoTime(), start));
 					model.commit();
 					result++;
 				}
@@ -131,6 +134,18 @@ final class Stage
 
 	private final Object runLock = new Object();
 
+	private static String getHost()
+	{
+		try
+		{
+			return InetAddress.getLocalHost().getHostName();
+		}
+		catch(final UnknownHostException e)
+		{
+			return "<UnknownHostException>";
+		}
+	}
+
 	private String getSavepoint(final Model model)
 	{
 		final String result;
@@ -149,10 +164,12 @@ final class Stage
 
 	void preempt()
 	{
+		final String host = getHost();
+
 		for(final Map.Entry<String, Patch> entry : patches.entrySet())
 		{
 			final Patch patch = entry.getValue();
-			new PatchRun(entry.getKey(), stageNumber, patch.isTransactionally());
+			new PatchRun(entry.getKey(), stageNumber, patch.isTransactionally(), host);
 		}
 	}
 
