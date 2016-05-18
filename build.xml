@@ -19,7 +19,7 @@
 	</taskdef>
 
 	<target name="src.instrument" unless="skip.instrument">
-		<instrument verify="${instrument.verify}" finalArgs="true" suppressUnusedWarningOnPrivateActivationConstructor="true" verbose="false">
+		<instrument verify="${instrument.verify}" finalArgs="true" suppressUnusedWarningOnPrivateActivationConstructor="true" annotateGenerated="false" verbose="false">
 			<fileset dir="src">
 				<include name="com/exedio/cope/patch/PatchRun.java" />
 				<include name="com/exedio/cope/patch/PatchMutex.java" />
@@ -40,7 +40,7 @@
 	</target>
 
 	<target name="testsrc.instrument" unless="skip.instrument">
-		<instrument verify="${instrument.verify}" finalArgs="true" suppressUnusedWarningOnPrivateActivationConstructor="true" verbose="false">
+		<instrument verify="${instrument.verify}" finalArgs="true" suppressUnusedWarningOnPrivateActivationConstructor="true" annotateGenerated="false" verbose="false">
 			<fileset dir="testsrc">
 				<include name="com/exedio/cope/patch/*Item.java" />
 			</fileset>

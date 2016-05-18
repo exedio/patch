@@ -13,10 +13,7 @@
 				<globmapper from="*" to="*" />
 			</firstmatchmapper>
 			<fileset dir="artifacts/lib">
-				<exclude name="bsh-src.jar" />
 				<exclude name="servlet-api-jar.jar" />
-				<exclude name="servlet-api-source.jar" />
-				<exclude name="trove-src.jar" />
 			</fileset>
 		</copy>
 

@@ -20,9 +20,10 @@
 		<artifact name="exedio-cope-patch" type="log" ext="txt" />
 	</publications>
 	<dependencies>
-		<dependency org="com.exedio" name="cope" rev="8016">
+		<dependency org="com.exedio" name="copeutil" rev="483" conf="runtime->runtime; build->runtime,sources,changelog" />
+		<dependency org="com.exedio" name="cope" rev="8613">
 			<conf name="runtime" mapped="runtime" />
-			<conf name="build" mapped="hsqldb,junit,sources" />
+			<conf name="build" mapped="hsqldb,junit,sources,changelog" />
 			<exclude org="com.exedio" module="copeservletutil" />
 		</dependency>
 		<!-- build dependencies -->
