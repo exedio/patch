@@ -18,7 +18,8 @@
 
 package com.exedio.cope.patch;
 
-import com.exedio.cope.util.CharsetName;
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -104,7 +105,7 @@ public final class PatchesBuilder
 				throw new IllegalArgumentException("does not exist: " + name);
 
 			try(
-				InputStreamReader reader = new InputStreamReader(stream, CharsetName.UTF8);
+				InputStreamReader reader = new InputStreamReader(stream, UTF_8);
 				BufferedReader bufferedReader = new BufferedReader(reader))
 			{
 				String line = null;
