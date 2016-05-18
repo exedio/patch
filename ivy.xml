@@ -12,12 +12,14 @@
 	</info>
 	<configurations>
 		<conf name="runtime" />
+		<conf name="sources" />
+		<conf name="changelog" />
 		<conf name="build" extends="runtime" visibility="private" />
 	</configurations>
 	<publications>
-		<artifact name="exedio-cope-patch" />
-		<artifact name="exedio-cope-patch" type="src" ext="zip" />
-		<artifact name="exedio-cope-patch" type="log" ext="txt" />
+		<artifact name="exedio-cope-patch" conf="runtime"   type="jar" ext="jar" />
+		<artifact name="exedio-cope-patch" conf="sources"   type="src" ext="zip" />
+		<artifact name="exedio-cope-patch" conf="changelog" type="log" ext="txt" />
 	</publications>
 	<dependencies>
 		<dependency org="com.exedio" name="copeutil" rev="483" conf="runtime->runtime; build->runtime,sources,changelog" />
