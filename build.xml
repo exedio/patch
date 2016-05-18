@@ -4,20 +4,20 @@
 
 	<property file="local.properties" />
 	<property file="project.properties" />
-	
+
 	<import>
 		<fileset dir="macros">
 			<include name="*.xml" />
 		</fileset>
 	</import>
-	
+
 	<taskdef resource="com/exedio/cope/instrument/ant.properties">
 		<classpath>
 			<pathelement location="lib/exedio-cope-instrument.jar" />
 			<pathelement location="lib/slf4j-api.jar" />
 		</classpath>
 	</taskdef>
-	
+
 	<target name="src.instrument" unless="skip.instrument">
 		<instrument verify="${instrument.verify}" finalArgs="true" suppressUnusedWarningOnPrivateActivationConstructor="true" verbose="false">
 			<fileset dir="src">
@@ -27,7 +27,7 @@
 			</fileset>
 		</instrument>
 	</target>
-	
+
 	<target name="src.compile" depends="src.instrument">
 		<compile srcdir="src">
 			<classpath>
@@ -38,7 +38,7 @@
 			</classpath>
 		</compile>
 	</target>
-	
+
 	<target name="testsrc.instrument" unless="skip.instrument">
 		<instrument verify="${instrument.verify}" finalArgs="true" suppressUnusedWarningOnPrivateActivationConstructor="true" verbose="false">
 			<fileset dir="testsrc">
@@ -46,7 +46,7 @@
 			</fileset>
 		</instrument>
 	</target>
-	
+
 	<target name="testsrc.compile" depends="src.compile, testsrc.instrument">
 		<compile srcdir="testsrc">
 			<classpath>
@@ -60,7 +60,7 @@
 			</classpath>
 		</compile>
 	</target>
-	
+
 	<target name="test" depends="testsrc.compile">
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testtmpdir" />
@@ -87,7 +87,7 @@
 			<assertions><enable/></assertions>
 		</junit>
 	</target>
-	
+
 	<target name="jar" depends="src.compile">
 		<jar jarfile="build/exedio-cope-patch.jar" filesonly="true" duplicate="fail" strict="fail" level="9">
 			<fileset dir="build/classes/src" />
@@ -102,14 +102,14 @@
 			</manifest>
 		</jar>
 	</target>
-	
+
 	<target name="jar.src">
 		<mkdir dir="build" />
 		<zip destfile="build/exedio-cope-patch-src.zip" filesonly="true" whenempty="fail" duplicate="fail" level="9">
 			<zipfileset dir="${basedir}/src"><include name="**/*.java"/><exclude name="**/*_Jspm.java" /></zipfileset>
 		</zip>
 	</target>
-	
+
 	<target name="clean">
 		<delete>
 			<fileset dir="src"><!-- not created anymore -->
@@ -121,11 +121,11 @@
 		<delete dir="webtestweb/WEB-INF/lib" /><!-- not created anymore -->
 		<delete dir="tomcat" /><!-- not created anymore -->
 	</target>
-	
+
 	<target name="instrument" depends="src.instrument, testsrc.instrument" />
-	
+
 	<target name="compile" depends="src.compile, testsrc.compile" />
-	
+
 	<target name="api">
 		<api title="cope patch">
 			<src>
@@ -139,11 +139,11 @@
 			</myClasspath>
 		</api>
 	</target>
-	
+
 	<target name="build"
 			depends="compile, test, jar" />
-	
-	
+
+
 	<target name="findbugs" depends="compile, findbugs.taskdef">
 		<findbugs
 					home="${basedir}/build/findbugs-home"
@@ -165,9 +165,9 @@
 			</auxclasspath>
 		</findbugs>
 	</target>
-	
+
 	<target name="all" depends="build, jar.src, api, findbugs" />
-	
+
 	<target name="jenkins" depends="all">
 		<copy todir="${basedir}/build/success">
 			<fileset file="${basedir}/build/exedio-cope-patch.jar" />
@@ -180,5 +180,5 @@
 			</filterset>
 		</copy>
 	</target>
-	
+
 </project>
