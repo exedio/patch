@@ -61,9 +61,9 @@ public final class Patches
 			throw new NullPointerException("ctx");
 
 		int result = 0;
-		for(final Map.Entry<Integer,Stage> entry : stages.entrySet())
+		for(final Stage stage : stages.values())
 		{
-			result += entry.getValue().run(ctx);
+			result += stage.run(ctx);
 		}
 
 		if(result>0)
@@ -83,8 +83,8 @@ public final class Patches
 		logger.info("preempt");
 		try(TransactionTry tx = PatchRun.TYPE.getModel().startTransactionTry("preempt"))
 		{
-			for(final Map.Entry<Integer,Stage> entry : stages.entrySet())
-				entry.getValue().preempt();
+			for(final Stage stage : stages.values())
+				stage.preempt();
 			tx.commit();
 		}
 	}
