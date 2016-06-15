@@ -98,54 +98,6 @@ public final class Patches
 		return new StalePatch(id);
 	}
 
-	private static final class StalePatch implements Patch
-	{
-		private final String id;
-
-		StalePatch(final String id)
-		{
-			this.id = id;
-		}
-
-		@Override
-		public String getID()
-		{
-			return id;
-		}
-
-		@Override
-		public int getStage()
-		{
-			return Integer.MIN_VALUE;
-		}
-
-		@Override
-		public void check()
-		{
-			// empty
-		}
-
-		@Override
-		public boolean isTransactionally()
-		{
-			return false;
-		}
-
-		@Override
-		public void run(final JobContext ctx)
-		{
-			throw new RuntimeException(
-					"stale patch " + id + " is supposed to been run already, " +
-					"therefore cannot be run again.");
-		}
-
-		@Override
-		public String toString()
-		{
-			return id;
-		}
-	}
-
 	public List<String> getIDs()
 	{
 		return getIDs(false);
