@@ -11,11 +11,6 @@
 			<delete dir="build/api" />
 			<mkdir  dir="build/api" />
 
-			<condition property="api.doclint" value="-Xdoclint:all,-missing" else="-nosince"> <!-- nosince is just a dummy -->
-				<available classname="java.util.Optional" /> <!-- available since JDK 1.8 -->
-			</condition>
-			<echo message="doclint //${api.doclint}//" />
-
 			<javadoc
 					destdir="build/api"
 					maxmemory="100m"
@@ -39,7 +34,7 @@
 				</classpath>
 				<tag name="cope.generated" enabled="true" />
 				<tag name="cope.get" enabled="true" />
-				<arg value="${api.doclint}" />
+				<arg value="-Xdoclint:all,-missing" />
 				<arg value="-Xmaxerrs"  /><arg value="10000" />
 				<arg value="-Xmaxwarns" /><arg value="10000" />
 			</javadoc>
