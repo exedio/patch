@@ -63,7 +63,7 @@ final class Stage
 		{
 			final LinkedHashMap<String,Patch> patches = new LinkedHashMap<>(this.patches);
 
-			try(TransactionTry tx = model.startTransactionTry(txName + "query"))
+			try(TransactionTry tx = startTransaction("query"))
 			{
 				final List<String> idsDone = new Query<>(PatchRun.patch).search();
 				tx.commit();
@@ -79,7 +79,7 @@ final class Stage
 			final int numberOfPatches = patches.size();
 			logger.info("s{} mutex seize for {} patches", stageNumber, numberOfPatches);
 			final PatchMutex mutex;
-			try(TransactionTry tx = model.startTransactionTry(txName + "mutex seize"))
+			try(TransactionTry tx = startTransaction("mutex seize"))
 			{
 				mutex = new PatchMutex(stageNumber, host, savepoint, numberOfPatches);
 				tx.commit();
@@ -123,7 +123,7 @@ final class Stage
 			}
 
 			logger.info("s{} mutex release", stageNumber);
-			try(TransactionTry tx = model.startTransactionTry(txName + "mutex release"))
+			try(TransactionTry tx = startTransaction("mutex release"))
 			{
 				mutex.deleteCopeItem();
 				tx.commit();
@@ -134,6 +134,11 @@ final class Stage
 	}
 
 	private final Object runLock = new Object();
+
+	private TransactionTry startTransaction(final String name)
+	{
+		return PatchRun.TYPE.getModel().startTransactionTry(txName + name);
+	}
 
 	private static String getHost()
 	{
