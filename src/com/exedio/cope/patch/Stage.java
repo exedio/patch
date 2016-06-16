@@ -128,15 +128,15 @@ final class Stage
 
 	private LinkedHashMap<String,Patch> getPatchesPending()
 	{
-		final LinkedHashMap<String,Patch> patches = new LinkedHashMap<>(this.patches);
+		final LinkedHashMap<String,Patch> result = new LinkedHashMap<>(patches);
 
 		try(TransactionTry tx = startTransaction("query"))
 		{
 			final List<String> idsDone = new Query<>(PatchRun.patch).search();
 			tx.commit();
-			patches.keySet().removeAll(idsDone);
+			result.keySet().removeAll(idsDone);
 		}
-		return patches;
+		return result;
 	}
 
 	private final Object runLock = new Object();
