@@ -73,6 +73,32 @@ public final class Patches
 	}
 
 	/**
+	 * If this method returns true, it is definitely known,
+	 * that there are no pending patches.
+	 * This means, {@link #run(JobContext) run} has nothing to do.
+	 * <p>
+	 * If this method returns false, nothing is known.
+	 * In particular one on the following conditions may be true:
+	 * <ul>
+	 * <li>There is at least one pending patch.</li>
+	 * <li>Method {@link #run(JobContext) run} is currently executed by another thread.</li>
+	 * <li>This method {@link #isDone() isDone} is currently executed by another thread.</li>
+	 * </ul>
+	 * This implies, that the result is not monotonous:
+	 * After this method returned true, subsequent calls may return false.
+	 */
+	public boolean isDone()
+	{
+		for(final Stage stage : stages.values())
+		{
+			if(!stage.isDone())
+				return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Marks all patches as run, without actually running them.
 	 * Is useful when you
 	 * {@link com.exedio.cope.Model#createSchema() created}

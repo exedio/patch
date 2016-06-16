@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +60,8 @@ final class Stage
 	{
 		final Model model = PatchRun.TYPE.getModel();
 
-		synchronized(runLock)
+		runLock.lock(); // blocks until available
+		try
 		{
 			final LinkedHashMap<String,Patch> patches = getPatchesPending();
 			if(patches.isEmpty())
@@ -124,6 +126,26 @@ final class Stage
 
 			return result;
 		}
+		finally
+		{
+			runLock.unlock();
+		}
+	}
+
+	boolean isDone()
+	{
+		final boolean lockAcquired = runLock.tryLock(); // returns immediately
+		if(!lockAcquired)
+			return false;
+
+		try
+		{
+			return getPatchesPending().isEmpty();
+		}
+		finally
+		{
+			runLock.unlock();
+		}
 	}
 
 	private LinkedHashMap<String,Patch> getPatchesPending()
@@ -139,7 +161,7 @@ final class Stage
 		return result;
 	}
 
-	private final Object runLock = new Object();
+	private final ReentrantLock runLock = new ReentrantLock();
 
 	private TransactionTry startTransaction(final String name)
 	{

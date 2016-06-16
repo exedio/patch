@@ -62,7 +62,9 @@ public class PatchesRealTest extends CopeModel4Test
 
 	@Test public void run()
 	{
+		assertEquals(false, patches.isDone());
 		assertEquals(2, patches.run(JobContexts.EMPTY));
+		assertEquals(true, patches.isDone());
 	}
 
 	private static SamplePatch newSamplePatch(final String id)
