@@ -40,11 +40,13 @@ final class Stage
 	private static final Logger logger = LoggerFactory.getLogger(Patches.class);
 
 	private final int stageNumber;
+	private final String txName;
 	private final LinkedHashMap<String,Patch> patches;
 
 	Stage(final int stageNumber)
 	{
 		this.stageNumber = stageNumber;
+		this.txName = "patch stage " + stageNumber + ' ';
 		this.patches = new LinkedHashMap<>();
 	}
 
@@ -56,7 +58,6 @@ final class Stage
 	int run(final JobContext ctx)
 	{
 		final Model model = PatchRun.TYPE.getModel();
-		final String txName = "patch stage " + stageNumber + ' ';
 
 		synchronized(runLock)
 		{
