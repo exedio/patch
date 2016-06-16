@@ -61,14 +61,7 @@ final class Stage
 
 		synchronized(runLock)
 		{
-			final LinkedHashMap<String,Patch> patches = new LinkedHashMap<>(this.patches);
-
-			try(TransactionTry tx = startTransaction("query"))
-			{
-				final List<String> idsDone = new Query<>(PatchRun.patch).search();
-				tx.commit();
-				patches.keySet().removeAll(idsDone);
-			}
+			final LinkedHashMap<String,Patch> patches = getPatchesPending();
 			if(patches.isEmpty())
 				return 0;
 
@@ -131,6 +124,19 @@ final class Stage
 
 			return result;
 		}
+	}
+
+	private LinkedHashMap<String,Patch> getPatchesPending()
+	{
+		final LinkedHashMap<String,Patch> patches = new LinkedHashMap<>(this.patches);
+
+		try(TransactionTry tx = startTransaction("query"))
+		{
+			final List<String> idsDone = new Query<>(PatchRun.patch).search();
+			tx.commit();
+			patches.keySet().removeAll(idsDone);
+		}
+		return patches;
 	}
 
 	private final Object runLock = new Object();
