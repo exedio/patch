@@ -83,12 +83,18 @@ public final class Patches
 	 * <li>There is at least one pending patch.</li>
 	 * <li>Method {@link #run(JobContext) run} is currently executed by another thread.</li>
 	 * <li>This method {@link #isDone() isDone} is currently executed by another thread.</li>
+	 * <li>The model containing the {@link Patches#types types} of the patch framework
+	 *     is not yet {@link com.exedio.cope.Model#isConnected() connected}.</li>
 	 * </ul>
 	 * This implies, that the result is not monotonous:
 	 * After this method returned true, subsequent calls may return false.
 	 */
 	public boolean isDone()
 	{
+		// TODO there is no test for being not connected
+		if(!PatchRun.TYPE.getModel().isConnected())
+			return false;
+
 		for(final Stage stage : stages.values())
 		{
 			if(!stage.isDone())
