@@ -3,12 +3,14 @@
     <type>org.netbeans.modules.ant.freeform</type>
     <configuration>
         <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
-            <name>copelive</name>
+            <name>copepatch</name>
         </general-data>
         <general-data xmlns="http://www.netbeans.org/ns/freeform-project/2">
             <!-- Do not use Project Properties customizer when editing this file manually. -->
-            <name>copelive</name>
-            <properties/>
+            <name>copepatch</name>
+            <properties>
+					<property name="libraries">lib/exedio-cope.jar:lib/exedio-cope-src.zip:lib/exedio-cope-util.jar:lib/exedio-cope-util.jar-src.zip:lib/slf4j-api.jar:lib/findbugs-annotations.jar</property>
+				</properties>
             <folders>
                 <source-folder>
                     <label>copelive</label>
@@ -25,12 +27,6 @@
                     <label>testsrc</label>
                     <type>java</type>
                     <location>testsrc</location>
-                    <encoding>UTF-8</encoding>
-                </source-folder>
-                <source-folder>
-                    <label>webtestsrc</label>
-                    <type>java</type>
-                    <location>webtestsrc</location>
                     <encoding>UTF-8</encoding>
                 </source-folder>
             </folders>
@@ -59,10 +55,6 @@
                         <label>testsrc</label>
                         <location>testsrc</location>
                     </source-folder>
-                    <source-folder style="packages">
-                        <label>webtestsrc</label>
-                        <location>webtestsrc</location>
-                    </source-folder>
                     <source-file>
                         <location>build.xml</location>
                     </source-file>
@@ -76,19 +68,16 @@
             </view>
             <subprojects/>
         </general-data>
-        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/1">
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/4">
             <compilation-unit>
                 <package-root>src</package-root>
-                <classpath mode="compile">lib/exedio-cope-util.jar:lib/exedio-cope-util.jar-src.zip</classpath>
-                <source-level>1.5</source-level>
+                <classpath mode="compile">${libraries}</classpath>
+                <source-level>1.8</source-level>
             </compilation-unit>
             <compilation-unit>
                 <package-root>testsrc</package-root>
-                <source-level>1.5</source-level>
-            </compilation-unit>
-            <compilation-unit>
-                <package-root>webtestsrc</package-root>
-                <source-level>1.5</source-level>
+                <classpath mode="compile">src:lib/junit.jar:lib/cpsuite.jar:lib/exedio-cope-junit.jar:${libraries}</classpath>
+                <source-level>1.8</source-level>
             </compilation-unit>
         </java-data>
     </configuration>
