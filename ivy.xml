@@ -23,10 +23,11 @@
 	</publications>
 	<dependencies>
 		<dependency org="com.exedio" name="copeutil" rev="483" conf="runtime->runtime; build->runtime,sources,changelog" />
-		<dependency org="com.exedio" name="cope" rev="8613">
+		<dependency org="com.exedio" name="cope" rev="8919">
 			<conf name="runtime" mapped="runtime" />
 			<conf name="build" mapped="hsqldb,junit,sources,changelog" />
 			<exclude org="com.exedio" module="copeservletutil" />
+			<exclude org="javax.servlet" module="javax.servlet-api"/>
 		</dependency>
 		<!-- build dependencies -->
 		<dependency org="ch.qos.logback" name="logback-classic" rev="1.0.4" conf="build->default" />
