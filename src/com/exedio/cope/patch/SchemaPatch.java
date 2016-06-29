@@ -55,14 +55,14 @@ public abstract class SchemaPatch implements Patch
 	/**
 	 * The statements listed here
 	 * are guaranteed to be executed subsequently
-	 * in the order specified by the list
+	 * in the order specified by the result
 	 * by one single {@link java.sql.Connection connection}.
-	 * So you may use connection states within a revision.
+	 * So you may use connection states within a patch.
 	 * <p>
-	 * For each revision a new {@link java.sql.Connection connection} is created.
+	 * For each patch a new {@link java.sql.Connection connection} is created.
 	 * That connection is not used for any other purpose afterwards
-	 * so you don't have to cleanup connection state at the end of each revision.
-	 * This is for minimizing effects between revisions.
+	 * so you don't have to cleanup connection state at the end of each patch.
+	 * This is for minimizing effects between patches.
 	 * <p>
 	 * This behaviour is consistent to {@link Revision#getBody()}.
 	 * <p>
