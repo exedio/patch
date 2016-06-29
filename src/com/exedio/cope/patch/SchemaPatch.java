@@ -68,6 +68,36 @@ public abstract class SchemaPatch implements Patch
 	 * <p>
 	 * This method is guaranteed to be called once only
 	 * for each instance of SchemaPatch.
+	 * <p>
+	 * <b>IMMUTABILITY:</b><br>
+	 * The result should not change later during further development -
+	 * not even implicitly by other changes in the code.
+	 * <br>
+	 * Consider a schema patch with the following statements:
+	 * <ul>
+	 * <li>{@code "ALTER TABLE Product ADD COLUMN stock integer"}</li>
+	 * <li>{@code "UPDATE Product SET stock = someSophisticatedExpression"}</li>
+	 * </ul>
+	 * So far this is ok.
+	 * Now someone might want to make a better world by generating the first statement
+	 * via some api:
+	 * <ul>
+	 * <li>{@code SQLGenerator.addColumn(Product.TYPE, Product.stock)}</li>
+	 * <li>{@code "UPDATE Product SET stock = someSophisticatedExpression"}</li>
+	 * </ul>
+	 * This looks nice at the first glance, but it introduces a severe problem:
+	 * Two weeks later another developer renames {@code stock} into {@code supply}
+	 * and writes another schema patch.
+	 * <ul>
+	 * <li>{@code "ALTER TABLE Product RENAME COLUMN stock TO supply"}</li>
+	 * </ul>
+	 * However, by renaming stock, the first patch changes to
+	 * <ul>
+	 * <li>{@code SQLGenerator.addColumn(Product.TYPE, Product.supply)}</li>
+	 * <li>{@code "UPDATE Product SET stock = someSophisticatedExpression"}</li>
+	 * </ul>
+	 * The second statement will fail,
+	 * because there is no column {@code stock} but only {@code supply}.
 	 */
 	protected abstract String[] computeBody();
 
