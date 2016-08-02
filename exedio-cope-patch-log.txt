@@ -7,6 +7,9 @@ omit bug fixes.
 The items are sorted inversely, i.e. latest items are on top
 
 --------------------------------------------------------------------------
+* RevisionPatch added.
+	Stores revision logs into patch logs for preserving information
+	after dropping revisions.
 * now compatible with COPE version that has default implementations for interface methods (>=8904..8919)
 * requires JDK 1.8.0_60
 * PatchRun#host and PatchMutex#host added

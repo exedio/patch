@@ -43,7 +43,7 @@ import org.junit.Test;
 public class PatchTest extends CopeModel4Test
 {
 	static final Model MODEL = new Model(
-			(Revisions.Factory)null,
+			(Revisions.Factory)ctx -> new Revisions(0),
 			new TypeSet[]{Patches.types},
 			SampleItem.TYPE,
 			SchemaSampleItem.TYPE
