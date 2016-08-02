@@ -76,6 +76,14 @@ public class RevisionPatchTest extends CopeModel4Test
 			final Iterator<PatchRun> runs = runs().iterator();
 			{
 				final PatchRun p = runs.next();
+				assertEquals("com.exedio.cope.RevisionInfoCreate#0", p.getPatch());
+				assertEquals(Integer.MIN_VALUE, p.getStage());
+				assertEquals(false, p.getIsTransactionally());
+				assertEquals(null, p.getSavepoint());
+				assertEquals(0, p.getElapsed());
+			}
+			{
+				final PatchRun p = runs.next();
 				assertEquals("com.exedio.cope.RevisionInfoRevise#100", p.getPatch());
 				assertEquals(Integer.MIN_VALUE, p.getStage());
 				assertEquals(false, p.getIsTransactionally());

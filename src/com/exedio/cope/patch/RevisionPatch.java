@@ -72,31 +72,33 @@ public final class RevisionPatch implements Patch
 		{
 			ctx.stopIfRequested();
 
-			final RevisionInfo revisionAbstract = RevisionInfo.read(entry.getValue());
-			if(revisionAbstract==null || !(revisionAbstract instanceof RevisionInfoRevise))
+			final RevisionInfo revision = RevisionInfo.read(entry.getValue());
+			if(revision==null)
 				continue;
 
-			final RevisionInfoRevise revision = (RevisionInfoRevise)revisionAbstract;
 			final int number = entry.getKey();
-			final String id = RevisionInfoRevise.class.getName() + '#' + number;
+			final String id = revision.getClass().getName() + '#' + number;
 			final Date date = revision.getDate();
 
 			try(TransactionTry tx = model.startTransactionTry(id))
 			{
 				long patchElapsed = 0;
-				int position = 0;
-				for(final Body body : revision.getBody())
+				if(revision instanceof RevisionInfoRevise)
 				{
-					final long elapsed = body.getElapsed();
-					SchemaPatchRun.TYPE.newItem(
-							SchemaPatchRun.patch.map(id),
-							SchemaPatchRun.position.map(position++),
-							SchemaPatchRun.sql.map(body.getSQL()),
-							SchemaPatchRun.finished.map(date),
-							SchemaPatchRun.rows.map(body.getRows()),
-							SchemaPatchRun.elapsed.map(elapsed));
+					int position = 0;
+					for(final Body body : ((RevisionInfoRevise)revision).getBody())
+					{
+						final long elapsed = body.getElapsed();
+						SchemaPatchRun.TYPE.newItem(
+								SchemaPatchRun.patch.map(id),
+								SchemaPatchRun.position.map(position++),
+								SchemaPatchRun.sql.map(body.getSQL()),
+								SchemaPatchRun.finished.map(date),
+								SchemaPatchRun.rows.map(body.getRows()),
+								SchemaPatchRun.elapsed.map(elapsed));
 
-					patchElapsed += elapsed;
+						patchElapsed += elapsed;
+					}
 				}
 
 				PatchRun.TYPE.newItem(
