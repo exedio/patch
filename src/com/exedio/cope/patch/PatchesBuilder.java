@@ -102,7 +102,7 @@ public final class PatchesBuilder
 		try(InputStream stream = clazz.getResourceAsStream(name))
 		{
 			if(stream==null)
-				throw new IllegalArgumentException("does not exist: " + name);
+				throw new IllegalArgumentException("" + clazz + " does not find " + name);
 
 			try(
 				InputStreamReader reader = new InputStreamReader(stream, UTF_8);

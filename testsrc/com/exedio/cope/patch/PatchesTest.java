@@ -209,7 +209,7 @@ public class PatchesTest
 		}
 		catch(final IllegalArgumentException e)
 		{
-			assertEquals("does not exist: stale-patch-ids.txt", e.getMessage());
+			assertEquals("class java.lang.Object does not find stale-patch-ids.txt", e.getMessage());
 		}
 	}
 
