@@ -212,4 +212,18 @@ public class PatchesTest
 			assertEquals("does not exist: stale-patch-ids.txt", e.getMessage());
 		}
 	}
+
+	@Test public void insertStaleFromResourceNull() throws IOException
+	{
+		final PatchesBuilder builder = new PatchesBuilder();
+		try
+		{
+			builder.insertStaleFromResource(null);
+			fail();
+		}
+		catch(final NullPointerException e)
+		{
+			assertEquals(null, e.getMessage());
+		}
+	}
 }
