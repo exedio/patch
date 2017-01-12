@@ -89,6 +89,7 @@ public class PatchTest extends CopeModel4Test
 		builder.insertAtStart(newSamplePatchNonTx("one"));
 		final Patches patches = builder.build();
 		assertEquals(false, isDone(patches));
+
 		assertEquals(1, run(patches, JobContexts.EMPTY));
 		final SampleItem one;
 		{
@@ -102,6 +103,8 @@ public class PatchTest extends CopeModel4Test
 			runOne = assertIt("one", false, runs.next());
 			assertFalse(runs.hasNext());
 		}
+		assertEquals(true, isDone(patches));
+
 		assertEquals(0, run(patches, JobContexts.EMPTY));
 		assertEquals(asList(one), items());
 		assertEquals(asList(runOne), runs());
@@ -118,6 +121,7 @@ public class PatchTest extends CopeModel4Test
 		builder.insertAtStart(newSamplePatch("one"));
 		final Patches patches = builder.build();
 		assertEquals(false, isDone(patches));
+
 		assertEquals(2, run(patches, ctx));
 		ctx.assertIt(
 				"requestedToStop()" +
@@ -153,6 +157,7 @@ public class PatchTest extends CopeModel4Test
 		builder2.insertAtStart(newSamplePatch("one"));
 		final Patches patches2 = builder2.build();
 		assertEquals(false, isDone(patches2));
+
 		assertEquals(1, run(patches2, ctx));
 		ctx.assertIt(
 				"requestedToStop()" +
@@ -173,6 +178,25 @@ public class PatchTest extends CopeModel4Test
 		}
 		ctx.assertIt("");
 		assertEquals(true, isDone(patches2));
+	}
+
+	@Test public void empty()
+	{
+		assertEquals(EMPTY_LIST, items());
+		assertEquals(EMPTY_LIST, runs());
+		final PatchesBuilder builder = new PatchesBuilder();
+		final Patches patches = builder.build();
+		assertEquals(true, isDone(patches));
+
+		assertEquals(0, run(patches, JobContexts.EMPTY));
+		assertEquals(asList(), items());
+		assertEquals(asList(), runs());
+		assertEquals(true, isDone(patches));
+
+		assertEquals(0, run(patches, JobContexts.EMPTY));
+		assertEquals(asList(), items());
+		assertEquals(asList(), runs());
+		assertEquals(true, isDone(patches));
 	}
 
 	@Test public void preempt()
@@ -224,6 +248,7 @@ public class PatchTest extends CopeModel4Test
 		builder.insertAtStart(newSamplePatch("ok"));
 		final Patches patches = builder.build();
 		assertEquals(false, isDone(patches));
+
 		try
 		{
 			run(patches, JobContexts.EMPTY);
@@ -284,6 +309,7 @@ public class PatchTest extends CopeModel4Test
 		builder.insertAtStart(newSamplePatchNonTx("ok"));
 		final Patches patches = builder.build();
 		assertEquals(false, isDone(patches));
+
 		try
 		{
 			run(patches, JobContexts.EMPTY);
