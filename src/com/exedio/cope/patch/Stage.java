@@ -51,7 +51,7 @@ final class Stage
 		this.patches = new LinkedHashMap<>();
 	}
 
-	public void put(final String id, final Patch patch)
+	void put(final String id, final Patch patch)
 	{
 		patches.put(id, patch);
 	}
