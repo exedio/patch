@@ -1,4 +1,4 @@
-build
-ivy/artifacts
-.eclipse-output
+/build
+/ivy/artifacts
+/.eclipse-output
 /nbproject/private/
