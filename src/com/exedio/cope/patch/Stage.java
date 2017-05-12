@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
 
 final class Stage
 {
+	@SuppressWarnings("LoggerInitializedWithForeignClass")
 	private static final Logger logger = LoggerFactory.getLogger(Patches.class);
 
 	private final int stageNumber;
@@ -106,6 +107,7 @@ final class Stage
 						patch.run(ctx);
 						model.startTransaction(txName + id + " log");
 					}
+					//noinspection ResultOfObjectAllocationIgnored persistent object
 					new PatchRun(id, stageNumber, isTransactionally, host, savepoint, toMillies(nanoTime(), start));
 					model.commit();
 					result++;
@@ -203,6 +205,7 @@ final class Stage
 		for(final Map.Entry<String, Patch> entry : patches.entrySet())
 		{
 			final Patch patch = entry.getValue();
+			//noinspection ResultOfObjectAllocationIgnored persistent object
 			new PatchRun(entry.getKey(), stageNumber, patch.isTransactionally(), host);
 		}
 	}

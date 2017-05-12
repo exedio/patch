@@ -109,6 +109,7 @@ public final class PatchesBuilder
 				BufferedReader bufferedReader = new BufferedReader(reader))
 			{
 				String line;
+				//noinspection NestedAssignment
 				while( (line = bufferedReader.readLine()) != null )
 				{
 					insertAtStart(Patches.stale(line));

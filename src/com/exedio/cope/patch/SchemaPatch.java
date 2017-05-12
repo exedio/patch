@@ -160,6 +160,7 @@ public abstract class SchemaPatch implements Patch
 
 				try(TransactionTry tx = model.startTransactionTry(SchemaPatch.class.getName() + ' ' + id + ' ' + (position+1) + '/' + body.length))
 				{
+					//noinspection ResultOfObjectAllocationIgnored persistent object
 					new SchemaPatchRun(id, position, sql, rows, elapsed);
 					tx.commit();
 				}

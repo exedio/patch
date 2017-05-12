@@ -30,6 +30,7 @@ import org.junit.Before;
 
 public class CopeModel4Test
 {
+	@SuppressWarnings("UnconstructableJUnitTestCase") // OK: is not constructed by junit
 	private static final class Adaptee extends CopeModelTest
 	{
 		Adaptee(final Model model, final CopeModel4Test adapter)
@@ -75,6 +76,7 @@ public class CopeModel4Test
 
 	protected CopeModel4Test(final Model model)
 	{
+		//noinspection ThisEscapedInObjectConstruction
 		this.test = new Adaptee(model, this);
 	}
 
