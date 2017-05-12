@@ -28,7 +28,7 @@ import com.exedio.cope.StringField;
 import com.exedio.cope.misc.Computed;
 
 @CopeName("CopePatchRun")
-@Computed()
+@Computed
 final class PatchRun extends Item
 {
 	static final StringField patch = new StringField().toFinal().unique();

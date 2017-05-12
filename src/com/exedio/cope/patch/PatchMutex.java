@@ -29,7 +29,7 @@ import com.exedio.cope.instrument.Wrapper;
 import com.exedio.cope.misc.Computed;
 
 @CopeName("CopePatchMutex")
-@Computed()
+@Computed
 final class PatchMutex extends Item
 {
 	private static final int THE_ONE = 42;
