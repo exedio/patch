@@ -23,7 +23,7 @@
 	</publications>
 	<dependencies>
 		<dependency org="com.exedio" name="copeutil" rev="483" conf="runtime->runtime; build->runtime,sources,changelog" />
-		<dependency org="com.exedio" name="cope" rev="8919" conf="runtime->runtime; build->hsqldb,junit,sources,changelog">
+		<dependency org="com.exedio" name="cope" rev="9318" conf="runtime->runtime; build->hsqldb,junit,sources,changelog">
 			<exclude org="com.exedio" module="copeservletutil" />
 			<exclude org="javax.servlet" module="javax.servlet-api"/>
 		</dependency>

@@ -22,13 +22,13 @@ import static com.exedio.cope.SchemaInfo.getColumnName;
 import static com.exedio.cope.SchemaInfo.getPrimaryKeyColumnName;
 import static com.exedio.cope.SchemaInfo.getTableName;
 
-import com.exedio.cope.CopeCacheWeight;
+import com.exedio.cope.CopeExternal;
 import com.exedio.cope.Item;
 import com.exedio.cope.SchemaInfo;
 import com.exedio.cope.StringField;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@CopeCacheWeight(0)
+@CopeExternal
 final class SchemaSampleItem extends Item
 {
 	private static final AtomicInteger thisSource = new AtomicInteger();
