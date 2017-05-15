@@ -27,7 +27,6 @@ import static org.junit.Assert.fail;
 import com.exedio.cope.Model;
 import com.exedio.cope.Query;
 import com.exedio.cope.Revisions;
-import com.exedio.cope.TypeSet;
 import com.exedio.cope.UniqueViolationException;
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.AssertionErrorJobContext;
@@ -42,12 +41,11 @@ import org.junit.Test;
 
 public class PatchTest extends CopeModel4Test
 {
-	static final Model MODEL = new Model(
-			(Revisions.Factory)ctx -> new Revisions(0),
-			new TypeSet[]{Patches.types},
-			SampleItem.TYPE,
-			SchemaSampleItem.TYPE
-	);
+	static final Model MODEL = Model.builder().
+			add(ctx -> new Revisions(0)).
+			add(Patches.types).
+			add(SampleItem.TYPE, SchemaSampleItem.TYPE).
+			build();
 
 	public PatchTest()
 	{

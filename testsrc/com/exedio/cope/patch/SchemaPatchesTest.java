@@ -28,7 +28,6 @@ import com.exedio.cope.ActivationParameters;
 import com.exedio.cope.Item;
 import com.exedio.cope.MandatoryViolationException;
 import com.exedio.cope.Model;
-import com.exedio.cope.Revisions;
 import com.exedio.cope.StringField;
 import com.exedio.cope.StringLengthViolationException;
 import com.exedio.cope.Type;
@@ -175,5 +174,5 @@ public class SchemaPatchesTest
 		@SuppressWarnings("unused") private AnItem(final ActivationParameters ap){super(ap);}
 	}
 
-	static final Model MODEL = new Model((Revisions.Factory)null, AnItem.TYPE);
+	static final Model MODEL = new Model(AnItem.TYPE);
 }
