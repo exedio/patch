@@ -24,7 +24,6 @@
 				dir="${basedir}/src"
 				verify="${instrument.verify}"
 				configByTags="support"
-				hintFormat="forTags"
 				verbose="false">
 		</instrument>
 	</target>
@@ -45,7 +44,6 @@
 				dir="${basedir}/testsrc"
 				verify="${instrument.verify}"
 				configByTags="support"
-				hintFormat="forTags"
 				verbose="false">
 			<classpath>
 				<pathelement location="build/classes/src" />
