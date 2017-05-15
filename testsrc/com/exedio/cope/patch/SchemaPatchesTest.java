@@ -33,6 +33,7 @@ import com.exedio.cope.StringField;
 import com.exedio.cope.StringLengthViolationException;
 import com.exedio.cope.Type;
 import com.exedio.cope.TypesBound;
+import com.exedio.cope.instrument.WrapperIgnore;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Test;
 
@@ -165,6 +166,7 @@ public class SchemaPatchesTest
 		};
 	}
 
+	@WrapperIgnore
 	static final class AnItem extends Item
 	{
 		static final StringField patch = new StringField().toFinal().lengthRange(0, 1000);
