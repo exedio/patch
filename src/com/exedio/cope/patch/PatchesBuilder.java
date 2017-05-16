@@ -108,7 +108,7 @@ public final class PatchesBuilder
 				InputStreamReader reader = new InputStreamReader(stream, UTF_8);
 				BufferedReader bufferedReader = new BufferedReader(reader))
 			{
-				String line = null;
+				String line;
 				while( (line = bufferedReader.readLine()) != null )
 				{
 					insertAtStart(Patches.stale(line));
