@@ -19,7 +19,7 @@
 package com.exedio.cope.patch;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.EMPTY_LIST;
+import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -45,7 +45,7 @@ public class StageTest extends CopeModel4Test
 
 	@Test public void test()
 	{
-		assertEquals(EMPTY_LIST, runs());
+		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(patch("oneB", 1));
 		builder.insertAtStart(patch("twoB", 2));

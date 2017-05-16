@@ -19,7 +19,7 @@
 package com.exedio.cope.patch;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.EMPTY_LIST;
+import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
@@ -54,8 +54,8 @@ public class PatchTest extends CopeModel4Test
 
 	@Test public void one()
 	{
-		assertEquals(EMPTY_LIST, items());
-		assertEquals(EMPTY_LIST, runs());
+		assertEquals(emptyList(), items());
+		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("one"));
 		final Patches patches = builder.build();
@@ -81,8 +81,8 @@ public class PatchTest extends CopeModel4Test
 
 	@Test public void oneNonTx()
 	{
-		assertEquals(EMPTY_LIST, items());
-		assertEquals(EMPTY_LIST, runs());
+		assertEquals(emptyList(), items());
+		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatchNonTx("one"));
 		final Patches patches = builder.build();
@@ -111,8 +111,8 @@ public class PatchTest extends CopeModel4Test
 
 	@Test public void two()
 	{
-		assertEquals(EMPTY_LIST, items());
-		assertEquals(EMPTY_LIST, runs());
+		assertEquals(emptyList(), items());
+		assertEquals(emptyList(), runs());
 		final JC ctx = new JC();
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("two"));
@@ -180,8 +180,8 @@ public class PatchTest extends CopeModel4Test
 
 	@Test public void empty()
 	{
-		assertEquals(EMPTY_LIST, items());
-		assertEquals(EMPTY_LIST, runs());
+		assertEquals(emptyList(), items());
+		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patches patches = builder.build();
 		assertEquals(true, isDone(patches));
@@ -199,7 +199,7 @@ public class PatchTest extends CopeModel4Test
 
 	@Test public void preempt()
 	{
-		assertEquals(EMPTY_LIST, runs());
+		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatchNonTx("nonTx"));
 		builder.insertAtStart(newSamplePatch("two"));
@@ -239,8 +239,8 @@ public class PatchTest extends CopeModel4Test
 
 	@Test public void failure()
 	{
-		assertEquals(EMPTY_LIST, items());
-		assertEquals(EMPTY_LIST, runs());
+		assertEquals(emptyList(), items());
+		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("fail"));
 		builder.insertAtStart(newSamplePatch("ok"));
@@ -300,8 +300,8 @@ public class PatchTest extends CopeModel4Test
 
 	@Test public void failureNonTx()
 	{
-		assertEquals(EMPTY_LIST, items());
-		assertEquals(EMPTY_LIST, runs());
+		assertEquals(emptyList(), items());
+		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatchNonTx("fail"));
 		builder.insertAtStart(newSamplePatchNonTx("ok"));
@@ -375,7 +375,7 @@ public class PatchTest extends CopeModel4Test
 	{
 		final String id = "staleID";
 
-		assertEquals(EMPTY_LIST, items());
+		assertEquals(emptyList(), items());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch(id));
 		final Patches patches = builder.build();
@@ -404,7 +404,7 @@ public class PatchTest extends CopeModel4Test
 
 	@Test public void staleError()
 	{
-		assertEquals(EMPTY_LIST, items());
+		assertEquals(emptyList(), items());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(Patches.stale("staleID"));
 		final Patches patches = builder.build();
@@ -421,7 +421,7 @@ public class PatchTest extends CopeModel4Test
 					"therefore cannot be run again.",
 					e.getMessage());
 		}
-		assertEquals(EMPTY_LIST, items());
+		assertEquals(emptyList(), items());
 		assertEquals(false, isDone(patches));
 	}
 
@@ -441,7 +441,7 @@ public class PatchTest extends CopeModel4Test
 
 	@Test public void insertStaleFromResource() throws IOException
 	{
-		assertEquals(EMPTY_LIST, runs());
+		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertStaleFromResource(PatchTest.class);
 		final Patches patches = builder.build();
@@ -457,7 +457,7 @@ public class PatchTest extends CopeModel4Test
 
 	@Test public void withStaleFromResource()
 	{
-		assertEquals(EMPTY_LIST, runs());
+		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder().withStaleFromResource(PatchTest.class);
 		final Patches patches = builder.build();
 		preempt(patches);

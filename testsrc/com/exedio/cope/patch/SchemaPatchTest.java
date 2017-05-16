@@ -18,7 +18,7 @@
 
 package com.exedio.cope.patch;
 
-import static java.util.Collections.EMPTY_LIST;
+import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -43,7 +43,7 @@ public class SchemaPatchTest extends CopeModel4Test
 
 	@Test public void one()
 	{
-		assertEquals(EMPTY_LIST, items());
+		assertEquals(emptyList(), items());
 		final PatchesBuilder builder = new PatchesBuilder();
 		final SchemaPatch patch = patch("one");
 		builder.insertAtStart(patch);
@@ -59,7 +59,7 @@ public class SchemaPatchTest extends CopeModel4Test
 
 	@Test public void more()
 	{
-		assertEquals(EMPTY_LIST, items());
+		assertEquals(emptyList(), items());
 		final PatchesBuilder builder = new PatchesBuilder();
 		final SchemaPatch patch = patch("one", "two", "three");
 		builder.insertAtStart(patch);
