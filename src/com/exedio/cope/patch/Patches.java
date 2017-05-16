@@ -44,8 +44,7 @@ public final class Patches
 		for(final String id : ids)
 		{
 			final Patch patch = patchesDescending.get(id);
-			final int stageNumber = patch.getStage();
-			stages.computeIfAbsent(stageNumber, Stage::new).put(id, patch);
+			stages.computeIfAbsent(patch.getStage(), Stage::new).put(id, patch);
 		}
 	}
 
