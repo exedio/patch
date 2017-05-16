@@ -23,7 +23,6 @@
 		<instrument
 				dir="${basedir}/src"
 				verify="${instrument.verify}"
-				configByTags="support"
 				verbose="false">
 		</instrument>
 	</target>
@@ -43,7 +42,6 @@
 		<instrument
 				dir="${basedir}/testsrc"
 				verify="${instrument.verify}"
-				configByTags="support"
 				verbose="false">
 			<classpath>
 				<pathelement location="build/classes/src" />

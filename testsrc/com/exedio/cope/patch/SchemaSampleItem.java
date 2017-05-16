@@ -21,11 +21,13 @@ package com.exedio.cope.patch;
 import static com.exedio.cope.SchemaInfo.getColumnName;
 import static com.exedio.cope.SchemaInfo.getPrimaryKeyColumnName;
 import static com.exedio.cope.SchemaInfo.getTableName;
+import static com.exedio.cope.instrument.Visibility.PACKAGE;
 
 import com.exedio.cope.CopeExternal;
 import com.exedio.cope.Item;
 import com.exedio.cope.SchemaInfo;
 import com.exedio.cope.StringField;
+import com.exedio.cope.instrument.Wrapper;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @CopeExternal
@@ -33,9 +35,7 @@ final class SchemaSampleItem extends Item
 {
 	private static final AtomicInteger thisSource = new AtomicInteger();
 
-	/**
-	 * @cope.get package
-	 */
+	@Wrapper(wrap="get", visibility=PACKAGE)
 	private static final StringField content = new StringField().toFinal();
 
 	static String create(final String contentValue)

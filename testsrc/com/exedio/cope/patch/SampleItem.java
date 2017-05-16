@@ -18,13 +18,14 @@
 
 package com.exedio.cope.patch;
 
+import static com.exedio.cope.instrument.Visibility.PRIVATE;
+
 import com.exedio.cope.IntegerField;
 import com.exedio.cope.Item;
 import com.exedio.cope.StringField;
+import com.exedio.cope.instrument.WrapperType;
 
-/**
- * @cope.constructor private
- */
+@WrapperType(constructor=PRIVATE)
 public final class SampleItem extends Item
 {
 	static final StringField patch = new StringField().toFinal().lengthRange(0, 1000);

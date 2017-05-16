@@ -18,11 +18,14 @@
 
 package com.exedio.cope.patch;
 
+import static com.exedio.cope.instrument.Visibility.NONE;
+
 import com.exedio.cope.CopeName;
 import com.exedio.cope.DateField;
 import com.exedio.cope.IntegerField;
 import com.exedio.cope.Item;
 import com.exedio.cope.StringField;
+import com.exedio.cope.instrument.Wrapper;
 import com.exedio.cope.misc.Computed;
 
 @CopeName("CopePatchMutex")
@@ -32,9 +35,7 @@ final class PatchMutex extends Item
 	private static final int THE_ONE = 42;
 	private static final Integer THE_ONE_OBJECT = Integer.valueOf(THE_ONE);
 
-	/**
-	 * @cope.get none
-	 */
+	@Wrapper(wrap="get", visibility=NONE)
 	@SuppressWarnings("unused")
 	private static final IntegerField id =
 		new IntegerField().toFinal().unique().
