@@ -47,7 +47,7 @@ final class SchemaSampleItem extends Item
 				" ( " + thisSource.getAndIncrement() + ", '" + contentValue + "' )";
 	}
 
-	private static final String q(final String name)
+	private static String q(final String name)
 	{
 		return SchemaInfo.quoteName(TYPE.getModel(), name);
 	}
