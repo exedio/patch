@@ -157,22 +157,20 @@ public class RevisionPatchTest extends CopeModel4Test
 	}
 
 
-	private static int run(
+	private static void run(
 			final Patches patches,
 			final JobContext ctx)
 	{
 		MODEL.commit();
-		int result;
 		try
 		{
-			result = patches.run(ctx);
+			patches.run(ctx);
 		}
 		finally
 		{
 			MODEL.startTransaction(RevisionPatchTest.class.getName());
 		}
 		assertEquals(0, PatchMutex.TYPE.newQuery().total());
-		return result;
 	}
 
 	private static List<PatchRun> runs()
