@@ -174,7 +174,7 @@ final class Stage
 		{
 			return InetAddress.getLocalHost().getHostName();
 		}
-		catch(final UnknownHostException e)
+		catch(final UnknownHostException ignored)
 		{
 			return "<UnknownHostException>";
 		}
