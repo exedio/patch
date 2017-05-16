@@ -45,13 +45,7 @@ public final class Patches
 		{
 			final Patch patch = patchesDescending.get(id);
 			final int stageNumber = patch.getStage();
-			Stage stage = stages.get(stageNumber);
-			if(stage==null)
-			{
-				stage = new Stage(stageNumber);
-				stages.put(stageNumber, stage);
-			}
-			stage.put(id, patch);
+			stages.computeIfAbsent(stageNumber, Stage::new).put(id, patch);
 		}
 	}
 
