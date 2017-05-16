@@ -108,7 +108,7 @@ public abstract class SchemaPatch implements Patch
 
 	private String[] body = null;
 
-	private final String[] getBodyInternal()
+	private String[] getBodyInternal()
 	{
 		if(body!=null)
 			return body;
@@ -174,7 +174,7 @@ public abstract class SchemaPatch implements Patch
 	}
 
 	@SuppressFBWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE") // OK
-	private static final int execute(
+	private static int execute(
 			final Connection connection,
 			final String sql)
 	{

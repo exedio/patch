@@ -139,7 +139,7 @@ public class RevisionPatchTest extends CopeModel4Test
 	}
 
 	@SuppressFBWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
-	private static final void save(final RevisionInfoRevise revision) throws SQLException
+	private static void save(final RevisionInfoRevise revision) throws SQLException
 	{
 		final Model model = PatchRun.TYPE.getModel();
 		model.commit();
