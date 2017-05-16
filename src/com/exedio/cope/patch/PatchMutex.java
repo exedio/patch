@@ -33,7 +33,7 @@ import com.exedio.cope.misc.Computed;
 final class PatchMutex extends Item
 {
 	private static final int THE_ONE = 42;
-	private static final Integer THE_ONE_OBJECT = Integer.valueOf(THE_ONE);
+	private static final Integer THE_ONE_OBJECT = THE_ONE;
 
 	@Wrapper(wrap="get", visibility=NONE)
 	@SuppressWarnings("unused")
