@@ -139,15 +139,14 @@ public class SchemaPatchTest extends CopeModel4Test
 		return q.search();
 	}
 
-	private static SchemaSampleItem assertIt(
+	private static void assertIt(
 			final String content,
 			final SchemaSampleItem actual)
 	{
 		assertEquals("content", content, actual.getContent());
-		return actual;
 	}
 
-	private static SchemaPatchRun assertIt(
+	private static void assertIt(
 			final int position,
 			final String sql,
 			final SchemaPatchRun actual)
@@ -156,7 +155,6 @@ public class SchemaPatchTest extends CopeModel4Test
 		assertEquals("position", position, actual.getPosition());
 		assertEquals("sql", sql, actual.getSql());
 		assertEquals("rows", 1, actual.getRows());
-		return actual;
 	}
 
 	/**
