@@ -39,7 +39,7 @@
 		</compile>
 	</target>
 
-	<target name="testsrc.instrument" unless="skip.instrument">
+	<target name="testsrc.instrument" depends="src.compile" unless="skip.instrument">
 		<instrument
 				dir="${basedir}/testsrc"
 				verify="${instrument.verify}"
