@@ -80,7 +80,7 @@ public class CopeModel4Test
 
 	/**
 	 * Override this method to provide your own connect properties
-	 * to method {@link #setUp()} for connecting.
+	 * to method {@link #setUpModel()} for connecting.
 	 */
 	protected ConnectProperties getConnectProperties()
 	{
