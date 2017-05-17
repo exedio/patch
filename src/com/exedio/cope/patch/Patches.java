@@ -75,7 +75,7 @@ public final class Patches
 	 * <ul>
 	 * <li>There is at least one pending patch.</li>
 	 * <li>Method {@link #run(JobContext) run} is currently executed by another thread.</li>
-	 * <li>This method {@link #isDone() isDone} is currently executed by another thread.</li>
+	 * <li>This method {@code isDone} is currently executed by another thread.</li>
 	 * <li>The model containing the {@link Patches#types types} of the patch framework
 	 *     is not yet {@link com.exedio.cope.Model#isConnected() connected}.</li>
 	 * </ul>
