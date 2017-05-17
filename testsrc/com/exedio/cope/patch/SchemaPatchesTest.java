@@ -24,15 +24,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.fail;
 
-import com.exedio.cope.ActivationParameters;
-import com.exedio.cope.Item;
 import com.exedio.cope.MandatoryViolationException;
-import com.exedio.cope.Model;
-import com.exedio.cope.StringField;
 import com.exedio.cope.StringLengthViolationException;
-import com.exedio.cope.Type;
-import com.exedio.cope.TypesBound;
-import com.exedio.cope.instrument.WrapperIgnore;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Test;
 
@@ -164,15 +157,4 @@ public class SchemaPatchesTest
 			}
 		};
 	}
-
-	@WrapperIgnore
-	static final class AnItem extends Item
-	{
-		static final StringField patch = new StringField().toFinal().lengthRange(0, 1000);
-		private static final long serialVersionUID = 1l;
-		static final Type<AnItem> TYPE = TypesBound.newType(AnItem.class);
-		@SuppressWarnings("unused") private AnItem(final ActivationParameters ap){super(ap);}
-	}
-
-	static final Model MODEL = new Model(AnItem.TYPE);
 }
