@@ -31,7 +31,7 @@ import org.junit.Test;
 
 public class PatchesTest
 {
-	@Test public void nullPatch()
+	@Test public void patchNull()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		try
@@ -45,7 +45,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void nullID()
+	@Test public void idNull()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patch patch = newSamplePatch(null);
@@ -62,7 +62,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void emptyID()
+	@Test public void idEmpty()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patch patch = newSamplePatch("");
@@ -95,7 +95,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void duplicateID()
+	@Test public void idDuplicate()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("duplicate"));
