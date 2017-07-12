@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import com.exedio.cope.MandatoryViolationException;
+import com.exedio.cope.StringCharSetViolationException;
 import com.exedio.cope.StringLengthViolationException;
 import com.exedio.cope.util.AssertionErrorJobContext;
 import java.io.IOException;
@@ -76,6 +77,24 @@ public class PatchesTest
 			assertEquals(
 					"length violation, '' is too short for CopePatchRun.patch, " +
 					"must be at least 1 characters, but was 0.",
+					e.getMessage());
+		}
+	}
+
+	@Test public void idCharset()
+	{
+		final PatchesBuilder builder = new PatchesBuilder();
+		final Patch patch = newSamplePatch("01234\t6789");
+		try
+		{
+			builder.insertAtStart(patch);
+			fail();
+		}
+		catch(final StringCharSetViolationException e)
+		{
+			assertEquals(
+					"character set violation, '01234\t6789' for CopePatchRun.patch, " +
+					"contains forbidden character '\t' on position 5.",
 					e.getMessage());
 		}
 	}

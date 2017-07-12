@@ -26,12 +26,13 @@ import com.exedio.cope.Item;
 import com.exedio.cope.LongField;
 import com.exedio.cope.StringField;
 import com.exedio.cope.misc.Computed;
+import com.exedio.cope.util.CharSet;
 
 @CopeName("CopePatchRun")
 @Computed
 final class PatchRun extends Item
 {
-	static final StringField patch = new StringField().toFinal().unique();
+	static final StringField patch = new StringField().toFinal().unique().charSet(new CharSet(' ', '~'));
 	static final IntegerField stage = new IntegerField().toFinal();
 	static final BooleanField isTransactionally = new BooleanField().toFinal();
 	static final StringField host      = new StringField().toFinal().optional().lengthMax(10000);
@@ -61,6 +62,7 @@ final class PatchRun extends Item
 	 * @param savepoint the initial value for field {@link #savepoint}.
 	 * @param elapsed the initial value for field {@link #elapsed}.
 	 * @throws com.exedio.cope.MandatoryViolationException if patch is null.
+	 * @throws com.exedio.cope.StringCharSetViolationException if patch violates its character set constraint.
 	 * @throws com.exedio.cope.StringLengthViolationException if patch, host, savepoint violates its length constraint.
 	 * @throws com.exedio.cope.UniqueViolationException if patch is not unique.
 	 */
@@ -74,6 +76,7 @@ final class PatchRun extends Item
 				final long elapsed)
 			throws
 				com.exedio.cope.MandatoryViolationException,
+				com.exedio.cope.StringCharSetViolationException,
 				com.exedio.cope.StringLengthViolationException,
 				com.exedio.cope.UniqueViolationException
 	{
