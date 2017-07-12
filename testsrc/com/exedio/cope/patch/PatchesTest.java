@@ -99,6 +99,36 @@ public class PatchesTest
 		}
 	}
 
+	@Test public void idTrimmedStart()
+	{
+		final PatchesBuilder builder = new PatchesBuilder();
+		final Patch patch = newSamplePatch(" 123456789");
+		try
+		{
+			builder.insertAtStart(patch);
+			fail();
+		}
+		catch(final IllegalArgumentException e)
+		{
+			assertEquals("id > 123456789< is not trimmed", e.getMessage());
+		}
+	}
+
+	@Test public void idTrimmedEnd()
+	{
+		final PatchesBuilder builder = new PatchesBuilder();
+		final Patch patch = newSamplePatch("123456789 ");
+		try
+		{
+			builder.insertAtStart(patch);
+			fail();
+		}
+		catch(final IllegalArgumentException e)
+		{
+			assertEquals("id >123456789 < is not trimmed", e.getMessage());
+		}
+	}
+
 	@Test public void check()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
