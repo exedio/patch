@@ -151,7 +151,7 @@ public class PatchesTest
 		catch(final RuntimeException e)
 		{
 			assertEquals(
-					"stale patch staleID is supposed to been run already, therefore cannot be run again.",
+					"stale patch >staleID< is supposed to been run already, therefore cannot be run again.",
 					e.getMessage());
 		}
 	}

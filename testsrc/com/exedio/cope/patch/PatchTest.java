@@ -417,7 +417,7 @@ public class PatchTest extends CopeModel4Test
 		catch(final RuntimeException e)
 		{
 			assertEquals(
-					"stale patch staleID is supposed to been run already, " +
+					"stale patch >staleID< is supposed to been run already, " +
 					"therefore cannot be run again.",
 					e.getMessage());
 		}

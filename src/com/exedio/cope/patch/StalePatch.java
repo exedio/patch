@@ -57,7 +57,7 @@ final class StalePatch implements Patch
 	public void run(final JobContext ctx)
 	{
 		throw new RuntimeException(
-				"stale patch " + id + " is supposed to been run already, " +
+				"stale patch >" + id + "< is supposed to been run already, " +
 				"therefore cannot be run again.");
 	}
 
