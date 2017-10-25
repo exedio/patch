@@ -122,9 +122,9 @@ public class PatchTest extends CopeModel4Test
 
 		assertEquals(2, run(patches, ctx));
 		ctx.assertIt(
-				"requestedToStop()" +
-				"requestedToStop()" + "setMessage(run s0 one)" + "incrementProgress()" +
-				"requestedToStop()" + "setMessage(run s0 two)" + "incrementProgress()" );
+				"stop()" +
+				"stop()" + "message(run s0 one)" + "progress()" +
+				"stop()" + "message(run s0 two)" + "progress()" );
 		final SampleItem one;
 		final SampleItem two;
 		{
@@ -158,8 +158,8 @@ public class PatchTest extends CopeModel4Test
 
 		assertEquals(1, run(patches2, ctx));
 		ctx.assertIt(
-				"requestedToStop()" +
-				"requestedToStop()" + "setMessage(run s0 three)" + "incrementProgress()");
+				"stop()" +
+				"stop()" + "message(run s0 three)" + "progress()");
 		{
 			final Iterator<SampleItem> items = items().iterator();
 			assertEquals(one, items.next());
@@ -590,7 +590,7 @@ public class PatchTest extends CopeModel4Test
 		@Override
 		public void stopIfRequested()
 		{
-			actual.append("requestedToStop()");
+			actual.append("stop()");
 		}
 
 		@Override
@@ -602,13 +602,13 @@ public class PatchTest extends CopeModel4Test
 		@Override
 		public void setMessage(final String message)
 		{
-			actual.append("setMessage(" + message + ")");
+			actual.append("message(" + message + ")");
 		}
 
 		@Override
 		public void incrementProgress()
 		{
-			actual.append("incrementProgress()");
+			actual.append("progress()");
 		}
 
 		void assertIt(final String expected)
