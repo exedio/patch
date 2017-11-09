@@ -30,7 +30,7 @@ import com.exedio.cope.util.JobContexts;
 import java.util.Iterator;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SchemaPatchTest extends CopeModel4Test
 {

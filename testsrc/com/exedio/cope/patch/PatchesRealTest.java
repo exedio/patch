@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.patch.cope.CopeRule;
 import com.exedio.cope.util.JobContexts;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * This test simulates the usage of patches within the project.
