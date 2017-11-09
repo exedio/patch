@@ -541,11 +541,11 @@ public class PatchTest extends CopeModel4Test
 			final int mutexNumberOfPatches,
 			final SampleItem actual)
 	{
-		assertEquals("id", id, actual.getPatch());
-		assertEquals("transactionName", transactionName, actual.getTransactionName());
-		assertEquals("mutexHost", getHost(), actual.getMutexHost());
-		assertEquals("mutexSavepoint", "FAILURE: not supported", actual.getMutexSavepoint());
-		assertEquals("mutexNumberOfPatches", mutexNumberOfPatches, actual.getMutexNumberOfPatches());
+		assertEquals(id, actual.getPatch(), "id");
+		assertEquals(transactionName, actual.getTransactionName(), "transactionName");
+		assertEquals(getHost(), actual.getMutexHost(), "mutexHost");
+		assertEquals("FAILURE: not supported", actual.getMutexSavepoint(), "mutexSavepoint");
+		assertEquals(mutexNumberOfPatches, actual.getMutexNumberOfPatches(), "mutexNumberOfPatches");
 		return actual;
 	}
 
@@ -561,11 +561,11 @@ public class PatchTest extends CopeModel4Test
 			final boolean isTransactionally,
 			final PatchRun actual)
 	{
-		assertEquals("id", id, actual.getPatch());
-		assertEquals("stage", 0, actual.getStage());
-		assertEquals("isTransactionally", isTransactionally, actual.getIsTransactionally());
-		assertEquals("host", getHost(), actual.getHost());
-		assertEquals("savepoint", "FAILURE: not supported", actual.getSavepoint());
+		assertEquals(id, actual.getPatch(), "id");
+		assertEquals(0, actual.getStage(), "stage");
+		assertEquals(isTransactionally, actual.getIsTransactionally(), "isTransactionally");
+		assertEquals(getHost(), actual.getHost(), "host");
+		assertEquals("FAILURE: not supported", actual.getSavepoint(), "savepoint");
 		return actual;
 	}
 
@@ -574,12 +574,12 @@ public class PatchTest extends CopeModel4Test
 			final boolean isTransactionally,
 			final PatchRun actual)
 	{
-		assertEquals("id", id, actual.getPatch());
-		assertEquals("stage", 0, actual.getStage());
-		assertEquals("isTransactionally", isTransactionally, actual.getIsTransactionally());
-		assertEquals("host", getHost(), actual.getHost());
-		assertEquals("savepoint", "preempted", actual.getSavepoint());
-		assertEquals("elapsed", 0, actual.getElapsed());
+		assertEquals(id, actual.getPatch(), "id");
+		assertEquals(0, actual.getStage(), "stage");
+		assertEquals(isTransactionally, actual.getIsTransactionally(), "isTransactionally");
+		assertEquals(getHost(), actual.getHost(), "host");
+		assertEquals("preempted", actual.getSavepoint(), "savepoint");
+		assertEquals(0, actual.getElapsed(), "elapsed");
 		return actual;
 	}
 

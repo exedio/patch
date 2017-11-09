@@ -150,7 +150,7 @@ public class SchemaPatchesTest
 			@Override
 			protected String[] computeBody()
 			{
-				assertFalse("gotBody", gotBody);
+				assertFalse(gotBody, "gotBody");
 				gotBody = true;
 
 				return body;

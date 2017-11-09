@@ -156,11 +156,11 @@ public class StageTest extends CopeModel4Test
 			final int stage,
 			final PatchRun actual)
 	{
-		assertEquals("id", id, actual.getPatch());
-		assertEquals("stage", stage, actual.getStage());
-		assertEquals("isTransactionally", true, actual.getIsTransactionally());
-		assertEquals("host", getHost(), actual.getHost());
-		assertEquals("savepoint", "FAILURE: not supported", actual.getSavepoint());
+		assertEquals(id, actual.getPatch(), "id");
+		assertEquals(stage, actual.getStage(), "stage");
+		assertEquals(true, actual.getIsTransactionally(), "isTransactionally");
+		assertEquals(getHost(), actual.getHost(), "host");
+		assertEquals("FAILURE: not supported", actual.getSavepoint(), "savepoint");
 		return actual;
 	}
 

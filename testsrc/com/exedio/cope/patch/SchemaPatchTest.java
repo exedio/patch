@@ -117,7 +117,7 @@ public class SchemaPatchTest extends CopeModel4Test
 			@Override
 			protected String[] computeBody()
 			{
-				assertFalse("gotBody", gotBody);
+				assertFalse(gotBody, "gotBody");
 				gotBody = true;
 
 				return body;
@@ -143,7 +143,7 @@ public class SchemaPatchTest extends CopeModel4Test
 			final String content,
 			final SchemaSampleItem actual)
 	{
-		assertEquals("content", content, actual.getContent());
+		assertEquals(content, actual.getContent(), "content");
 	}
 
 	private static void assertIt(
@@ -151,10 +151,10 @@ public class SchemaPatchTest extends CopeModel4Test
 			final String sql,
 			final SchemaPatchRun actual)
 	{
-		assertEquals("id", "patchId", actual.getPatch());
-		assertEquals("position", position, actual.getPosition());
-		assertEquals("sql", sql, actual.getSql());
-		assertEquals("rows", 1, actual.getRows());
+		assertEquals("patchId", actual.getPatch(), "id");
+		assertEquals(position, actual.getPosition(), "position");
+		assertEquals(sql, actual.getSql(), "sql");
+		assertEquals(1, actual.getRows(), "rows");
 	}
 
 	/**
