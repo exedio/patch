@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 
 public class SchemaPatchesTest
 {
-	@Test public void getBody()
+	@Test void getBody()
 	{
 		final SchemaPatch patch = patch("one", "two");
 		assertEquals(asList("one", "two"), asList(patch.getBody()));
@@ -39,7 +39,7 @@ public class SchemaPatchesTest
 		assertNotSame(patch.getBody(), patch.getBody());
 	}
 
-	@Test public void getBodyNull()
+	@Test void getBodyNull()
 	{
 		final SchemaPatch patch = patch((String[])null);
 		try
@@ -53,7 +53,7 @@ public class SchemaPatchesTest
 		}
 	}
 
-	@Test public void nullBody()
+	@Test void nullBody()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final SchemaPatch patch = patch((String[])null);
@@ -68,7 +68,7 @@ public class SchemaPatchesTest
 		}
 	}
 
-	@Test public void emptyBody()
+	@Test void emptyBody()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final SchemaPatch patch = patch();
@@ -84,7 +84,7 @@ public class SchemaPatchesTest
 	}
 
 	@SuppressFBWarnings("BC_UNCONFIRMED_CAST_OF_RETURN_VALUE")
-	@Test public void nullBodyElement()
+	@Test void nullBodyElement()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final SchemaPatch patch = patch("one", null);
@@ -106,7 +106,7 @@ public class SchemaPatchesTest
 	}
 
 	@SuppressFBWarnings("BC_UNCONFIRMED_CAST_OF_RETURN_VALUE")
-	@Test public void emptyBodyElement()
+	@Test void emptyBodyElement()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final SchemaPatch patch = patch("one", "");

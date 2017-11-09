@@ -43,7 +43,7 @@ public class StageTest extends CopeModel4Test
 		super(MODEL);
 	}
 
-	@Test public void test()
+	@Test void test()
 	{
 		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();

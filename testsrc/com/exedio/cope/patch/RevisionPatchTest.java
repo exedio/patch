@@ -50,7 +50,7 @@ public class RevisionPatchTest extends CopeModel4Test
 		super(MODEL);
 	}
 
-	@Test public void test() throws SQLException
+	@Test void test() throws SQLException
 	{
 		assertEquals(emptyList(), runs());
 

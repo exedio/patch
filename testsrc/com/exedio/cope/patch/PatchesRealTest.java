@@ -56,7 +56,7 @@ public class PatchesRealTest extends CopeModel4Test
 	}
 
 	@CopeRule.NoTransaction
-	@Test public void run()
+	@Test void run()
 	{
 		assertEquals(false, patches.isDone());
 		assertEquals(2, patches.run(JobContexts.EMPTY));

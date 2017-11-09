@@ -41,7 +41,7 @@ public class SchemaPatchTest extends CopeModel4Test
 		super(MODEL);
 	}
 
-	@Test public void one()
+	@Test void one()
 	{
 		assertEquals(emptyList(), items());
 		final PatchesBuilder builder = new PatchesBuilder();
@@ -57,7 +57,7 @@ public class SchemaPatchTest extends CopeModel4Test
 		assertFalse(runs.hasNext());
 	}
 
-	@Test public void more()
+	@Test void more()
 	{
 		assertEquals(emptyList(), items());
 		final PatchesBuilder builder = new PatchesBuilder();

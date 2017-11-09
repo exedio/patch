@@ -52,7 +52,7 @@ public class PatchTest extends CopeModel4Test
 		super(MODEL);
 	}
 
-	@Test public void one()
+	@Test void one()
 	{
 		assertEquals(emptyList(), items());
 		assertEquals(emptyList(), runs());
@@ -79,7 +79,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(true, isDone(patches));
 	}
 
-	@Test public void oneNonTx()
+	@Test void oneNonTx()
 	{
 		assertEquals(emptyList(), items());
 		assertEquals(emptyList(), runs());
@@ -109,7 +109,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(true, isDone(patches));
 	}
 
-	@Test public void two()
+	@Test void two()
 	{
 		assertEquals(emptyList(), items());
 		assertEquals(emptyList(), runs());
@@ -178,7 +178,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(true, isDone(patches2));
 	}
 
-	@Test public void empty()
+	@Test void empty()
 	{
 		assertEquals(emptyList(), items());
 		assertEquals(emptyList(), runs());
@@ -197,7 +197,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(true, isDone(patches));
 	}
 
-	@Test public void preempt()
+	@Test void preempt()
 	{
 		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
@@ -237,7 +237,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(true, isDone(patches));
 	}
 
-	@Test public void failure()
+	@Test void failure()
 	{
 		assertEquals(emptyList(), items());
 		assertEquals(emptyList(), runs());
@@ -298,7 +298,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(false, isDone(patches));
 	}
 
-	@Test public void failureNonTx()
+	@Test void failureNonTx()
 	{
 		assertEquals(emptyList(), items());
 		assertEquals(emptyList(), runs());
@@ -371,7 +371,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(false, isDone(patches));
 	}
 
-	@Test public void stale()
+	@Test void stale()
 	{
 		final String id = "staleID";
 
@@ -402,7 +402,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(true, isDone(patches2));
 	}
 
-	@Test public void staleError()
+	@Test void staleError()
 	{
 		assertEquals(emptyList(), items());
 		final PatchesBuilder builder = new PatchesBuilder();
@@ -425,7 +425,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(false, isDone(patches));
 	}
 
-	@Test public void nullCtx()
+	@Test void nullCtx()
 	{
 		final Patches patches = new PatchesBuilder().build();
 		try
@@ -439,7 +439,7 @@ public class PatchTest extends CopeModel4Test
 		}
 	}
 
-	@Test public void insertStaleFromResource() throws IOException
+	@Test void insertStaleFromResource() throws IOException
 	{
 		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
@@ -455,7 +455,7 @@ public class PatchTest extends CopeModel4Test
 		}
 	}
 
-	@Test public void withStaleFromResource()
+	@Test void withStaleFromResource()
 	{
 		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder().withStaleFromResource(PatchTest.class);

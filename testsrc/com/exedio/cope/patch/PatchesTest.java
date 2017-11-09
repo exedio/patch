@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 
 public class PatchesTest
 {
-	@Test public void patchNull()
+	@Test void patchNull()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		try
@@ -46,7 +46,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void idNull()
+	@Test void idNull()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patch patch = newSamplePatch(null);
@@ -63,7 +63,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void idEmpty()
+	@Test void idEmpty()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patch patch = newSamplePatch("");
@@ -81,7 +81,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void idCharset()
+	@Test void idCharset()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patch patch = newSamplePatch("01234\t6789");
@@ -99,7 +99,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void idTrimmedStart()
+	@Test void idTrimmedStart()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patch patch = newSamplePatch(" 123456789");
@@ -114,7 +114,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void idTrimmedEnd()
+	@Test void idTrimmedEnd()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patch patch = newSamplePatch("123456789 ");
@@ -129,7 +129,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void check()
+	@Test void check()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patch patch = newSamplePatchCheck("id");
@@ -144,7 +144,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void idDuplicate()
+	@Test void idDuplicate()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("duplicate"));
@@ -163,7 +163,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void exhausted()
+	@Test void exhausted()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.build();
@@ -187,7 +187,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void stale()
+	@Test void stale()
 	{
 		final Patch patch = Patches.stale("staleID");
 		assertEquals("staleID", patch.getID());
@@ -205,7 +205,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void staleError()
+	@Test void staleError()
 	{
 		try
 		{
@@ -220,7 +220,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void getIDs()
+	@Test void getIDs()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("other1"));
@@ -248,7 +248,7 @@ public class PatchesTest
 		return new SamplePatch(null, id, "check exception message", true);
 	}
 
-	@Test public void insertStaleFromResourceNotFound() throws IOException
+	@Test void insertStaleFromResourceNotFound() throws IOException
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		try
@@ -262,7 +262,7 @@ public class PatchesTest
 		}
 	}
 
-	@Test public void insertStaleFromResourceNull() throws IOException
+	@Test void insertStaleFromResourceNull() throws IOException
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		try
