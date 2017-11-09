@@ -42,8 +42,8 @@ public class SchemaPatchesTest
 	@Test void getBodyNull()
 	{
 		final SchemaPatch patch = patch((String[])null);
-		assertFails(() ->
-			patch.getBody(),
+		assertFails(
+			patch::getBody,
 			NullPointerException.class, "body");
 	}
 

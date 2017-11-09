@@ -122,8 +122,8 @@ public class PatchesTest
 			builder.insertAtStart(newSamplePatch("id")),
 			IllegalStateException.class,
 			"builder is exhausted");
-		assertFails(() ->
-			builder.build(),
+		assertFails(
+			builder::build,
 			IllegalStateException.class,
 			"builder is exhausted");
 	}
