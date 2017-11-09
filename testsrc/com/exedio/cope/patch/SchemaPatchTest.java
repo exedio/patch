@@ -161,8 +161,7 @@ public class SchemaPatchTest extends CopeModel4Test
 	 * This method is needed because creation of SchemaSampleItem
 	 * bypasses (therefore corrupt) cope item cache.
 	 */
-	@BeforeEach
-	public void deleteItems()
+	@BeforeEach void deleteItems()
 	{
 		for(final SchemaSampleItem item : items())
 			item.deleteCopeItem();
