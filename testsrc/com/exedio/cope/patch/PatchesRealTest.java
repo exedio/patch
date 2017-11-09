@@ -22,6 +22,7 @@ import static com.exedio.cope.patch.PatchTest.MODEL;
 import static org.junit.Assert.assertEquals;
 
 import com.exedio.cope.patch.cope.CopeModel4Test;
+import com.exedio.cope.patch.cope.CopeRule;
 import com.exedio.cope.util.JobContexts;
 import org.junit.Test;
 
@@ -54,12 +55,7 @@ public class PatchesRealTest extends CopeModel4Test
 		super(MODEL);
 	}
 
-	@Override
-	protected boolean doesManageTransactions()
-	{
-		return false;
-	}
-
+	@CopeRule.NoTransaction
 	@Test public void run()
 	{
 		assertEquals(false, patches.isDone());

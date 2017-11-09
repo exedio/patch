@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 
-<project name="copepatch" default="build" basedir=".">
+<project name="copepatch" default="build" basedir="."
+			xmlns:if="ant:if"
+			xmlns:unless="ant:unless">
 
 	<!--suppress AntMissingPropertiesFileInspection -->
 	<property file="local.properties" />
@@ -46,9 +48,8 @@
 				verbose="false">
 			<classpath>
 				<pathelement location="build/classes/src" />
-				<pathelement location="lib/exedio-cope-junit.jar" />
-				<pathelement location="lib/junit.jar" />
-				<pathelement location="lib/cpsuite.jar" />
+				<pathelement location="lib/junit-jupiter-api.jar" />
+				<pathelement location="lib/apiguardian-api.jar" />
 			</classpath>
 		</instrument>
 	</target>
@@ -58,40 +59,50 @@
 			<classpath>
 				<pathelement location="build/classes/src" />
 				<pathelement location="lib/exedio-cope.jar" />
-				<pathelement location="lib/exedio-cope-junit.jar" />
 				<pathelement location="lib/exedio-cope-instrument-annotations.jar" />
-				<pathelement location="lib/junit.jar" />
-				<pathelement location="lib/cpsuite.jar" />
+				<pathelement location="lib/junit-jupiter-api.jar" />
+				<pathelement location="lib/apiguardian-api.jar" />
 				<pathelement location="lib/findbugs-annotations.jar" />
 			</classpath>
 		</compile>
 	</target>
 
-	<target name="test" depends="testsrc.compile">
+	<target name="checkAntIfUnless">
+		<property name="antSupportsGenericIfUnless" value="true"/>
+		<fail message="ant 1.9.1 required: https://ant.apache.org/manual/ifunless.html" unless:set="antSupportsGenericIfUnless"/>
+	</target>
+
+	<target name="test" depends="testsrc.compile, checkAntIfUnless">
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testtmpdir" />
-		<junit fork="yes" dir="${basedir}"
-				 haltonerror="true" haltonfailure="true"
-				 showoutput="true" printsummary="true">
-			<formatter type="brief" usefile="false" />
-			<formatter type="xml" />
+		<java taskname="junit" fork="yes" dir="${basedir}"
+				failonerror="true"
+				classname="org.junit.platform.console.ConsoleLauncher">
+			<arg line="--details verbose" />
+			<arg line="--disable-ansi-colors" if:set="disable-ansi-colors" />
 			<classpath>
 				<pathelement location="build/classes/src" />
 				<pathelement location="build/classes/testsrc" />
 				<pathelement location="lib/hsqldb.jar" />
-				<pathelement location="lib/junit.jar" />
-				<pathelement location="lib/cpsuite.jar" />
+				<pathelement location="lib/opentest4j.jar" />
+				<pathelement location="lib/junit-jupiter-api.jar" />
+				<pathelement location="lib/junit-jupiter-engine.jar" />
+				<pathelement location="lib/junit-platform-commons.jar" />
+				<pathelement location="lib/junit-platform-engine.jar" />
+				<pathelement location="lib/junit-platform-launcher.jar" />
+				<pathelement location="lib/junit-platform-console.jar" />
 				<pathelement location="lib/exedio-cope.jar" />
-				<pathelement location="lib/exedio-cope-junit.jar" />
 				<pathelement location="lib/slf4j-api.jar" />
 				<pathelement location="lib/logback-classic.jar" />
 				<pathelement location="lib/logback-core.jar" />
 			</classpath>
-			<test name="${test}" todir="build/testresults" outfile="copepatch" />
+			<arg line="--scan-class-path build/classes/testsrc" unless:set="test" />
+			<arg line="--select-class ${test}" if:set="test" />
+			<arg line="--reports-dir build/testresults" />
 			<sysproperty key="java.io.tmpdir" value="${basedir}/build/testtmpdir" />
 			<sysproperty key="java.awt.headless" value="true" />
 			<assertions><enable/></assertions>
-		</junit>
+		</java>
 	</target>
 
 	<target name="jar" depends="src.compile">
@@ -165,8 +176,6 @@
 			<class location="${basedir}/build/classes/testsrc" />
 			<auxclasspath>
 				<pathelement location="${basedir}/lib/exedio-cope.jar" />
-				<pathelement location="${basedir}/lib/exedio-cope-junit.jar" />
-				<pathelement location="${basedir}/lib/junit.jar" />
 				<pathelement location="${basedir}/lib/slf4j-api.jar" />
 			</auxclasspath>
 		</findbugs>

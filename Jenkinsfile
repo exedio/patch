@@ -43,6 +43,7 @@ timestamps
 						' "-Dbuild.revision=${BUILD_NUMBER}"' +
 						' "-Dbuild.tag=git ${BRANCH_NAME} ' + scmResult.GIT_COMMIT + ' ' + scmResult.GIT_TREE + ' jenkins ${BUILD_NUMBER} ${BUILD_TIMESTAMP}"' +
 						' -Dinstrument.verify=true' +
+						' -Ddisable-ansi-colors=true' +
 						' -Dfindbugs.output=xml'
 
 				warnings(

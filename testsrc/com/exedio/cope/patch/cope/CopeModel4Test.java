@@ -22,87 +22,30 @@
 
 package com.exedio.cope.patch.cope;
 
+import static java.util.Objects.requireNonNull;
+
 import com.exedio.cope.ConnectProperties;
 import com.exedio.cope.Model;
-import com.exedio.cope.junit.CopeModelTest;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-public class CopeModel4Test
+@ExtendWith(CopeRule.class)
+public class CopeModel4Test implements CopeRule.Config
 {
-	@SuppressWarnings("UnconstructableJUnitTestCase") // OK: is not constructed by junit
-	private static final class Adaptee extends CopeModelTest
-	{
-		Adaptee(final Model model, final CopeModel4Test adapter)
-		{
-			super(model);
-			this.adapter = adapter;
-		}
-
-		private final CopeModel4Test adapter;
-
-		/**
-		 * Just to make them visible to the adapter.
-		 */
-		@Override
-		protected void setUp() throws Exception
-		{
-			super.setUp();
-		}
-
-		/**
-		 * Just to make them visible to the adapter.
-		 */
-		@Override
-		protected void tearDown() throws Exception
-		{
-			super.tearDown();
-		}
-
-		@Override
-		public ConnectProperties getConnectProperties()
-		{
-			return adapter.getConnectProperties();
-		}
-
-		@Override
-		protected boolean doesManageTransactions()
-		{
-			return adapter.doesManageTransactions();
-		}
-	}
-
-	private final Adaptee test;
+	private final Model model;
 
 	protected CopeModel4Test(final Model model)
 	{
-		//noinspection ThisEscapedInObjectConstruction
-		this.test = new Adaptee(model, this);
+		this.model = requireNonNull(model, "model");
 	}
 
-	/**
-	 * Override this method to provide your own connect properties
-	 * to method {@link #setUpModel()} for connecting.
-	 */
-	protected ConnectProperties getConnectProperties()
+	@Override
+	public final Model getModel()
+	{
+		return model;
+	}
+	@Override
+	public final ConnectProperties getConnectProperties()
 	{
 		return new ConnectProperties(ConnectProperties.getDefaultPropertyFile());
-	}
-
-	protected boolean doesManageTransactions()
-	{
-		return true;
-	}
-
-	@Before
-	public final void setUpModel() throws Exception
-	{
-		test.setUp();
-	}
-
-	@After
-	public final void tearDownModel() throws Exception
-	{
-		test.tearDown();
 	}
 }

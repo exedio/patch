@@ -23,16 +23,16 @@
 	</publications>
 	<dependencies>
 		<dependency org="com.exedio" name="copeutil" rev="483" conf="runtime->runtime; build->runtime,sources,changelog" />
-		<dependency org="com.exedio" name="cope" rev="9318" conf="runtime->runtime; build->hsqldb,junit,sources,changelog">
+		<dependency org="com.exedio" name="cope" rev="9318" conf="runtime->runtime; build->hsqldb,sources,changelog">
 			<exclude org="com.exedio" module="copeservletutil" />
 			<exclude org="javax.servlet" module="javax.servlet-api"/>
 		</dependency>
 		<!-- build dependencies -->
 		<dependency org="ch.qos.logback" name="logback-classic" rev="1.0.4" conf="build->default" />
-		<dependency org="junit" name="junit" rev="4.9" conf="build->default">
-			<exclude org="org.hamcrest" module="hamcrest-core" />
-		</dependency>
+		<dependency org="org.junit.jupiter"  name="junit-jupiter-api"      rev="5.0.1" conf="build->default,sources" />
+		<dependency org="org.junit.jupiter"  name="junit-jupiter-engine"   rev="5.0.1" conf="build->default" />
+		<dependency org="org.junit.platform" name="junit-platform-console" rev="1.0.1" conf="build->default" />
+		<dependency org="org.apiguardian"    name="apiguardian-api"        rev="1.0.0" conf="build->default" />
 		<dependency org="findbugs-x" name="findbugs" rev="3.0.0" conf="build->default" />
-		<dependency org="cpsuite" name="cpsuite" rev="1.2.7.1" conf="build->default" />
 	</dependencies>
 </ivy-module>
