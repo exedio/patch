@@ -18,11 +18,11 @@
 
 package com.exedio.cope.patch;
 
+import static com.exedio.cope.junit.Assert.assertFails;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.Assert.fail;
 
 import com.exedio.cope.Model;
 import com.exedio.cope.Query;
@@ -218,15 +218,10 @@ public class PatchTest extends CopeModel4Test
 		}
 		assertEquals(true, isDone(patches));
 
-		try
-		{
-			preempt(patches);
-			fail();
-		}
-		catch(final UniqueViolationException e)
-		{
-			assertEquals("unique violation for CopePatchRun.patchImplicitUnique", e.getMessage());
-		}
+		assertFails(() ->
+			preempt(patches),
+			UniqueViolationException.class,
+			"unique violation for CopePatchRun.patchImplicitUnique");
 		{
 			final Iterator<PatchRun> runs = runs().iterator();
 			assertEquals(runOne  , runs.next());
@@ -247,15 +242,10 @@ public class PatchTest extends CopeModel4Test
 		final Patches patches = builder.build();
 		assertEquals(false, isDone(patches));
 
-		try
-		{
-			run(patches, JobContexts.EMPTY);
-			fail();
-		}
-		catch(final RuntimeException e)
-		{
-			assertEquals("failed", e.getMessage());
-		}
+		assertFails(() ->
+			run(patches, JobContexts.EMPTY),
+			RuntimeException.class,
+			"failed");
 		final SampleItem ok;
 		{
 			final Iterator<SampleItem> items = items().iterator();
@@ -270,29 +260,19 @@ public class PatchTest extends CopeModel4Test
 		}
 		assertEquals(false, isDone(patches));
 
-		try
-		{
-			run(patches, JobContexts.EMPTY);
-			fail();
-		}
-		catch(final UniqueViolationException e)
-		{
-			assertEquals("unique violation for CopePatchMutex.idImplicitUnique", e.getMessage());
-		}
+		assertFails(() ->
+			run(patches, JobContexts.EMPTY),
+			UniqueViolationException.class,
+			"unique violation for CopePatchMutex.idImplicitUnique");
 		assertEquals(asList(ok), items());
 		assertEquals(asList(runOk), runs());
 		assertEquals(false, isDone(patches));
 
 		PatchMutex.release();
-		try
-		{
-			run(patches, JobContexts.EMPTY);
-			fail();
-		}
-		catch(final RuntimeException e)
-		{
-			assertEquals("failed", e.getMessage());
-		}
+		assertFails(() ->
+			run(patches, JobContexts.EMPTY),
+			RuntimeException.class,
+			"failed");
 		assertEquals(asList(ok), items());
 		assertEquals(asList(runOk), runs());
 		assertEquals(false, isDone(patches));
@@ -308,15 +288,10 @@ public class PatchTest extends CopeModel4Test
 		final Patches patches = builder.build();
 		assertEquals(false, isDone(patches));
 
-		try
-		{
-			run(patches, JobContexts.EMPTY);
-			fail();
-		}
-		catch(final RuntimeException e)
-		{
-			assertEquals("failed", e.getMessage());
-		}
+		assertFails(() ->
+			run(patches, JobContexts.EMPTY),
+			RuntimeException.class,
+			"failed");
 		final SampleItem ok;
 		final SampleItem fail1;
 		{
@@ -333,29 +308,19 @@ public class PatchTest extends CopeModel4Test
 		}
 		assertEquals(false, isDone(patches));
 
-		try
-		{
-			run(patches, JobContexts.EMPTY);
-			fail();
-		}
-		catch(final UniqueViolationException e)
-		{
-			assertEquals("unique violation for CopePatchMutex.idImplicitUnique", e.getMessage());
-		}
+		assertFails(() ->
+			run(patches, JobContexts.EMPTY),
+			UniqueViolationException.class,
+			"unique violation for CopePatchMutex.idImplicitUnique");
 		assertEquals(asList(ok, fail1), items());
 		assertEquals(asList(runOk), runs());
 		assertEquals(false, isDone(patches));
 
 		PatchMutex.release();
-		try
-		{
-			run(patches, JobContexts.EMPTY);
-			fail();
-		}
-		catch(final RuntimeException e)
-		{
-			assertEquals("failed", e.getMessage());
-		}
+		assertFails(() ->
+			run(patches, JobContexts.EMPTY),
+			RuntimeException.class,
+			"failed");
 		{
 			final Iterator<SampleItem> items = items().iterator();
 			assertEquals(ok, items.next());
@@ -409,18 +374,11 @@ public class PatchTest extends CopeModel4Test
 		builder.insertAtStart(Patches.stale("staleID"));
 		final Patches patches = builder.build();
 		assertEquals(false, isDone(patches));
-		try
-		{
-			run(patches, JobContexts.EMPTY);
-			fail();
-		}
-		catch(final RuntimeException e)
-		{
-			assertEquals(
-					"stale patch >staleID< is supposed to been run already, " +
-					"therefore cannot be run again.",
-					e.getMessage());
-		}
+		assertFails(() ->
+			run(patches, JobContexts.EMPTY),
+			RuntimeException.class,
+			"stale patch >staleID< is supposed to been run already, " +
+			"therefore cannot be run again.");
 		assertEquals(emptyList(), items());
 		assertEquals(false, isDone(patches));
 	}
@@ -428,15 +386,9 @@ public class PatchTest extends CopeModel4Test
 	@Test void nullCtx()
 	{
 		final Patches patches = new PatchesBuilder().build();
-		try
-		{
-			run(patches, null);
-			fail();
-		}
-		catch(final NullPointerException e)
-		{
-			assertEquals("ctx", e.getMessage());
-		}
+		assertFails(() ->
+			run(patches, null),
+			NullPointerException.class, "ctx");
 	}
 
 	@Test void insertStaleFromResource() throws IOException

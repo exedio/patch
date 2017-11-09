@@ -19,7 +19,7 @@
 package com.exedio.cope.junit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Collection;
 import java.util.Collections;

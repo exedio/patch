@@ -18,10 +18,10 @@
 
 package com.exedio.cope.patch;
 
+import static com.exedio.cope.junit.Assert.assertFails;
 import static com.exedio.cope.junit.CopeAssert.assertEqualsUnmodifiable;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.Assert.fail;
 
 import com.exedio.cope.MandatoryViolationException;
 import com.exedio.cope.StringCharSetViolationException;
@@ -35,113 +35,71 @@ public class PatchesTest
 	@Test void patchNull()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
-		try
-		{
-			builder.insertAtStart(null);
-			fail();
-		}
-		catch(final NullPointerException e)
-		{
-			assertEquals("patch", e.getMessage());
-		}
+		assertFails(() ->
+			builder.insertAtStart(null),
+			NullPointerException.class, "patch");
 	}
 
 	@Test void idNull()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patch patch = newSamplePatch(null);
-		try
-		{
-			builder.insertAtStart(patch);
-			fail();
-		}
-		catch(final MandatoryViolationException e)
-		{
-			assertEquals(
-					"mandatory violation for CopePatchRun.patch",
-					e.getMessage());
-		}
+		assertFails(() ->
+			builder.insertAtStart(patch),
+			MandatoryViolationException.class,
+			"mandatory violation for CopePatchRun.patch");
 	}
 
 	@Test void idEmpty()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patch patch = newSamplePatch("");
-		try
-		{
-			builder.insertAtStart(patch);
-			fail();
-		}
-		catch(final StringLengthViolationException e)
-		{
-			assertEquals(
-					"length violation, '' is too short for CopePatchRun.patch, " +
-					"must be at least 1 characters, but was 0.",
-					e.getMessage());
-		}
+		assertFails(() ->
+			builder.insertAtStart(patch),
+			StringLengthViolationException.class,
+			"length violation, '' is too short for CopePatchRun.patch, " +
+			"must be at least 1 characters, but was 0.");
 	}
 
 	@Test void idCharset()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patch patch = newSamplePatch("01234\t6789");
-		try
-		{
-			builder.insertAtStart(patch);
-			fail();
-		}
-		catch(final StringCharSetViolationException e)
-		{
-			assertEquals(
-					"character set violation, '01234\t6789' for CopePatchRun.patch, " +
-					"contains forbidden character '\t' on position 5.",
-					e.getMessage());
-		}
+		assertFails(() ->
+			builder.insertAtStart(patch),
+			StringCharSetViolationException.class,
+			"character set violation, '01234\t6789' for CopePatchRun.patch, " +
+			"contains forbidden character '\t' on position 5.");
 	}
 
 	@Test void idTrimmedStart()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patch patch = newSamplePatch(" 123456789");
-		try
-		{
-			builder.insertAtStart(patch);
-			fail();
-		}
-		catch(final IllegalArgumentException e)
-		{
-			assertEquals("id > 123456789< is not trimmed", e.getMessage());
-		}
+		assertFails(() ->
+			builder.insertAtStart(patch),
+			IllegalArgumentException .class,
+			"id > 123456789< is not trimmed");
 	}
 
 	@Test void idTrimmedEnd()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patch patch = newSamplePatch("123456789 ");
-		try
-		{
-			builder.insertAtStart(patch);
-			fail();
-		}
-		catch(final IllegalArgumentException e)
-		{
-			assertEquals("id >123456789 < is not trimmed", e.getMessage());
-		}
+		assertFails(() ->
+			builder.insertAtStart(patch),
+			IllegalArgumentException.class,
+			"id >123456789 < is not trimmed");
 	}
 
 	@Test void check()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patch patch = newSamplePatchCheck("id");
-		try
-		{
-			builder.insertAtStart(patch);
-			fail();
-		}
-		catch(final RuntimeException e)
-		{
-			assertEquals("check exception message", e.getMessage());
-		}
+		assertFails(() ->
+			builder.insertAtStart(patch),
+			RuntimeException.class,
+			"check exception message");
 	}
 
 	@Test void idDuplicate()
@@ -149,42 +107,25 @@ public class PatchesTest
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("duplicate"));
 		final Patch patch = newSamplePatch("duplicate");
-		try
-		{
-			builder.insertAtStart(patch);
-			fail();
-		}
-		catch(final IllegalArgumentException e)
-		{
-			assertEquals(
-					"duplicate id >duplicate< " +
-					"with class com.exedio.cope.patch.SamplePatch",
-					e.getMessage());
-		}
+		assertFails(() ->
+			builder.insertAtStart(patch),
+			IllegalArgumentException.class,
+			"duplicate id >duplicate< " +
+			"with class com.exedio.cope.patch.SamplePatch");
 	}
 
 	@Test void exhausted()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.build();
-		try
-		{
-			builder.insertAtStart(newSamplePatch("id"));
-			fail();
-		}
-		catch(final IllegalStateException e)
-		{
-			assertEquals("builder is exhausted", e.getMessage());
-		}
-		try
-		{
-			builder.build();
-			fail();
-		}
-		catch(final IllegalStateException e)
-		{
-			assertEquals("builder is exhausted", e.getMessage());
-		}
+		assertFails(() ->
+			builder.insertAtStart(newSamplePatch("id")),
+			IllegalStateException.class,
+			"builder is exhausted");
+		assertFails(() ->
+			builder.build(),
+			IllegalStateException.class,
+			"builder is exhausted");
 	}
 
 	@Test void stale()
@@ -192,32 +133,18 @@ public class PatchesTest
 		final Patch patch = Patches.stale("staleID");
 		assertEquals("staleID", patch.getID());
 		assertEquals(false, patch.isTransactionally());
-		try
-		{
-			patch.run(new AssertionErrorJobContext());
-			fail();
-		}
-		catch(final RuntimeException e)
-		{
-			assertEquals(
-					"stale patch >staleID< is supposed to been run already, therefore cannot be run again.",
-					e.getMessage());
-		}
+		assertFails(() ->
+			patch.run(new AssertionErrorJobContext()),
+			RuntimeException.class,
+			"stale patch >staleID< is supposed to been run already, therefore cannot be run again.");
 	}
 
 	@Test void staleError()
 	{
-		try
-		{
-			Patches.stale("");
-			fail();
-		}
-		catch(final StringLengthViolationException e)
-		{
-			assertEquals(
-					"length violation, '' is too short for CopePatchRun.patch, must be at least 1 characters, but was 0.",
-					e.getMessage());
-		}
+		assertFails(() ->
+			Patches.stale(""),
+			StringLengthViolationException.class,
+			"length violation, '' is too short for CopePatchRun.patch, must be at least 1 characters, but was 0.");
 	}
 
 	@Test void getIDs()
@@ -251,28 +178,17 @@ public class PatchesTest
 	@Test void insertStaleFromResourceNotFound() throws IOException
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
-		try
-		{
-			builder.insertStaleFromResource(Object.class);
-			fail();
-		}
-		catch(final IllegalArgumentException e)
-		{
-			assertEquals("class java.lang.Object does not find stale-patch-ids.txt", e.getMessage());
-		}
+		assertFails(() ->
+			builder.insertStaleFromResource(Object.class),
+			IllegalArgumentException.class,
+			"class java.lang.Object does not find stale-patch-ids.txt");
 	}
 
 	@Test void insertStaleFromResourceNull() throws IOException
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
-		try
-		{
-			builder.insertStaleFromResource(null);
-			fail();
-		}
-		catch(final NullPointerException e)
-		{
-			assertEquals(null, e.getMessage());
-		}
+		assertFails(() ->
+			builder.insertStaleFromResource(null),
+			NullPointerException.class, null);
 	}
 }
