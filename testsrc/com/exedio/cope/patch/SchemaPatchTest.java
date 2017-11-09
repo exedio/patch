@@ -29,7 +29,7 @@ import com.exedio.cope.util.JobContext;
 import com.exedio.cope.util.JobContexts;
 import java.util.Iterator;
 import java.util.List;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Test;
 
 public class SchemaPatchTest extends CopeModel4Test
@@ -161,7 +161,7 @@ public class SchemaPatchTest extends CopeModel4Test
 	 * This method is needed because creation of SchemaSampleItem
 	 * bypasses (therefore corrupt) cope item cache.
 	 */
-	@Before
+	@BeforeEach
 	public void deleteItems()
 	{
 		for(final SchemaSampleItem item : items())
