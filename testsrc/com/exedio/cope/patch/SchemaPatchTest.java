@@ -19,8 +19,8 @@
 package com.exedio.cope.patch;
 
 import static java.util.Collections.emptyList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.exedio.cope.Model;
 import com.exedio.cope.Query;

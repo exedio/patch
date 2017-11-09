@@ -18,7 +18,7 @@
 
 package com.exedio.cope.patch;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.exedio.cope.Model;
 import com.exedio.cope.TransactionTry;

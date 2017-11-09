@@ -19,7 +19,7 @@
 package com.exedio.cope.patch;
 
 import static com.exedio.cope.patch.PatchTest.MODEL;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.patch.cope.CopeRule;
