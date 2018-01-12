@@ -32,8 +32,6 @@
 				<classpath>
 					<myClasspath />
 				</classpath>
-				<tag name="cope.generated" enabled="true" />
-				<tag name="cope.get" enabled="true" />
 				<arg value="-Xdoclint:all,-missing" />
 				<arg value="-Xmaxerrs"  /><arg value="10000" />
 				<arg value="-Xmaxwarns" /><arg value="10000" />
