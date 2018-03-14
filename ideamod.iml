@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/testsrc" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/.eclipse-output" />
       <excludeFolder url="file://$MODULE_DIR$/.settings" />
+      <excludeFolder url="file://$MODULE_DIR$/ant" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
       <excludeFolder url="file://$MODULE_DIR$/ivy/artifacts" />
       <excludeFolder url="file://$MODULE_DIR$/nbproject" />
