@@ -27,7 +27,6 @@ import com.exedio.cope.MandatoryViolationException;
 import com.exedio.cope.StringCharSetViolationException;
 import com.exedio.cope.StringLengthViolationException;
 import com.exedio.cope.util.AssertionErrorJobContext;
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 public class PatchesTest
@@ -175,7 +174,7 @@ public class PatchesTest
 		return new SamplePatch(null, id, "check exception message", true);
 	}
 
-	@Test void insertStaleFromResourceNotFound() throws IOException
+	@Test void insertStaleFromResourceNotFound()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		assertFails(() ->
@@ -184,7 +183,7 @@ public class PatchesTest
 			"class java.lang.Object does not find stale-patch-ids.txt");
 	}
 
-	@Test void insertStaleFromResourceNull() throws IOException
+	@Test void insertStaleFromResourceNull()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		assertFails(() ->
