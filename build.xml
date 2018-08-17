@@ -94,6 +94,7 @@
 				<pathelement location="lib/junit-platform-launcher.jar" />
 				<pathelement location="lib/junit-platform-console.jar" />
 				<pathelement location="lib/exedio-cope.jar" />
+				<pathelement location="lib/exedio-cope-hsqldb.jar" />
 				<pathelement location="lib/slf4j-api.jar" />
 				<pathelement location="lib/logback-classic.jar" />
 				<pathelement location="lib/logback-core.jar" />

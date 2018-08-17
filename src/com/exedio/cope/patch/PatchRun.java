@@ -120,6 +120,19 @@ final class PatchRun extends Item
 	}
 
 	/**
+	 * Finds a patchRun by its {@link #patch}.
+	 * @param patch shall be equal to field {@link #patch}.
+	 * @throws java.lang.IllegalArgumentException if there is no matching item.
+	 */
+	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="forStrict")
+	static final PatchRun forPatchStrict(final java.lang.String patch)
+			throws
+				java.lang.IllegalArgumentException
+	{
+		return PatchRun.patch.searchUniqueStrict(PatchRun.class,patch);
+	}
+
+	/**
 	 * Returns the value of {@link #stage}.
 	 */
 	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")

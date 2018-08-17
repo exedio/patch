@@ -25,6 +25,7 @@ import com.exedio.cope.DateField;
 import com.exedio.cope.IntegerField;
 import com.exedio.cope.Item;
 import com.exedio.cope.StringField;
+import com.exedio.cope.instrument.WrapInterim;
 import com.exedio.cope.instrument.Wrapper;
 import com.exedio.cope.misc.Computed;
 
@@ -33,6 +34,7 @@ import com.exedio.cope.misc.Computed;
 final class PatchMutex extends Item
 {
 	private static final int THE_ONE = 42;
+	@WrapInterim
 	private static final Integer THE_ONE_OBJECT = THE_ONE;
 
 	@Wrapper(wrap="get", visibility=NONE)
