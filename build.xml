@@ -16,7 +16,7 @@
 		</fileset>
 	</import>
 
-	<taskdef resource="com/exedio/cope/instrument/ant.properties">
+	<taskdef resource="com/exedio/cope/instrument/ant.properties" onerror="failall">
 		<classpath>
 			<pathelement location="lib/exedio-cope-instrument.jar" />
 			<pathelement location="lib/slf4j-api.jar" />
