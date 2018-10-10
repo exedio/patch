@@ -121,6 +121,7 @@
 				<attribute name="Class-Path" value="exedio-cope.jar" />
 			</manifest>
 		</jar>
+		<plot file="build/exedio-cope-patch.jar" />
 	</target>
 
 	<target name="jar.src">
@@ -128,6 +129,7 @@
 		<zip destfile="build/exedio-cope-patch-src.zip" filesonly="true" whenempty="fail" duplicate="fail" level="9">
 			<zipfileset dir="${basedir}/src"><include name="**/*.java"/><exclude name="**/*_Jspm.java" /></zipfileset>
 		</zip>
+		<plot file="build/exedio-cope-patch-src.zip" />
 	</target>
 
 	<target name="clean">

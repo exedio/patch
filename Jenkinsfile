@@ -64,6 +64,20 @@ timestamps
 						useStableBuildAsReference: false,
 				)
 				archive 'build/success/*'
+				step([$class: 'PlotBuilder',
+						csvFileName: 'plots.csv',
+						exclZero: false,
+						keepRecords: false,
+						group: 'Sizes',
+						title: 'exedio-cope-patch.jar',
+						numBuilds: '1000',
+						style: 'line',
+						useDescr: false,
+						propertiesSeries: [
+							[ file: 'build/exedio-cope-patch.jar-plot.properties',     label: 'exedio-cope-patch.jar' ],
+							[ file: 'build/exedio-cope-patch-src.zip-plot.properties', label: 'exedio-cope-patch-src.zip' ],
+						],
+				])
 			}
 		}
 		catch(Exception e)
