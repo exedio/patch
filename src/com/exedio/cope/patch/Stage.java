@@ -71,15 +71,8 @@ final class Stage
 			ctx.stopIfRequested();
 			final String host = getHost();
 			final String savepoint = getSavepoint(model);
-
 			final int numberOfPatches = patches.size();
-			logger.info("s{} mutex seize for {} patches", stageNumber, numberOfPatches);
-			final PatchMutex mutex;
-			try(TransactionTry tx = startTransaction("mutex seize"))
-			{
-				mutex = new PatchMutex(stageNumber, host, savepoint, numberOfPatches);
-				tx.commit();
-			}
+			final PatchMutex mutex = seizeMutex(host, savepoint, numberOfPatches);
 
 			int numberOfPatch = 1;
 			int result = 0;
@@ -119,18 +112,35 @@ final class Stage
 				ctx.incrementProgress();
 			}
 
-			logger.info("s{} mutex release", stageNumber);
-			try(TransactionTry tx = startTransaction("mutex release"))
-			{
-				mutex.deleteCopeItem();
-				tx.commit();
-			}
-
+			releaseMutex(mutex);
 			return result;
 		}
 		finally
 		{
 			runLock.unlock();
+		}
+	}
+
+	private PatchMutex seizeMutex(
+			final String host,
+			final String savepoint,
+			final int numberOfPatches)
+	{
+		logger.info("s{} mutex seize for {} patches", stageNumber, numberOfPatches);
+		try(TransactionTry tx = startTransaction("mutex seize"))
+		{
+			return tx.commit(
+					new PatchMutex(stageNumber, host, savepoint, numberOfPatches));
+		}
+	}
+
+	private void releaseMutex(final PatchMutex mutex)
+	{
+		logger.info("s{} mutex release", stageNumber);
+		try(TransactionTry tx = startTransaction("mutex release"))
+		{
+			mutex.deleteCopeItem();
+			tx.commit();
 		}
 	}
 
