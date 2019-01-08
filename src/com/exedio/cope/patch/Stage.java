@@ -211,13 +211,21 @@ final class Stage
 	void preempt()
 	{
 		final String host = getHost();
+		final int numberOfPatches = patches.size();
+		final PatchMutex mutex = seizeMutex(host, null, numberOfPatches);
 
-		for(final Map.Entry<String, Patch> entry : patches.entrySet())
+		try(TransactionTry tx = startTransaction("preempt"))
 		{
-			final Patch patch = entry.getValue();
-			//noinspection ResultOfObjectAllocationIgnored persistent object
-			new PatchRun(entry.getKey(), stageNumber, patch.isTransactionally(), host);
+			for(final Map.Entry<String, Patch> entry : patches.entrySet())
+			{
+				final Patch patch = entry.getValue();
+				//noinspection ResultOfObjectAllocationIgnored persistent object
+				new PatchRun(entry.getKey(), stageNumber, patch.isTransactionally(), host);
+			}
+			tx.commit();
 		}
+
+		releaseMutex(mutex);
 	}
 
 

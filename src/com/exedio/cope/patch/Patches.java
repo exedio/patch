@@ -18,7 +18,6 @@
 
 package com.exedio.cope.patch;
 
-import com.exedio.cope.TransactionTry;
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
 import java.util.ArrayList;
@@ -106,12 +105,8 @@ public final class Patches
 	public void preempt()
 	{
 		logger.info("preempt");
-		try(TransactionTry tx = PatchRun.TYPE.getModel().startTransactionTry("preempt"))
-		{
-			for(final Stage stage : stages.values())
-				stage.preempt();
-			tx.commit();
-		}
+		for(final Stage stage : stages.values())
+			stage.preempt();
 	}
 
 

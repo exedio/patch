@@ -251,7 +251,10 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(false, isDone(patches));
 		log.assertEvents();
 		preempt(patches);
-		log.assertEvents("INFO preempt");
+		log.assertEvents(
+				"INFO preempt",
+				"INFO s0 mutex seize for 3 patches",
+				"INFO s0 mutex release");
 		final PatchRun runOne, runTwo, runNonTx;
 		{
 			final Iterator<PatchRun> runs = runs().iterator();
@@ -267,7 +270,9 @@ public class PatchTest extends CopeModel4Test
 			preempt(patches),
 			UniqueViolationException.class,
 			"unique violation for CopePatchRun.patchImplicitUnique");
-		log.assertEvents("INFO preempt");
+		log.assertEvents(
+				"INFO preempt",
+				"INFO s0 mutex seize for 3 patches");
 		{
 			final Iterator<PatchRun> runs = runs().iterator();
 			assertEquals(runOne  , runs.next());
