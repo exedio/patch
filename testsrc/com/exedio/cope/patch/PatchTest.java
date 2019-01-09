@@ -28,6 +28,7 @@ import com.exedio.cope.Model;
 import com.exedio.cope.Query;
 import com.exedio.cope.Revisions;
 import com.exedio.cope.UniqueViolationException;
+import com.exedio.cope.junit.LogRule;
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.AssertionErrorJobContext;
 import com.exedio.cope.util.JobContext;
@@ -38,7 +39,9 @@ import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+@ExtendWith(LogRule.class)
 public class PatchTest extends CopeModel4Test
 {
 	static final Model MODEL = Model.builder().
@@ -52,15 +55,23 @@ public class PatchTest extends CopeModel4Test
 		super(MODEL);
 	}
 
-	@Test void one()
+	@Test void one(final LogRule log)
 	{
+		log.listen(Patches.class);
 		assertEquals(emptyList(), items());
 		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("one"));
 		final Patches patches = builder.build();
 		assertEquals(false, isDone(patches));
+		log.assertEvents();
 		assertEquals(1, run(patches, JobContexts.EMPTY));
+		log.assertEvents(
+				"ERROR savepoint",
+				"INFO s0 mutex seize for 1 patches",
+				"INFO s0 run 1/1 one",
+				"INFO s0 mutex release",
+				"INFO run finished after 1 patches");
 		final SampleItem one;
 		{
 			final Iterator<SampleItem> items = items().iterator();
@@ -73,14 +84,17 @@ public class PatchTest extends CopeModel4Test
 			runOne = assertIt("one", true, runs.next());
 			assertFalse(runs.hasNext());
 		}
+		log.assertEvents();
 		assertEquals(0, run(patches, JobContexts.EMPTY));
+		log.assertEvents();
 		assertEquals(asList(one), items());
 		assertEquals(asList(runOne), runs());
 		assertEquals(true, isDone(patches));
 	}
 
-	@Test void oneNonTx()
+	@Test void oneNonTx(final LogRule log)
 	{
+		log.listen(Patches.class);
 		assertEquals(emptyList(), items());
 		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
@@ -88,7 +102,14 @@ public class PatchTest extends CopeModel4Test
 		final Patches patches = builder.build();
 		assertEquals(false, isDone(patches));
 
+		log.assertEvents();
 		assertEquals(1, run(patches, JobContexts.EMPTY));
+		log.assertEvents(
+				"ERROR savepoint",
+				"INFO s0 mutex seize for 1 patches",
+				"INFO s0 run 1/1 one",
+				"INFO s0 mutex release",
+				"INFO run finished after 1 patches");
 		final SampleItem one;
 		{
 			final Iterator<SampleItem> items = items().iterator();
@@ -103,14 +124,17 @@ public class PatchTest extends CopeModel4Test
 		}
 		assertEquals(true, isDone(patches));
 
+		log.assertEvents();
 		assertEquals(0, run(patches, JobContexts.EMPTY));
+		log.assertEvents();
 		assertEquals(asList(one), items());
 		assertEquals(asList(runOne), runs());
 		assertEquals(true, isDone(patches));
 	}
 
-	@Test void two()
+	@Test void two(final LogRule log)
 	{
+		log.listen(Patches.class);
 		assertEquals(emptyList(), items());
 		assertEquals(emptyList(), runs());
 		final JC ctx = new JC();
@@ -120,7 +144,15 @@ public class PatchTest extends CopeModel4Test
 		final Patches patches = builder.build();
 		assertEquals(false, isDone(patches));
 
+		log.assertEvents();
 		assertEquals(2, run(patches, ctx));
+		log.assertEvents(
+				"ERROR savepoint",
+				"INFO s0 mutex seize for 2 patches",
+				"INFO s0 run 1/2 one",
+				"INFO s0 run 2/2 two",
+				"INFO s0 mutex release",
+				"INFO run finished after 2 patches");
 		ctx.assertIt(
 				"stop()" +
 				"stop()" + "message(run s0 one)" + "progress()" +
@@ -143,7 +175,9 @@ public class PatchTest extends CopeModel4Test
 		}
 		assertEquals(true, isDone(patches));
 
+		log.assertEvents();
 		assertEquals(0, run(patches, ctx));
+		log.assertEvents();
 		ctx.assertIt("");
 		assertEquals(asList(one, two), items());
 		assertEquals(asList(runOne, runTwo), runs());
@@ -156,7 +190,14 @@ public class PatchTest extends CopeModel4Test
 		final Patches patches2 = builder2.build();
 		assertEquals(false, isDone(patches2));
 
+		log.assertEvents();
 		assertEquals(1, run(patches2, ctx));
+		log.assertEvents(
+				"ERROR savepoint",
+				"INFO s0 mutex seize for 1 patches",
+				"INFO s0 run 1/1 three",
+				"INFO s0 mutex release",
+				"INFO run finished after 1 patches");
 		ctx.assertIt(
 				"stop()" +
 				"stop()" + "message(run s0 three)" + "progress()");
@@ -197,8 +238,9 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(true, isDone(patches));
 	}
 
-	@Test void preempt()
+	@Test void preempt(final LogRule log)
 	{
+		log.listen(Patches.class);
 		assertEquals(emptyList(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatchNonTx("nonTx"));
@@ -207,7 +249,9 @@ public class PatchTest extends CopeModel4Test
 		final Patches patches = builder.build();
 
 		assertEquals(false, isDone(patches));
+		log.assertEvents();
 		preempt(patches);
+		log.assertEvents("INFO preempt");
 		final PatchRun runOne, runTwo, runNonTx;
 		{
 			final Iterator<PatchRun> runs = runs().iterator();
@@ -218,10 +262,12 @@ public class PatchTest extends CopeModel4Test
 		}
 		assertEquals(true, isDone(patches));
 
+		log.assertEvents();
 		assertFails(() ->
 			preempt(patches),
 			UniqueViolationException.class,
 			"unique violation for CopePatchRun.patchImplicitUnique");
+		log.assertEvents("INFO preempt");
 		{
 			final Iterator<PatchRun> runs = runs().iterator();
 			assertEquals(runOne  , runs.next());

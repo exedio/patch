@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @CopeExternal
 final class SchemaSampleItem extends Item
 {
-	private static final AtomicInteger thisSource = new AtomicInteger();
+	static final AtomicInteger thisSource = new AtomicInteger();
 
 	@Wrapper(wrap="get", visibility=PACKAGE)
 	private static final StringField content = new StringField().toFinal();

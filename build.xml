@@ -51,6 +51,8 @@
 			<classpath>
 				<pathelement location="build/classes/src" />
 				<pathelement location="lib/junit-jupiter-api.jar" />
+				<pathelement location="lib/logback-classic.jar" />
+				<pathelement location="lib/logback-core.jar" />
 				<pathelement location="lib/apiguardian-api.jar" />
 			</classpath>
 		</instrument>
@@ -63,6 +65,9 @@
 				<pathelement location="lib/exedio-cope.jar" />
 				<pathelement location="lib/exedio-cope-instrument-annotations.jar" />
 				<pathelement location="lib/junit-jupiter-api.jar" />
+				<pathelement location="lib/slf4j-api.jar" />
+				<pathelement location="lib/logback-classic.jar" />
+				<pathelement location="lib/logback-core.jar" />
 				<pathelement location="lib/apiguardian-api.jar" />
 				<pathelement location="lib/findbugs-annotations.jar" />
 			</classpath>

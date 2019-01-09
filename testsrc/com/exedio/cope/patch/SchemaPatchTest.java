@@ -24,14 +24,18 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.exedio.cope.Model;
 import com.exedio.cope.Query;
+import com.exedio.cope.junit.LogRule;
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.JobContext;
 import com.exedio.cope.util.JobContexts;
 import java.util.Iterator;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+@ExtendWith(LogRule.class)
 public class SchemaPatchTest extends CopeModel4Test
 {
 	static final Model MODEL = PatchTest.MODEL;
@@ -41,14 +45,25 @@ public class SchemaPatchTest extends CopeModel4Test
 		super(MODEL);
 	}
 
-	@Test void one()
+	@Test void one(final LogRule log)
 	{
+		log.listen(Patches.class, "pt");
+		log.listen(SchemaPatch.class, "spt");
 		assertEquals(emptyList(), items());
 		final PatchesBuilder builder = new PatchesBuilder();
 		final SchemaPatch patch = patch("one");
 		builder.insertAtStart(patch);
 		final Patches patches = builder.build();
+		log.assertEvents();
 		assertEquals(1, run(patches, JobContexts.EMPTY));
+		log.assertEvents(
+				"pt: ERROR savepoint",
+				"pt: INFO s0 mutex seize for 1 patches",
+				"pt: INFO s0 run 1/1 patchId",
+				"spt: INFO executing 1 statements for patchId",
+				"spt: INFO 1/1: INSERT INTO \"SchemaSampleItem\" ( \"this\", \"content\" ) VALUES ( 0, 'one' )",
+				"pt: INFO s0 mutex release",
+				"pt: INFO run finished after 1 patches");
 		final Iterator<SchemaSampleItem> items = items().iterator();
 		assertIt("one", items.next());
 		assertFalse(items.hasNext());
@@ -57,14 +72,27 @@ public class SchemaPatchTest extends CopeModel4Test
 		assertFalse(runs.hasNext());
 	}
 
-	@Test void more()
+	@Test void more(final LogRule log)
 	{
+		log.listen(Patches.class, "pt");
+		log.listen(SchemaPatch.class, "spt");
 		assertEquals(emptyList(), items());
 		final PatchesBuilder builder = new PatchesBuilder();
 		final SchemaPatch patch = patch("one", "two", "three");
 		builder.insertAtStart(patch);
 		final Patches patches = builder.build();
+		log.assertEvents();
 		assertEquals(1, run(patches, JobContexts.EMPTY));
+		log.assertEvents(
+				"pt: ERROR savepoint",
+				"pt: INFO s0 mutex seize for 1 patches",
+				"pt: INFO s0 run 1/1 patchId",
+				"spt: INFO executing 3 statements for patchId",
+				"spt: INFO 1/3: INSERT INTO \"SchemaSampleItem\" ( \"this\", \"content\" ) VALUES ( 0, 'one' )",
+				"spt: INFO 2/3: INSERT INTO \"SchemaSampleItem\" ( \"this\", \"content\" ) VALUES ( 1, 'two' )",
+				"spt: INFO 3/3: INSERT INTO \"SchemaSampleItem\" ( \"this\", \"content\" ) VALUES ( 2, 'three' )",
+				"pt: INFO s0 mutex release",
+				"pt: INFO run finished after 1 patches");
 		final Iterator<SchemaSampleItem> items = items().iterator();
 		assertIt("one", items.next());
 		assertIt("two", items.next());
@@ -165,5 +193,10 @@ public class SchemaPatchTest extends CopeModel4Test
 	{
 		for(final SchemaSampleItem item : items())
 			item.deleteCopeItem();
+	}
+
+	@AfterEach void resetThisSource()
+	{
+		SchemaSampleItem.thisSource.set(0);
 	}
 }
