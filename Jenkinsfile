@@ -43,25 +43,14 @@ timestamps
 						' -Ddisable-ansi-colors=true' +
 						' -Dfindbugs.output=xml'
 
-				warnings(
-						canComputeNew: true,
-						canResolveRelativePaths: true,
-						categoriesPattern: '',
-						consoleParsers: [[parserName: 'Java Compiler (javac)']],
-						defaultEncoding: '', excludePattern: '', healthy: '', includePattern: '', messagesPattern: '', unHealthy: '',
-						unstableTotalAll: '0',
-						usePreviousBuildAsReference: false,
-						useStableBuildAsReference: false,
-				)
-				findbugs(
-						canComputeNew: true,
-						defaultEncoding: '', excludePattern: '', healthy: '', includePattern: '',
-						isRankActivated: false,
-						pattern: 'build/findbugs.xml',
-						unHealthy: '',
-						unstableTotalAll: '0',
-						usePreviousBuildAsReference: false,
-						useStableBuildAsReference: false,
+				recordIssues(
+						enabledForFailure: true,
+						ignoreFailedBuilds: false,
+						qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]],
+						tools: [
+							java(),
+							spotBugs(pattern: 'build/findbugs.xml', useRankAsPriority: true),
+						],
 				)
 				archiveArtifacts 'build/success/*'
 				plot(
