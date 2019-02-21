@@ -30,14 +30,14 @@ timestamps
 				if(gitStatus!='?? git-status.txt\n')
 				{
 					archive 'git-status.txt'
-					currentBuild.result = 'FAILURE';
+					currentBuild.result = 'FAILURE'
 				}
 			}
 		}
 		catch(Exception e)
 		{
 			//todo handle script returned exit code 143
-			throw e;
+			throw e
 		}
 		finally
 		{
@@ -61,12 +61,12 @@ def abortable(Closure body)
 {
 	try
 	{
-		body.call();
+		body.call()
 	}
 	catch(hudson.AbortException e)
 	{
 		if(e.getMessage().contains("exit code 143"))
 			return
-		throw e;
+		throw e
 	}
 }
