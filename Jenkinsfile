@@ -63,8 +63,8 @@ timestamps
 						usePreviousBuildAsReference: false,
 						useStableBuildAsReference: false,
 				)
-				archive 'build/success/*'
-				step([$class: 'PlotBuilder',
+				archiveArtifacts 'build/success/*'
+				plot(
 						csvFileName: 'plots.csv',
 						exclZero: false,
 						keepRecords: false,
@@ -77,7 +77,7 @@ timestamps
 							[ file: 'build/exedio-cope-patch.jar-plot.properties',     label: 'exedio-cope-patch.jar' ],
 							[ file: 'build/exedio-cope-patch-src.zip-plot.properties', label: 'exedio-cope-patch-src.zip' ],
 						],
-				])
+				)
 			}
 		}
 		catch(Exception e)
@@ -92,10 +92,7 @@ timestamps
 					allowEmptyResults: false,
 					testResults: 'build/testresults/*.xml',
 			)
-			def to = emailextrecipients([
-					[$class: 'CulpritsRecipientProvider'],
-					[$class: 'RequesterRecipientProvider']
-			])
+			def to = emailextrecipients([culprits(), requestor()])
 			//TODO details
 			step([$class: 'Mailer',
 					recipients: to,
