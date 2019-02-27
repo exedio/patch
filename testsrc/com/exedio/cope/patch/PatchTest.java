@@ -283,6 +283,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(true, isDone(patches));
 	}
 
+	@SuppressWarnings({"DuplicateExpressions", "RedundantSuppression"})
 	@Test void failure()
 	{
 		assertEquals(emptyList(), items());
@@ -329,6 +330,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(false, isDone(patches));
 	}
 
+	@SuppressWarnings({"DuplicateExpressions", "RedundantSuppression"})
 	@Test void failureNonTx()
 	{
 		assertEquals(emptyList(), items());
