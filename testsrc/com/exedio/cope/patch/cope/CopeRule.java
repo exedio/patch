@@ -69,7 +69,7 @@ public final class CopeRule implements
 	@Override
 	public void beforeEach(final ExtensionContext context)
 	{
-		@SuppressWarnings("ConstantConditions")
+		@SuppressWarnings("OptionalGetWithoutIsPresent")
 		final Config config = (Config)context.getTestInstance().get();
 		model = requireNonNull(config.getModel(), "model");
 		//noinspection IfStatementWithNegatedCondition
