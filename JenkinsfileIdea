@@ -2,9 +2,10 @@
 timestamps
 {
 	def idea = 'idea-2018.3.5'
+	def confighome = '.IdeaIC2018.3'
 
 	//noinspection GroovyAssignabilityCheck
-	lock('idea') { node(idea)
+	lock('idea') { node('OpenJdk18Debian9 && ' + idea)
 	{
 		try
 		{
@@ -15,11 +16,18 @@ timestamps
 
 				checkout scm
 
+				env.JAVA_HOME = "${tool 'openjdk 1.8 debian9'}"
+				env.PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
+
 				properties([
 						buildDiscarder(logRotator(
 								numToKeepStr : '50'
 						))
 				])
+
+				sh "ant/bin/ant -f conf/idea" +
+						' -Dconfig.home=' + env.HOME + '/' + confighome +
+						' -Djava.home=' + env.JAVA_HOME
 
 				sh "/" + idea + "/bin/inspect.sh . 'Project Default' idea-inspection-output"
 				archiveArtifacts 'idea-inspection-output/**'
