@@ -22,7 +22,7 @@ timestamps
 
 				properties([
 						buildDiscarder(logRotator(
-								numToKeepStr         : isRelease ? '1000' : '15',
+								numToKeepStr         : isRelease ? '1000' : '30',
 								artifactNumToKeepStr : isRelease ? '1000' :  '2'
 						))
 				])
