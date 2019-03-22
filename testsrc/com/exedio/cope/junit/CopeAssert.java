@@ -105,6 +105,7 @@ public final class CopeAssert
 		assertEquals(expected, actual);
 	}
 
+	@SuppressWarnings("unused") // OK: for later use
 	public static void assertEqualsUnmodifiable(final Map<?,?> expected, final Map<?,?> actual)
 	{
 		try
