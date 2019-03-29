@@ -6,7 +6,7 @@
 		<property name="findbugs.root" value="findbugs-3.0.0" />
 		<untar
 				compression="gzip"
-				src="${basedir}/lib/findbugs.tar.gz"
+				src="${basedir}/lib/findbugs/findbugs.tar.gz"
 				dest="${basedir}/build">
 			<patternset>
 				<exclude name="${findbugs.root}/doc/**" />

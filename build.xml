@@ -18,9 +18,8 @@
 
 	<taskdef resource="com/exedio/cope/instrument/ant.properties" onerror="failall">
 		<classpath>
-			<pathelement location="lib/exedio-cope-instrument.jar" />
-			<pathelement location="lib/slf4j-api.jar" />
-			<pathelement location="lib/findbugs-annotations.jar" />
+			<fileset dir="lib/instrument" />
+			<pathelement location="lib/findbugs/findbugs-annotations.jar" />
 		</classpath>
 	</taskdef>
 
@@ -35,10 +34,9 @@
 	<target name="src.compile" depends="src.instrument">
 		<compile srcdir="src">
 			<classpath>
-				<pathelement location="lib/exedio-cope.jar" />
-				<pathelement location="lib/slf4j-api.jar" />
-				<pathelement location="lib/exedio-cope-instrument-annotations.jar" />
-				<pathelement location="lib/findbugs-annotations.jar" />
+				<fileset dir="lib/runtime" />
+				<pathelement location="lib/instrument/exedio-cope-instrument-annotations.jar" />
+				<pathelement location="lib/findbugs/findbugs-annotations.jar" />
 			</classpath>
 		</compile>
 	</target>
@@ -50,10 +48,7 @@
 				verbose="false">
 			<classpath>
 				<pathelement location="build/classes/src" />
-				<pathelement location="lib/junit-jupiter-api.jar" />
-				<pathelement location="lib/logback-classic.jar" />
-				<pathelement location="lib/logback-core.jar" />
-				<pathelement location="lib/apiguardian-api.jar" />
+				<fileset dir="lib/test" />
 			</classpath>
 		</instrument>
 	</target>
@@ -62,14 +57,9 @@
 		<compile srcdir="testsrc">
 			<classpath>
 				<pathelement location="build/classes/src" />
-				<pathelement location="lib/exedio-cope.jar" />
-				<pathelement location="lib/exedio-cope-instrument-annotations.jar" />
-				<pathelement location="lib/junit-jupiter-api.jar" />
-				<pathelement location="lib/slf4j-api.jar" />
-				<pathelement location="lib/logback-classic.jar" />
-				<pathelement location="lib/logback-core.jar" />
-				<pathelement location="lib/apiguardian-api.jar" />
-				<pathelement location="lib/findbugs-annotations.jar" />
+				<fileset dir="lib/test" />
+				<pathelement location="lib/instrument/exedio-cope-instrument-annotations.jar" />
+				<pathelement location="lib/findbugs/findbugs-annotations.jar" />
 			</classpath>
 		</compile>
 	</target>
@@ -90,19 +80,7 @@
 			<classpath>
 				<pathelement location="build/classes/src" />
 				<pathelement location="build/classes/testsrc" />
-				<pathelement location="lib/hsqldb.jar" />
-				<pathelement location="lib/opentest4j.jar" />
-				<pathelement location="lib/junit-jupiter-api.jar" />
-				<pathelement location="lib/junit-jupiter-engine.jar" />
-				<pathelement location="lib/junit-platform-commons.jar" />
-				<pathelement location="lib/junit-platform-engine.jar" />
-				<pathelement location="lib/junit-platform-launcher.jar" />
-				<pathelement location="lib/junit-platform-console.jar" />
-				<pathelement location="lib/exedio-cope.jar" />
-				<pathelement location="lib/exedio-cope-hsqldb.jar" />
-				<pathelement location="lib/slf4j-api.jar" />
-				<pathelement location="lib/logback-classic.jar" />
-				<pathelement location="lib/logback-core.jar" />
+				<fileset dir="lib/test" />
 			</classpath>
 			<arg line="--scan-class-path build/classes/testsrc" unless:set="test" />
 			<arg line="--select-class ${test}" if:set="test" />
@@ -159,10 +137,9 @@
 				<fileset dir="src" includes="**/*.java" />
 			</src>
 			<myClasspath>
-				<pathelement location="lib/exedio-cope.jar" />
-				<pathelement location="lib/exedio-cope-instrument-annotations.jar" />
-				<pathelement location="lib/slf4j-api.jar" />
-				<pathelement location="lib/findbugs-annotations.jar" />
+				<fileset dir="lib/runtime" />
+				<pathelement location="lib/instrument/exedio-cope-instrument-annotations.jar" />
+				<pathelement location="lib/findbugs/findbugs-annotations.jar" />
 			</myClasspath>
 		</api>
 	</target>
@@ -185,9 +162,8 @@
 			<class location="${basedir}/build/classes/src" />
 			<class location="${basedir}/build/classes/testsrc" />
 			<auxclasspath>
-				<pathelement location="${basedir}/lib/exedio-cope.jar" />
-				<pathelement location="${basedir}/lib/slf4j-api.jar" />
-				<pathelement location="${basedir}/lib/junit-jupiter-api.jar" />
+				<fileset dir="lib/test" />
+				<pathelement location="lib/instrument/exedio-cope-instrument-annotations.jar" />
 			</auxclasspath>
 		</findbugs>
 	</target>
