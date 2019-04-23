@@ -19,7 +19,7 @@
 	<taskdef resource="com/exedio/cope/instrument/ant.properties" onerror="failall">
 		<classpath>
 			<fileset dir="lib/instrument" />
-			<pathelement location="lib/findbugs/findbugs-annotations.jar" />
+			<pathelement location="lib/findbugs/spotbugs-annotations.jar" />
 		</classpath>
 	</taskdef>
 
@@ -36,7 +36,7 @@
 			<classpath>
 				<fileset dir="lib/runtime" />
 				<pathelement location="lib/instrument/exedio-cope-instrument-annotations.jar" />
-				<pathelement location="lib/findbugs/findbugs-annotations.jar" />
+				<pathelement location="lib/findbugs/spotbugs-annotations.jar" />
 			</classpath>
 		</compile>
 	</target>
@@ -59,7 +59,7 @@
 				<pathelement location="build/classes/src" />
 				<fileset dir="lib/test" />
 				<pathelement location="lib/instrument/exedio-cope-instrument-annotations.jar" />
-				<pathelement location="lib/findbugs/findbugs-annotations.jar" />
+				<pathelement location="lib/findbugs/spotbugs-annotations.jar" />
 			</classpath>
 		</compile>
 	</target>
@@ -139,7 +139,7 @@
 			<myClasspath>
 				<fileset dir="lib/runtime" />
 				<pathelement location="lib/instrument/exedio-cope-instrument-annotations.jar" />
-				<pathelement location="lib/findbugs/findbugs-annotations.jar" />
+				<pathelement location="lib/findbugs/spotbugs-annotations.jar" />
 			</myClasspath>
 		</api>
 	</target>
@@ -150,7 +150,6 @@
 
 	<target name="findbugs" depends="compile, findbugs.taskdef">
 		<findbugs
-					home="${basedir}/build/findbugs-home"
 					jvmargs="-Xmx512M"
 					failOnError="true"
 					warningsProperty="findbugs.warnings"
@@ -161,6 +160,9 @@
 					reportlevel="low">
 			<class location="${basedir}/build/classes/src" />
 			<class location="${basedir}/build/classes/testsrc" />
+			<classpath>
+				<fileset dir="lib/findbugs" />
+			</classpath>
 			<auxclasspath>
 				<fileset dir="lib/test" />
 				<pathelement location="lib/instrument/exedio-cope-instrument-annotations.jar" />

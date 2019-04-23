@@ -33,6 +33,7 @@ import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.AssertionErrorJobContext;
 import com.exedio.cope.util.JobContext;
 import com.exedio.cope.util.JobContexts;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -42,6 +43,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(LogRule.class)
+@SuppressFBWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
 public class PatchTest extends CopeModel4Test
 {
 	static final Model MODEL = Model.builder().

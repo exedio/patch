@@ -8,7 +8,6 @@
 		<copy overwrite="true" todir="../lib">
 			<firstmatchmapper>
 				<globmapper from="*-jar.jar" to="*.jar" />
-				<globmapper from="*-dist.tar.gz" to="*.tar.gz" />
 				<globmapper from="*" to="*" />
 			</firstmatchmapper>
 			<fileset dir="artifacts/lib">

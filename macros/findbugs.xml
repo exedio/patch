@@ -3,19 +3,9 @@
 <project name="findbugs" default="fail" basedir=".">
 
 	<target name="findbugs.taskdef">
-		<property name="findbugs.root" value="findbugs-3.0.0" />
-		<untar
-				compression="gzip"
-				src="${basedir}/lib/findbugs/findbugs.tar.gz"
-				dest="${basedir}/build">
-			<patternset>
-				<exclude name="${findbugs.root}/doc/**" />
-			</patternset>
-			<mapper type="glob" from="${findbugs.root}/*" to="findbugs-home/*" />
-		</untar>
 		<taskdef
 				resource="edu/umd/cs/findbugs/anttask/tasks.properties"
-				classpath="build/findbugs-home/lib/findbugs-ant.jar"
+				classpath="lib/findbugs/spotbugs-ant.jar"
 				onerror="failall" />
 	</target>
 

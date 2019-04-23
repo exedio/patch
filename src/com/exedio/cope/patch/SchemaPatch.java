@@ -138,6 +138,7 @@ public abstract class SchemaPatch implements Patch
 	}
 
 	@Override
+	@SuppressFBWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
 	public final void run(final JobContext ctx)
 	{
 		final String id = getID();
