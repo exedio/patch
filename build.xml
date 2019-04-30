@@ -148,7 +148,12 @@
 			depends="compile, test, jar" />
 
 
-	<target name="findbugs" depends="compile, findbugs.taskdef">
+	<taskdef
+			resource="edu/umd/cs/findbugs/anttask/tasks.properties"
+			classpath="lib/findbugs/spotbugs-ant.jar"
+			onerror="failall" />
+
+	<target name="findbugs" depends="compile">
 		<findbugs
 					jvmargs="-Xmx512M"
 					failOnError="true"
