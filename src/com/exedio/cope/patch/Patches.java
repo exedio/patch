@@ -26,6 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +35,11 @@ public final class Patches
 	private static final Logger logger = LoggerFactory.getLogger(Patches.class);
 
 	private final TreeMap<Integer,Stage> stages;
+	private final PatchesDoneListener doneListener;
+	private final AtomicBoolean listenerNotified = new AtomicBoolean(false);
 
-	Patches(final LinkedHashMap<String,Patch> patchesDescending)
+	Patches(final LinkedHashMap<String,Patch> patchesDescending,
+			  final PatchesDoneListener doneListener)
 	{
 		final ArrayList<String> ids = new ArrayList<>(patchesDescending.keySet());
 		Collections.reverse(ids);
@@ -45,6 +49,7 @@ public final class Patches
 			final Patch patch = patchesDescending.get(id);
 			stages.computeIfAbsent(patch.getStage(), Stage::new).put(id, patch);
 		}
+		this.doneListener = doneListener;
 	}
 
 	public int run(final JobContext ctx)
@@ -61,7 +66,18 @@ public final class Patches
 		if(result>0)
 			logger.info("run finished after {} patches", result);
 
+		notifyListener();
+
 		return result;
+	}
+
+	private void notifyListener()
+	{
+		if (doneListener != null && listenerNotified.compareAndSet(false, true))
+		{
+			doneListener.notifyPatchesDone();
+			logger.info("PatchesDoneListener was notified");
+		}
 	}
 
 	/**
@@ -107,6 +123,7 @@ public final class Patches
 		logger.info("preempt");
 		for(final Stage stage : stages.values())
 			stage.preempt();
+		notifyListener();
 	}
 
 

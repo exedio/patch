@@ -193,4 +193,23 @@ public class PatchesTest
 			builder.insertStaleFromResource(null),
 			NullPointerException.class, null);
 	}
+
+	@Test void patchesDoneListenerNull()
+	{
+		final PatchesBuilder builder = new PatchesBuilder();
+		assertFails(() ->
+				builder.withDoneListener(null),
+				NullPointerException.class, null);
+	}
+
+	@Test void patchesDoneListenerOverwrite()
+	{
+		final PatchesDoneListener doneListener = () -> {};
+		final PatchesBuilder builder = new PatchesBuilder().withDoneListener(doneListener);
+
+		assertFails(() ->
+				builder.withDoneListener(() -> {}),
+				IllegalArgumentException.class,
+				"a doneListener >"+doneListener+"< is already set");
+	}
 }

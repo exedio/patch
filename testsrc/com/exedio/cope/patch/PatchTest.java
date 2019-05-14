@@ -94,6 +94,32 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(true, isDone(patches));
 	}
 
+
+	@Test void oneWithListener(final LogRule log)
+	{
+		log.listen(Patches.class);
+		assertEquals(emptyList(), items());
+		assertEquals(emptyList(), runs());
+		final TestPatchesDoneListener listener = new TestPatchesDoneListener();
+		final PatchesBuilder builder = new PatchesBuilder().withDoneListener(listener);
+		builder.insertAtStart(newSamplePatch("one"));
+		final Patches patches = builder.build();
+		assertEquals(false, isDone(patches));
+		log.assertEvents();
+		assertEquals(false, listener.patchesDone);
+		assertEquals(1, run(patches, JobContexts.EMPTY));
+		log.assertEvents(
+				"ERROR savepoint",
+				"INFO s0 mutex seize for 1 patches",
+				"INFO s0 run 1/1 one",
+				"INFO s0 mutex release",
+				"INFO run finished after 1 patches",
+				"INFO PatchesDoneListener was notified");
+		assertEquals(true, listener.patchesDone);
+		//would cause exception if listener would get notified again
+		assertEquals(0, run(patches, JobContexts.EMPTY));
+	}
+
 	@Test void oneNonTx(final LogRule log)
 	{
 		log.listen(Patches.class);
@@ -240,6 +266,19 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(true, isDone(patches));
 	}
 
+	@Test void emptyWithListener()
+	{
+		assertEquals(emptyList(), items());
+		assertEquals(emptyList(), runs());
+		final TestPatchesDoneListener listener = new TestPatchesDoneListener();
+		final PatchesBuilder builder = new PatchesBuilder().withDoneListener(listener);
+		final Patches patches = builder.build();
+		assertEquals(false, listener.patchesDone);
+
+		assertEquals(0, run(patches, JobContexts.EMPTY));
+		assertEquals(true, listener.patchesDone);
+	}
+
 	@Test void preempt(final LogRule log)
 	{
 		log.listen(Patches.class);
@@ -283,6 +322,30 @@ public class PatchTest extends CopeModel4Test
 			assertFalse(runs.hasNext());
 		}
 		assertEquals(true, isDone(patches));
+	}
+
+	@Test void preemptWithListener(final LogRule log)
+	{
+		log.listen(Patches.class);
+		assertEquals(emptyList(), runs());
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.insertAtStart(newSamplePatchNonTx("nonTx"));
+		builder.insertAtStart(newSamplePatch("two"));
+		builder.insertAtStart(newSamplePatch("one"));
+		final TestPatchesDoneListener listener = new TestPatchesDoneListener();
+		builder.withDoneListener(listener);
+		final Patches patches = builder.build();
+
+		assertEquals(false, isDone(patches));
+		assertEquals(false, listener.patchesDone);
+		log.assertEvents();
+		preempt(patches);
+		log.assertEvents(
+				"INFO preempt",
+				"INFO s0 mutex seize for 3 patches",
+				"INFO s0 mutex release",
+				"INFO PatchesDoneListener was notified");
+		assertEquals(true, listener.patchesDone);
 	}
 
 	@SuppressWarnings({"DuplicateExpressions", "RedundantSuppression"})
@@ -634,6 +697,17 @@ public class PatchTest extends CopeModel4Test
 		catch(final UnknownHostException e)
 		{
 			throw new RuntimeException(e);
+		}
+	}
+
+	private static final class TestPatchesDoneListener implements PatchesDoneListener
+	{
+		private boolean patchesDone = false;
+		@Override
+		public void notifyPatchesDone()
+		{
+			assertEquals(false, patchesDone);
+			patchesDone = true;
 		}
 	}
 }

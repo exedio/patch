@@ -25,10 +25,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 public final class PatchesBuilder
 {
 	private LinkedHashMap<String,Patch> patches = new LinkedHashMap<>();
+	private PatchesDoneListener doneListener = null;
 
 	public void insertAtStart(final Patch patch)
 	{
@@ -56,7 +58,7 @@ public final class PatchesBuilder
 	public Patches build()
 	{
 		assertNotExhausted();
-		final Patches result = new Patches(patches);
+		final Patches result = new Patches(patches, doneListener);
 		patches = null;
 		return result;
 	}
@@ -65,6 +67,19 @@ public final class PatchesBuilder
 	{
 		if(patches==null)
 			throw new IllegalStateException("builder is exhausted");
+	}
+
+	/**
+	 *@see PatchesDoneListener#notifyPatchesDone()
+	 */
+	public PatchesBuilder withDoneListener(final PatchesDoneListener listener)
+	{
+		Objects.requireNonNull(listener);
+		if (doneListener != null)
+			throw new IllegalArgumentException("a doneListener >"+doneListener+"< is already set");
+
+		this.doneListener = listener;
+		return this;
 	}
 
 	/**
