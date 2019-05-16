@@ -36,7 +36,7 @@ public final class Patches
 
 	private final TreeMap<Integer,Stage> stages;
 	private final PatchesDoneListener doneListener;
-	private final AtomicBoolean listenerNotified = new AtomicBoolean(false);
+	private final AtomicBoolean doneListenerNotified = new AtomicBoolean(false);
 
 	Patches(final LinkedHashMap<String,Patch> patchesDescending,
 			  final PatchesDoneListener doneListener)
@@ -73,7 +73,7 @@ public final class Patches
 
 	private void notifyListener()
 	{
-		if (doneListener != null && listenerNotified.compareAndSet(false, true))
+		if (doneListener != null && doneListenerNotified.compareAndSet(false, true))
 		{
 			doneListener.notifyPatchesDone();
 			logger.info("PatchesDoneListener was notified");
