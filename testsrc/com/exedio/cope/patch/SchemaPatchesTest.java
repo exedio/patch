@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 import com.exedio.cope.MandatoryViolationException;
 import com.exedio.cope.StringLengthViolationException;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.jupiter.api.Test;
 
 public class SchemaPatchesTest
@@ -66,7 +65,6 @@ public class SchemaPatchesTest
 			"body must not be empty");
 	}
 
-	@SuppressFBWarnings("BC_UNCONFIRMED_CAST_OF_RETURN_VALUE")
 	@Test void nullBodyElement()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
@@ -81,7 +79,6 @@ public class SchemaPatchesTest
 				e.getCause().getMessage());
 	}
 
-	@SuppressFBWarnings("BC_UNCONFIRMED_CAST_OF_RETURN_VALUE")
 	@Test void emptyBodyElement()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();

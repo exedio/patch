@@ -175,7 +175,6 @@ public abstract class SchemaPatch implements Patch
 		model.clearCache();
 	}
 
-	@SuppressFBWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE") // OK
 	private static int execute(
 			final Connection connection,
 			final String sql)
