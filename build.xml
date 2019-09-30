@@ -144,6 +144,7 @@
 				classname="org.junit.platform.console.ConsoleLauncher">
 			<arg line="--details ${test-details}" />
 			<arg line="--disable-ansi-colors" if:set="disable-ansi-colors" />
+			<jvmarg value="-XX:-ShowCodeDetailsInExceptionMessages" />
 			<classpath>
 				<pathelement location="build/classes/src" />
 				<pathelement location="build/classes/consolesrc" />
