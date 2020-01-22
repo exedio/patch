@@ -100,7 +100,7 @@ final class PatchMutex extends Item
 	 * @return null if there is no matching item.
 	 */
 	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="for")
-	private static final PatchMutex forId(final int id)
+	private static PatchMutex forId(final int id)
 	{
 		return PatchMutex.id.searchUnique(PatchMutex.class,id);
 	}
