@@ -33,6 +33,7 @@
 			<exclude org="javax.servlet" module="javax.servlet-api"/>
 		</dependency>
 		<!-- build dependencies -->
+		<dependency org="org.slf4j" name="slf4j-nop" rev="1.6.4" conf="instrument->default" />
 		<dependency org="ch.qos.logback" name="logback-classic" rev="1.0.4" conf="test->default" />
 		<dependency org="org.junit.jupiter"  name="junit-jupiter-api"      rev="5.3.2" conf="test->default; ide->sources" />
 		<dependency org="org.junit.jupiter"  name="junit-jupiter-engine"   rev="5.3.2" conf="test->default" />
