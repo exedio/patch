@@ -26,11 +26,15 @@
 	<target name="src.instrument" unless="skip.instrument">
 		<instrument
 				dir="${basedir}/src"
-				genericConstructorOneline="false"
-				javaxAnnotationGenerated="true"
 				verify="${instrument.verify}"
 				verbose="false">
-			<disableWrap>com.exedio.cope.IntegerField#searchUniqueStrict(java.lang.Class,int)</disableWrap>
+			<suppressWarnings>
+				<constructor>RedundantArrayCreation</constructor>
+				<constructor>RedundantSuppression</constructor>
+				<wrapper>FinalMethodInFinalClass</wrapper>
+				<wrapper>RedundantSuppression</wrapper>
+				<wrapper>UnnecessarilyQualifiedStaticUsage</wrapper>
+			</suppressWarnings>
 		</instrument>
 	</target>
 
@@ -47,15 +51,17 @@
 	<target name="testsrc.instrument" depends="src.compile" unless="skip.instrument">
 		<instrument
 				dir="${basedir}/testsrc"
-				genericConstructorOneline="false"
-				javaxAnnotationGenerated="true"
 				verify="${instrument.verify}"
 				verbose="false">
 			<classpath>
 				<pathelement location="build/classes/src" />
 				<fileset dir="lib/test" />
 			</classpath>
-			<disableWrap>com.exedio.cope.IntegerField#searchUniqueStrict(java.lang.Class,int)</disableWrap>
+			<suppressWarnings>
+				<wrapper>FinalMethodInFinalClass</wrapper>
+				<wrapper>RedundantSuppression</wrapper>
+				<wrapper>UnnecessarilyQualifiedStaticUsage</wrapper>
+			</suppressWarnings>
 		</instrument>
 	</target>
 

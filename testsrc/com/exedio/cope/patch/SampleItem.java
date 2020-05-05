@@ -61,7 +61,7 @@ public final class SampleItem extends Item
 	 * @throws com.exedio.cope.MandatoryViolationException if patch is null.
 	 * @throws com.exedio.cope.StringLengthViolationException if patch, transactionName, mutexHost, mutexSavepoint violates its length constraint.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @WrapperType(constructor=...) and @WrapperInitial
+	@com.exedio.cope.instrument.Generated // customize with @WrapperType(constructor=...) and @WrapperInitial
 	private SampleItem(
 				final java.lang.String patch,
 				final java.lang.String transactionName,
@@ -85,16 +85,14 @@ public final class SampleItem extends Item
 	/**
 	 * Creates a new SampleItem and sets the given fields initially.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @WrapperType(genericConstructor=...)
-	private SampleItem(final com.exedio.cope.SetValue<?>... setValues)
-	{
-		super(setValues);
-	}
+	@com.exedio.cope.instrument.Generated // customize with @WrapperType(genericConstructor=...)
+	private SampleItem(final com.exedio.cope.SetValue<?>... setValues){super(setValues);}
 
 	/**
 	 * Returns the value of {@link #patch}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final java.lang.String getPatch()
 	{
 		return SampleItem.patch.get(this);
@@ -103,7 +101,8 @@ public final class SampleItem extends Item
 	/**
 	 * Returns the value of {@link #number}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final int getNumber()
 	{
 		return SampleItem.number.getMandatory(this);
@@ -114,16 +113,32 @@ public final class SampleItem extends Item
 	 * @param number shall be equal to field {@link #number}.
 	 * @return null if there is no matching item.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="for")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="for")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	static final SampleItem forNumber(final int number)
 	{
 		return SampleItem.number.searchUnique(SampleItem.class,number);
 	}
 
 	/**
+	 * Finds a sampleItem by its {@link #number}.
+	 * @param number shall be equal to field {@link #number}.
+	 * @throws java.lang.IllegalArgumentException if there is no matching item.
+	 */
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="forStrict")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
+	static final SampleItem forNumberStrict(final int number)
+			throws
+				java.lang.IllegalArgumentException
+	{
+		return SampleItem.number.searchUniqueStrict(SampleItem.class,number);
+	}
+
+	/**
 	 * Returns the value of {@link #transactionName}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final java.lang.String getTransactionName()
 	{
 		return SampleItem.transactionName.get(this);
@@ -132,7 +147,8 @@ public final class SampleItem extends Item
 	/**
 	 * Returns the value of {@link #mutexHost}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final java.lang.String getMutexHost()
 	{
 		return SampleItem.mutexHost.get(this);
@@ -141,7 +157,8 @@ public final class SampleItem extends Item
 	/**
 	 * Returns the value of {@link #mutexSavepoint}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final java.lang.String getMutexSavepoint()
 	{
 		return SampleItem.mutexSavepoint.get(this);
@@ -150,25 +167,26 @@ public final class SampleItem extends Item
 	/**
 	 * Returns the value of {@link #mutexNumberOfPatches}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final int getMutexNumberOfPatches()
 	{
 		return SampleItem.mutexNumberOfPatches.getMandatory(this);
 	}
 
-	@javax.annotation.Generated("com.exedio.cope.instrument")
+	@com.exedio.cope.instrument.Generated
 	private static final long serialVersionUID = 1l;
 
 	/**
 	 * The persistent type information for sampleItem.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @WrapperType(type=...)
+	@com.exedio.cope.instrument.Generated // customize with @WrapperType(type=...)
 	public static final com.exedio.cope.Type<SampleItem> TYPE = com.exedio.cope.TypesBound.newType(SampleItem.class);
 
 	/**
 	 * Activation constructor. Used for internal purposes only.
 	 * @see com.exedio.cope.Item#Item(com.exedio.cope.ActivationParameters)
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument")
+	@com.exedio.cope.instrument.Generated
 	private SampleItem(final com.exedio.cope.ActivationParameters ap){super(ap);}
 }

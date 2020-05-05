@@ -38,6 +38,7 @@ final class PatchMutex extends Item
 	private static final Integer THE_ONE_OBJECT = THE_ONE;
 
 	@Wrapper(wrap="get", visibility=NONE)
+	@Wrapper(wrap="forStrict", visibility=NONE)
 	@SuppressWarnings("unused")
 	private static final IntegerField id =
 		new IntegerField().toFinal().unique().
@@ -67,7 +68,8 @@ final class PatchMutex extends Item
 	 * @throws com.exedio.cope.IntegerRangeViolationException if numberOfPatches violates its range constraint.
 	 * @throws com.exedio.cope.StringLengthViolationException if host, savepoint violates its length constraint.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @WrapperType(constructor=...) and @WrapperInitial
+	@com.exedio.cope.instrument.Generated // customize with @WrapperType(constructor=...) and @WrapperInitial
+	@java.lang.SuppressWarnings({"RedundantArrayCreation","RedundantSuppression"})
 	PatchMutex(
 				final int stage,
 				final java.lang.String host,
@@ -88,18 +90,16 @@ final class PatchMutex extends Item
 	/**
 	 * Creates a new PatchMutex and sets the given fields initially.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @WrapperType(genericConstructor=...)
-	private PatchMutex(final com.exedio.cope.SetValue<?>... setValues)
-	{
-		super(setValues);
-	}
+	@com.exedio.cope.instrument.Generated // customize with @WrapperType(genericConstructor=...)
+	private PatchMutex(final com.exedio.cope.SetValue<?>... setValues){super(setValues);}
 
 	/**
 	 * Finds a patchMutex by it's {@link #id}.
 	 * @param id shall be equal to field {@link #id}.
 	 * @return null if there is no matching item.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="for")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="for")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	private static PatchMutex forId(final int id)
 	{
 		return PatchMutex.id.searchUnique(PatchMutex.class,id);
@@ -108,7 +108,8 @@ final class PatchMutex extends Item
 	/**
 	 * Returns the value of {@link #stage}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final int getStage()
 	{
 		return PatchMutex.stage.getMandatory(this);
@@ -117,7 +118,8 @@ final class PatchMutex extends Item
 	/**
 	 * Returns the value of {@link #host}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final java.lang.String getHost()
 	{
 		return PatchMutex.host.get(this);
@@ -126,7 +128,8 @@ final class PatchMutex extends Item
 	/**
 	 * Returns the value of {@link #savepoint}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final java.lang.String getSavepoint()
 	{
 		return PatchMutex.savepoint.get(this);
@@ -135,7 +138,8 @@ final class PatchMutex extends Item
 	/**
 	 * Returns the value of {@link #numberOfPatches}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final int getNumberOfPatches()
 	{
 		return PatchMutex.numberOfPatches.getMandatory(this);
@@ -144,25 +148,26 @@ final class PatchMutex extends Item
 	/**
 	 * Returns the value of {@link #finished}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final java.util.Date getFinished()
 	{
 		return PatchMutex.finished.get(this);
 	}
 
-	@javax.annotation.Generated("com.exedio.cope.instrument")
+	@com.exedio.cope.instrument.Generated
 	private static final long serialVersionUID = 1l;
 
 	/**
 	 * The persistent type information for patchMutex.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @WrapperType(type=...)
+	@com.exedio.cope.instrument.Generated // customize with @WrapperType(type=...)
 	static final com.exedio.cope.Type<PatchMutex> TYPE = com.exedio.cope.TypesBound.newType(PatchMutex.class);
 
 	/**
 	 * Activation constructor. Used for internal purposes only.
 	 * @see com.exedio.cope.Item#Item(com.exedio.cope.ActivationParameters)
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument")
+	@com.exedio.cope.instrument.Generated
 	private PatchMutex(final com.exedio.cope.ActivationParameters ap){super(ap);}
 }

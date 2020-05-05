@@ -66,7 +66,8 @@ final class PatchRun extends Item
 	 * @throws com.exedio.cope.StringLengthViolationException if patch, host, savepoint violates its length constraint.
 	 * @throws com.exedio.cope.UniqueViolationException if patch is not unique.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @WrapperType(constructor=...) and @WrapperInitial
+	@com.exedio.cope.instrument.Generated // customize with @WrapperType(constructor=...) and @WrapperInitial
+	@java.lang.SuppressWarnings({"RedundantArrayCreation","RedundantSuppression"})
 	PatchRun(
 				final java.lang.String patch,
 				final int stage,
@@ -93,16 +94,14 @@ final class PatchRun extends Item
 	/**
 	 * Creates a new PatchRun and sets the given fields initially.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @WrapperType(genericConstructor=...)
-	private PatchRun(final com.exedio.cope.SetValue<?>... setValues)
-	{
-		super(setValues);
-	}
+	@com.exedio.cope.instrument.Generated // customize with @WrapperType(genericConstructor=...)
+	private PatchRun(final com.exedio.cope.SetValue<?>... setValues){super(setValues);}
 
 	/**
 	 * Returns the value of {@link #patch}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final java.lang.String getPatch()
 	{
 		return PatchRun.patch.get(this);
@@ -113,7 +112,8 @@ final class PatchRun extends Item
 	 * @param patch shall be equal to field {@link #patch}.
 	 * @return null if there is no matching item.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="for")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="for")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	static final PatchRun forPatch(final java.lang.String patch)
 	{
 		return PatchRun.patch.searchUnique(PatchRun.class,patch);
@@ -124,7 +124,8 @@ final class PatchRun extends Item
 	 * @param patch shall be equal to field {@link #patch}.
 	 * @throws java.lang.IllegalArgumentException if there is no matching item.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="forStrict")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="forStrict")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	static final PatchRun forPatchStrict(final java.lang.String patch)
 			throws
 				java.lang.IllegalArgumentException
@@ -135,7 +136,8 @@ final class PatchRun extends Item
 	/**
 	 * Returns the value of {@link #stage}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final int getStage()
 	{
 		return PatchRun.stage.getMandatory(this);
@@ -144,7 +146,8 @@ final class PatchRun extends Item
 	/**
 	 * Returns the value of {@link #isTransactionally}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final boolean getIsTransactionally()
 	{
 		return PatchRun.isTransactionally.getMandatory(this);
@@ -153,7 +156,8 @@ final class PatchRun extends Item
 	/**
 	 * Returns the value of {@link #host}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final java.lang.String getHost()
 	{
 		return PatchRun.host.get(this);
@@ -162,7 +166,8 @@ final class PatchRun extends Item
 	/**
 	 * Returns the value of {@link #savepoint}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final java.lang.String getSavepoint()
 	{
 		return PatchRun.savepoint.get(this);
@@ -171,7 +176,8 @@ final class PatchRun extends Item
 	/**
 	 * Returns the value of {@link #finished}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final java.util.Date getFinished()
 	{
 		return PatchRun.finished.get(this);
@@ -180,25 +186,26 @@ final class PatchRun extends Item
 	/**
 	 * Returns the value of {@link #elapsed}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final long getElapsed()
 	{
 		return PatchRun.elapsed.getMandatory(this);
 	}
 
-	@javax.annotation.Generated("com.exedio.cope.instrument")
+	@com.exedio.cope.instrument.Generated
 	private static final long serialVersionUID = 1l;
 
 	/**
 	 * The persistent type information for patchRun.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @WrapperType(type=...)
+	@com.exedio.cope.instrument.Generated // customize with @WrapperType(type=...)
 	static final com.exedio.cope.Type<PatchRun> TYPE = com.exedio.cope.TypesBound.newType(PatchRun.class);
 
 	/**
 	 * Activation constructor. Used for internal purposes only.
 	 * @see com.exedio.cope.Item#Item(com.exedio.cope.ActivationParameters)
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument")
+	@com.exedio.cope.instrument.Generated
 	private PatchRun(final com.exedio.cope.ActivationParameters ap){super(ap);}
 }

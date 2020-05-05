@@ -49,7 +49,8 @@ final class SchemaPatchRun extends Item
 	 * @throws com.exedio.cope.MandatoryViolationException if patch, sql is null.
 	 * @throws com.exedio.cope.StringLengthViolationException if patch, sql violates its length constraint.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @WrapperType(constructor=...) and @WrapperInitial
+	@com.exedio.cope.instrument.Generated // customize with @WrapperType(constructor=...) and @WrapperInitial
+	@java.lang.SuppressWarnings({"RedundantArrayCreation","RedundantSuppression"})
 	SchemaPatchRun(
 				final java.lang.String patch,
 				final int position,
@@ -73,16 +74,14 @@ final class SchemaPatchRun extends Item
 	/**
 	 * Creates a new SchemaPatchRun and sets the given fields initially.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @WrapperType(genericConstructor=...)
-	private SchemaPatchRun(final com.exedio.cope.SetValue<?>... setValues)
-	{
-		super(setValues);
-	}
+	@com.exedio.cope.instrument.Generated // customize with @WrapperType(genericConstructor=...)
+	private SchemaPatchRun(final com.exedio.cope.SetValue<?>... setValues){super(setValues);}
 
 	/**
 	 * Returns the value of {@link #patch}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final java.lang.String getPatch()
 	{
 		return SchemaPatchRun.patch.get(this);
@@ -91,7 +90,8 @@ final class SchemaPatchRun extends Item
 	/**
 	 * Returns the value of {@link #position}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final int getPosition()
 	{
 		return SchemaPatchRun.position.getMandatory(this);
@@ -100,7 +100,8 @@ final class SchemaPatchRun extends Item
 	/**
 	 * Returns the value of {@link #sql}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final java.lang.String getSql()
 	{
 		return SchemaPatchRun.sql.get(this);
@@ -109,7 +110,8 @@ final class SchemaPatchRun extends Item
 	/**
 	 * Returns the value of {@link #finished}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final java.util.Date getFinished()
 	{
 		return SchemaPatchRun.finished.get(this);
@@ -118,7 +120,8 @@ final class SchemaPatchRun extends Item
 	/**
 	 * Returns the value of {@link #rows}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final int getRows()
 	{
 		return SchemaPatchRun.rows.getMandatory(this);
@@ -127,25 +130,26 @@ final class SchemaPatchRun extends Item
 	/**
 	 * Returns the value of {@link #elapsed}.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @Wrapper(wrap="get")
+	@com.exedio.cope.instrument.Generated // customize with @Wrapper(wrap="get")
+	@java.lang.SuppressWarnings({"FinalMethodInFinalClass","RedundantSuppression","UnnecessarilyQualifiedStaticUsage"})
 	final long getElapsed()
 	{
 		return SchemaPatchRun.elapsed.getMandatory(this);
 	}
 
-	@javax.annotation.Generated("com.exedio.cope.instrument")
+	@com.exedio.cope.instrument.Generated
 	private static final long serialVersionUID = 1l;
 
 	/**
 	 * The persistent type information for schemaPatchRun.
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument") // customize with @WrapperType(type=...)
+	@com.exedio.cope.instrument.Generated // customize with @WrapperType(type=...)
 	static final com.exedio.cope.Type<SchemaPatchRun> TYPE = com.exedio.cope.TypesBound.newType(SchemaPatchRun.class);
 
 	/**
 	 * Activation constructor. Used for internal purposes only.
 	 * @see com.exedio.cope.Item#Item(com.exedio.cope.ActivationParameters)
 	 */
-	@javax.annotation.Generated("com.exedio.cope.instrument")
+	@com.exedio.cope.instrument.Generated
 	private SchemaPatchRun(final com.exedio.cope.ActivationParameters ap){super(ap);}
 }
