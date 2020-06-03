@@ -29,6 +29,7 @@ timestamps
 				env.PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
 
 				sh "rm -rf " + env.HOME  + "/.Idea*"
+				sh "rm -rf " + env.HOME  + "/.cache/JetBrains"
 				sh "rm -rf " + env.HOME  + "/.config/JetBrains"
 
 				sh "/" + idea + "/bin/inspect.sh " + env.WORKSPACE + " 'Project Default' idea-inspection-output"
