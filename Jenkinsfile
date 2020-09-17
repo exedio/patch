@@ -1,7 +1,7 @@
 
 timestamps
 {
-	def jdk = 'openjdk-8-deb9'
+	def jdk = 'openjdk-8'
 	def isRelease = env.BRANCH_NAME.toString().equals("master")
 
 	properties([
@@ -12,7 +12,7 @@ timestamps
 	])
 
 	//noinspection GroovyAssignabilityCheck
-	node(jdk)
+	node('docker')
 	{
 		try
 		{
@@ -23,16 +23,26 @@ timestamps
 
 				def buildTag = makeBuildTag(checkout(scm))
 
-				env.JAVA_HOME = tool type: 'jdk', name: jdk
-				env.PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
-
-				sh "ant/bin/ant -noinput clean jenkins" +
-						' "-Dbuild.revision=${BUILD_NUMBER}"' +
-						' "-Dbuild.tag=' + buildTag + '"' +
-						' -Dbuild.status=' + (isRelease?'release':'integration') +
-						' -Dinstrument.verify=true' +
-						' -Ddisable-ansi-colors=true' +
-						' -Dfindbugs.output=xml'
+				def dockerName = env.JOB_NAME.replace("/", "-") + "-" + env.BUILD_NUMBER
+				def dockerDate = new Date().format("yyyyMMdd")
+				def mainImage = docker.build(
+						'exedio-jenkins:' + dockerName + '-' + dockerDate,
+						'--build-arg JDK=' + jdk + ' ' +
+						'conf/main')
+				mainImage.inside(
+						"--name '" + dockerName + "' " +
+						"--hostname mydockerhostname " + // needed for InetAddress.getLocalHost()
+						"--add-host mydockerhostname:127.0.0.1 " + // needed for InetAddress.getLocalHost()
+						"--network none")
+				{
+					sh "ant/bin/ant -noinput clean jenkins" +
+							' "-Dbuild.revision=${BUILD_NUMBER}"' +
+							' "-Dbuild.tag=' + buildTag + '"' +
+							' -Dbuild.status=' + (isRelease?'release':'integration') +
+							' -Dinstrument.verify=true' +
+							' -Ddisable-ansi-colors=true' +
+							' -Dfindbugs.output=xml'
+				}
 
 				recordIssues(
 						enabledForFailure: true,
