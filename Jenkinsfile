@@ -31,6 +31,8 @@ timestamps
 						'conf/main')
 				mainImage.inside(
 						"--name '" + dockerName + "' " +
+						"--cap-drop all " +
+						"--security-opt no-new-privileges " +
 						"--hostname mydockerhostname " + // needed for InetAddress.getLocalHost()
 						"--add-host mydockerhostname:127.0.0.1 " + // needed for InetAddress.getLocalHost()
 						"--network none")
