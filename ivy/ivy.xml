@@ -17,6 +17,7 @@
 		<conf name="changelog" />
 		<conf visibility="private" name="instrument" />
 		<conf visibility="private" name="test" extends="runtime" />
+		<conf visibility="private" name="ant" />
 		<conf visibility="private" name="findbugs" />
 		<conf visibility="private" name="ide" extends="runtime,test"
 				description="classpath for IDEs such as Eclipse and IntelliJ, includes java sources and changelogs" />
@@ -33,6 +34,7 @@
 			<exclude org="javax.servlet" module="javax.servlet-api"/>
 		</dependency>
 		<!-- build dependencies -->
+		<dependency org="org.apache.ant" name="ant" rev="1.10.9" conf="ant->default" />
 		<dependency org="org.slf4j" name="slf4j-nop" rev="1.6.4" conf="instrument->default" />
 		<dependency org="ch.qos.logback" name="logback-classic" rev="1.0.4" conf="test->default" />
 		<dependency org="org.junit.jupiter"  name="junit-jupiter-api"      rev="5.3.2" conf="test->default; ide->sources" />
