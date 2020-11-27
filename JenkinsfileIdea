@@ -27,6 +27,7 @@ timestamps
 				checkout scm
 
 				recordIssues(
+						failOnError: true,
 						enabledForFailure: true,
 						ignoreFailedBuilds: false,
 						qualityGates: [[threshold: 1, type: 'TOTAL_HIGH', unstable: true]],
@@ -58,6 +59,7 @@ timestamps
 				archiveArtifacts 'idea-inspection-output/**'
 				sh "rm idea-inspection-output/SpellCheckingInspection.xml"
 				recordIssues(
+						failOnError: true,
 						enabledForFailure: true,
 						ignoreFailedBuilds: false,
 						qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]],
