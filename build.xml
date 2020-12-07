@@ -94,6 +94,7 @@
 				<pathelement location="build/classes/testsrc" />
 				<fileset dir="lib/test" />
 			</classpath>
+			<arg line="--fail-if-no-tests" />
 			<arg line="--scan-class-path build/classes/testsrc" unless:set="test" />
 			<arg line="--select-class ${test}" if:set="test" />
 			<arg line="--reports-dir build/testresults" />
