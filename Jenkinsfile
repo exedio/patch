@@ -85,7 +85,7 @@ timestamps
 					allowEmptyResults: false,
 					testResults: 'build/testresults/*.xml',
 			)
-			def to = emailextrecipients([culprits(), requestor()])
+			def to = emailextrecipients([isRelease ? culprits() : developers(), requestor()])
 			//TODO details
 			step([$class: 'Mailer',
 					recipients: to,
