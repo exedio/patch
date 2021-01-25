@@ -17,7 +17,6 @@
         <CLASSES>
           <root url="file://$MODULE_DIR$/lib/ide" />
           <root url="jar://$MODULE_DIR$/lib/instrument/exedio-cope-instrument-annotations.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/findbugs/spotbugs-annotations.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>

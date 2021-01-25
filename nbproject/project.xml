@@ -9,7 +9,7 @@
             <!-- Do not use Project Properties customizer when editing this file manually. -->
             <name>copepatch</name>
             <properties>
-					<property name="libraries">lib/exedio-cope.jar:lib/exedio-cope-src.zip:lib/exedio-cope-util.jar:lib/exedio-cope-util.jar-src.zip:lib/slf4j-api.jar:lib/findbugs-annotations.jar</property>
+					<property name="libraries">lib/exedio-cope.jar:lib/exedio-cope-src.zip:lib/exedio-cope-util.jar:lib/exedio-cope-util.jar-src.zip:lib/slf4j-api.jar</property>
 				</properties>
             <folders>
                 <source-folder>

@@ -31,7 +31,6 @@ import com.exedio.cope.SchemaInfo;
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.JobContext;
 import com.exedio.cope.util.JobContexts;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -138,7 +137,6 @@ public class RevisionPatchTest extends CopeModel4Test
 		}
 	}
 
-	@SuppressFBWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 	private static void save(final RevisionInfoRevise revision) throws SQLException
 	{
 		final Model model = PatchRun.TYPE.getModel();

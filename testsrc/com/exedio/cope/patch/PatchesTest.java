@@ -27,10 +27,8 @@ import com.exedio.cope.MandatoryViolationException;
 import com.exedio.cope.StringCharSetViolationException;
 import com.exedio.cope.StringLengthViolationException;
 import com.exedio.cope.util.AssertionErrorJobContext;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.jupiter.api.Test;
 
-@SuppressFBWarnings("NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS")
 public class PatchesTest
 {
 	@Test void patchNull()

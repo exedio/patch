@@ -42,8 +42,7 @@ timestamps
 							' "-Dbuild.tag=' + buildTag + '"' +
 							' -Dbuild.status=' + (isRelease?'release':'integration') +
 							' -Dinstrument.verify=true' +
-							' -Ddisable-ansi-colors=true' +
-							' -Dfindbugs.output=xml'
+							' -Ddisable-ansi-colors=true'
 				}
 
 				recordIssues(
@@ -53,7 +52,6 @@ timestamps
 						qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]],
 						tools: [
 							java(),
-							spotBugs(pattern: 'build/findbugs.xml', useRankAsPriority: true),
 						],
 				)
 				archiveArtifacts 'build/success/*'

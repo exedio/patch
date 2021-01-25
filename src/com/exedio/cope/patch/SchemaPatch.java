@@ -29,7 +29,6 @@ import com.exedio.cope.TransactionTry;
 import com.exedio.cope.misc.Arrays;
 import com.exedio.cope.util.JobContext;
 import com.exedio.dsmf.SQLRuntimeException;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -138,7 +137,6 @@ public abstract class SchemaPatch implements Patch
 	}
 
 	@Override
-	@SuppressFBWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
 	public final void run(final JobContext ctx)
 	{
 		final String id = getID();

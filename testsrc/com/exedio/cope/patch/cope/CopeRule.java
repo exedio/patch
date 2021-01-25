@@ -22,7 +22,6 @@ import static java.util.Objects.requireNonNull;
 
 import com.exedio.cope.ConnectProperties;
 import com.exedio.cope.Model;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -46,7 +45,6 @@ public final class CopeRule implements
 		ConnectProperties getConnectProperties();
 	}
 
-	@SuppressFBWarnings("UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR")
 	private Model model;
 
 	@Override
