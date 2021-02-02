@@ -23,7 +23,7 @@ timestamps
 
 				def buildTag = makeBuildTag(checkout(scm))
 
-				def dockerName = env.JOB_NAME.replace("/", "-") + "-" + env.BUILD_NUMBER
+				def dockerName = env.JOB_NAME.replace("/", "-").replace(" ", "_") + "-" + env.BUILD_NUMBER
 				def dockerDate = new Date().format("yyyyMMdd")
 				def mainImage = docker.build(
 						'exedio-jenkins:' + dockerName + '-' + dockerDate,

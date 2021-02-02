@@ -43,7 +43,7 @@ timestamps
 						],
 				)
 
-				def dockerName = env.JOB_NAME.replace("/", "-") + "-" + env.BUILD_NUMBER
+				def dockerName = env.JOB_NAME.replace("/", "-").replace(" ", "_") + "-" + env.BUILD_NUMBER
 				docker.
 					build(
 						'exedio-jenkins:' + dockerName + '-' + new Date().format("yyyyMMdd"),
