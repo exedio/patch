@@ -153,6 +153,8 @@ public abstract class SchemaPatch implements Patch
 				final String sql = body[position];
 				if(logger.isInfoEnabled())
 					logger.info("{}/{}: {}", new Object[]{position+1, body.length, sql});
+				if(ctx.supportsMessage())
+					ctx.setMessage("SchemaPatch " + (position+1) + '/' + body.length + ' ' + sql);
 				final long start = nanoTime();
 				final int rows = execute(connection, sql);
 				final long elapsed = toMillies(nanoTime(), start);
@@ -163,6 +165,7 @@ public abstract class SchemaPatch implements Patch
 					new SchemaPatchRun(id, position, sql, rows, elapsed);
 					tx.commit();
 				}
+				ctx.incrementProgress();
 			}
 		}
 		catch(final SQLException e)
