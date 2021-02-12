@@ -81,9 +81,10 @@ final class Stage
 				final String id = entry.getKey();
 
 				ctx.stopIfRequested();
-				logger.info("s{} run {}/{} {}", new Object[]{stageNumber, numberOfPatch++, numberOfPatches, id});
+				logger.info("s{} run {}/{} {}", new Object[]{stageNumber, numberOfPatch, numberOfPatches, id});
 				if(ctx.supportsMessage())
-					ctx.setMessage("run s" + stageNumber + ' ' + id);
+					ctx.setMessage("run s" + stageNumber + ' ' + numberOfPatch + '/' + numberOfPatches + ' ' + id);
+				numberOfPatch++;
 
 				final Patch patch = entry.getValue();
 				final boolean isTransactionally = patch.isTransactionally();

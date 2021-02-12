@@ -181,8 +181,8 @@ public class PatchTest extends CopeModel4Test
 				"INFO run finished after 2 patches");
 		ctx.assertIt(
 				"stop()" +
-				"stop()" + "message(run s0 one)" + "progress()" +
-				"stop()" + "message(run s0 two)" + "progress()" );
+				"stop()" + "message(run s0 1/2 one)" + "progress()" +
+				"stop()" + "message(run s0 2/2 two)" + "progress()" );
 		final SampleItem one;
 		final SampleItem two;
 		{
@@ -226,7 +226,7 @@ public class PatchTest extends CopeModel4Test
 				"INFO run finished after 1 patches");
 		ctx.assertIt(
 				"stop()" +
-				"stop()" + "message(run s0 three)" + "progress()");
+				"stop()" + "message(run s0 1/1 three)" + "progress()");
 		{
 			final Iterator<SampleItem> items = items().iterator();
 			assertEquals(one, items.next());

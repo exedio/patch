@@ -97,7 +97,7 @@ public class SchemaPatchTest extends CopeModel4Test
 				"pt: INFO run finished after 1 patches");
 		ctx.assertIt(
 				"stop()" +
-				"stop()" + "message(run s0 patchId)" + "progress()");
+				"stop()" + "message(run s0 1/1 patchId)" + "progress()");
 		final Iterator<SchemaSampleItem> items = items().iterator();
 		assertIt("one", items.next());
 		assertIt("two", items.next());
