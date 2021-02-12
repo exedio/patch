@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import com.exedio.cope.Model;
 import com.exedio.cope.Query;
 import com.exedio.cope.junit.LogRule;
+import com.exedio.cope.patch.PatchTest.JC;
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.JobContext;
 import com.exedio.cope.util.JobContexts;
@@ -77,12 +78,13 @@ public class SchemaPatchTest extends CopeModel4Test
 		log.listen(Patches.class, "pt");
 		log.listen(SchemaPatch.class, "spt");
 		assertEquals(emptyList(), items());
+		final JC ctx = new JC();
 		final PatchesBuilder builder = new PatchesBuilder();
 		final SchemaPatch patch = patch("one", "two", "three");
 		builder.insertAtStart(patch);
 		final Patches patches = builder.build();
 		log.assertEvents();
-		assertEquals(1, run(patches, JobContexts.EMPTY));
+		assertEquals(1, run(patches, ctx));
 		log.assertEvents(
 				"pt: ERROR savepoint",
 				"pt: INFO s0 mutex seize for 1 patches",
@@ -93,6 +95,9 @@ public class SchemaPatchTest extends CopeModel4Test
 				"spt: INFO 3/3: INSERT INTO \"SchemaSampleItem\" ( \"this\", \"content\" ) VALUES ( 2, 'three' )",
 				"pt: INFO s0 mutex release",
 				"pt: INFO run finished after 1 patches");
+		ctx.assertIt(
+				"stop()" +
+				"stop()" + "message(run s0 patchId)" + "progress()");
 		final Iterator<SchemaSampleItem> items = items().iterator();
 		assertIt("one", items.next());
 		assertIt("two", items.next());
