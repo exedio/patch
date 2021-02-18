@@ -13,8 +13,10 @@
 	</info>
 	<configurations>
 		<conf name="runtime" />
+		<conf name="console" />
 		<conf name="sources" />
 		<conf name="changelog" />
+		<conf visibility="private" name="jspm" />
 		<conf visibility="private" name="instrument" />
 		<conf visibility="private" name="test" extends="runtime" />
 		<conf visibility="private" name="ant" />
@@ -42,5 +44,8 @@
 		<dependency org="org.junit.platform" name="junit-platform-console" rev="1.3.2" conf="test->default" />
 		<dependency org="org.apiguardian"    name="apiguardian-api"        rev="1.0.0" conf="test->default" />
 		<dependency org="com.google.code.findbugs" name="jsr305" rev="3.0.2" conf="jsr305->default" />
+		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" conf="console->default; ide->default,sources" />
+		<dependency org="com.exedio" name="cops"     rev="394" conf="console->runtime; ide->runtime,sources,changelog" />
+		<dependency org="com.exedio" name="jspm"     rev="202" conf="jspm->runtime; ide->changelog" />
 	</dependencies>
 </ivy-module>

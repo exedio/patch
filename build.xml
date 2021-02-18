@@ -23,6 +23,12 @@
 		</classpath>
 	</taskdef>
 
+	<taskdef resource="com/exedio/jspm/ant.properties" onerror="failall">
+		<classpath>
+			<fileset dir="lib/jspm" />
+		</classpath>
+	</taskdef>
+
 	<target name="src.instrument" unless="skip.instrument">
 		<instrument
 				dir="${basedir}/src"
@@ -75,6 +81,22 @@
 		</compile>
 	</target>
 
+	<target name="consolesrc.jspm">
+		<jspm>
+			<fileset dir="consolesrc" includes="**/*.jspm" />
+		</jspm>
+	</target>
+
+	<target name="consolesrc.compile" depends="src.compile,consolesrc.jspm">
+		<compile srcdir="consolesrc">
+			<classpath>
+				<fileset dir="lib/console" />
+				<fileset dir="lib/runtime" />
+				<pathelement location="build/classes/src" />
+			</classpath>
+		</compile>
+	</target>
+
 	<target name="checkAntIfUnless">
 		<property name="antSupportsGenericIfUnless" value="true"/>
 		<fail message="ant 1.9.1 required: https://ant.apache.org/manual/ifunless.html" unless:set="antSupportsGenericIfUnless"/>
@@ -103,7 +125,9 @@
 		</java>
 	</target>
 
-	<target name="jar" depends="src.compile">
+	<target name="jar" depends="jar.runtime, jar.console" />
+
+	<target name="jar.runtime" depends="src.compile">
 		<jar jarfile="build/exedio-cope-patch.jar" filesonly="true" duplicate="fail" strict="fail" level="9">
 			<fileset dir="build/classes/src" />
 			<manifest>
@@ -119,10 +143,28 @@
 		<plot file="build/exedio-cope-patch.jar" />
 	</target>
 
+	<target name="jar.console" depends="consolesrc.compile">
+		<jar jarfile="build/exedio-cope-patch-console.jar" filesonly="true" duplicate="fail" strict="fail" level="9">
+			<fileset dir="build/classes/consolesrc" />
+			<manifest>
+				<attribute name="Specification-Title" value="exedio cope patch console" />
+				<attribute name="Specification-Version" value="${build.tag}" />
+				<attribute name="Specification-Vendor" value="exedio GmbH" />
+				<attribute name="Implementation-Title" value="exedio cope patch console" />
+				<attribute name="Implementation-Version" value="${build.tag}" />
+				<attribute name="Implementation-Vendor" value="exedio GmbH" />
+			</manifest>
+		</jar>
+		<plot file="build/exedio-cope-patch-console.jar" />
+	</target>
+
 	<target name="jar.src">
 		<mkdir dir="build" />
 		<zip destfile="build/exedio-cope-patch-src.zip" filesonly="true" whenempty="fail" duplicate="fail" level="9">
 			<zipfileset dir="${basedir}/src"><include name="**/*.java"/><exclude name="**/*_Jspm.java" /></zipfileset>
+			<zipfileset dir="${basedir}/consolesrc">
+				<include name="**/*.java" />
+			</zipfileset>
 		</zip>
 		<plot file="build/exedio-cope-patch-src.zip" />
 	</target>
@@ -130,6 +172,9 @@
 	<target name="clean">
 		<delete>
 			<fileset dir="src"><!-- not created anymore -->
+				<include name="**/*_Jspm.java" />
+			</fileset>
+			<fileset dir="consolesrc"><!-- not created anymore -->
 				<include name="**/*_Jspm.java" />
 			</fileset>
 		</delete>
@@ -141,7 +186,7 @@
 
 	<target name="instrument" depends="src.instrument, testsrc.instrument" />
 
-	<target name="compile" depends="src.compile, testsrc.compile" />
+	<target name="compile" depends="src.compile, consolesrc.compile, testsrc.compile" />
 
 	<target name="api">
 		<api title="cope patch">
@@ -156,6 +201,8 @@
 		</api>
 	</target>
 
+	<target name="src" depends="consolesrc.jspm" description="creates all sources, so the IDE does not complain" />
+
 	<target name="build"
 			depends="compile, test, jar" />
 
@@ -165,6 +212,7 @@
 	<target name="jenkins" depends="all">
 		<copy todir="${basedir}/build/success">
 			<fileset file="${basedir}/build/exedio-cope-patch.jar" />
+			<fileset file="${basedir}/build/exedio-cope-patch-console.jar" />
 			<fileset file="${basedir}/build/exedio-cope-patch-src.zip" />
 			<fileset file="${basedir}/exedio-cope-patch-log.txt" />
 		</copy>

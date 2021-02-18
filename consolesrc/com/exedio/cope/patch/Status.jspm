@@ -1,0 +1,12 @@
+<%
+package com.exedio.cope.patch;
+
+
+final class Job_Jspm
+{
+	static void write(final Out out)
+	{
+	%><h1><%="Patches"%></h1><%
+	}
+}
+%>
