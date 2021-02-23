@@ -275,7 +275,7 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 					"Model: Connected.",
 					call.getDivContent("modelStatus"));
 			assertThat(call.getDivContent("mutexStatus"), matchesPattern(
-					"Mutex: Stage: 0 Patches: 2 Host: .+ Finished: .+ SavePoint: FAILURE: not supported by com.exedio.cope.HsqldbDialect"));
+					"Mutex: Stage: 0 Patches: 2 Host: .+ Finished: .+ SavePoint: NOT AVAILABLE: not supported by com.exedio.cope.HsqldbDialect"));
 			assertEquals(
 					"Patches: Failed",
 					call.getDivContent("patchesStatus"));
@@ -284,7 +284,7 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 					call.getGlobalActions());
 			assertEquals("Connected\n", requestGetStatus(servlet, "model"));
 			assertThat(requestGetStatus(servlet, "mutex"), matchesPattern(
-					"Stage: 0 Patches: 2 Host: .+ Finished: .+ SavePoint: FAILURE: not supported by com.exedio.cope.HsqldbDialect\\n"));
+					"Stage: 0 Patches: 2 Host: .+ Finished: .+ SavePoint: NOT AVAILABLE: not supported by com.exedio.cope.HsqldbDialect\\n"));
 			assertEquals("Failed\n", requestGetStatus(servlet, "patches"));
 			assertEquals("Ok\n", requestGetStatus(servlet, "schema"));
 		}

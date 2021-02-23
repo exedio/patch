@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.exedio.cope.Model;
 import com.exedio.cope.Query;
+import com.exedio.cope.SchemaSavepointNotAvailableException;
 import com.exedio.cope.TransactionTry;
 import com.exedio.cope.util.JobContext;
 import java.net.InetAddress;
@@ -204,18 +205,22 @@ final class Stage
 		}
 	}
 
-	@SuppressWarnings("deprecation") // will be fixed immediately afterwards
 	private String getSavepoint(final Model model)
 	{
 		final String result;
 		try
 		{
-			result = model.getSchemaSavepoint();
+			result = model.getSchemaSavepointNew();
 		}
 		catch(final SQLException e)
 		{
 			logger.error("savepoint", e);
 			return "FAILURE: " + e.getMessage();
+		}
+		catch(final SchemaSavepointNotAvailableException e)
+		{
+			logger.warn("savepoint {}", e.getMessage());
+			return "NOT AVAILABLE: " + e.getMessage();
 		}
 		logger.info("s{} savepoint {}", stageNumber, result);
 		return result;

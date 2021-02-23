@@ -75,7 +75,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(1, run(patches, JobContexts.EMPTY));
 		log.assertEvents(
 				"INFO run initiated by PatchTestInitiator",
-				"ERROR savepoint",
+				"WARN savepoint not supported by com.exedio.cope.HsqldbDialect",
 				"INFO s0 mutex seize for 1 patches",
 				"INFO s0 run 1/1 one",
 				"INFO s0 mutex release",
@@ -116,7 +116,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(1, run(patches, JobContexts.EMPTY));
 		log.assertEvents(
 				"INFO run initiated by PatchTestInitiator",
-				"ERROR savepoint",
+				"WARN savepoint not supported by com.exedio.cope.HsqldbDialect",
 				"INFO s0 mutex seize for 1 patches",
 				"INFO s0 run 1/1 one",
 				"INFO s0 mutex release",
@@ -141,7 +141,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(1, run(patches, JobContexts.EMPTY));
 		log.assertEvents(
 				"INFO run initiated by PatchTestInitiator",
-				"ERROR savepoint",
+				"WARN savepoint not supported by com.exedio.cope.HsqldbDialect",
 				"INFO s0 mutex seize for 1 patches",
 				"INFO s0 run 1/1 one",
 				"INFO s0 mutex release",
@@ -184,7 +184,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(2, run(patches, ctx));
 		log.assertEvents(
 				"INFO run initiated by PatchTestInitiator",
-				"ERROR savepoint",
+				"WARN savepoint not supported by com.exedio.cope.HsqldbDialect",
 				"INFO s0 mutex seize for 2 patches",
 				"INFO s0 run 1/2 one",
 				"INFO s0 run 2/2 two",
@@ -231,7 +231,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(1, run(patches2, ctx));
 		log.assertEvents(
 				"INFO run initiated by PatchTestInitiator",
-				"ERROR savepoint",
+				"WARN savepoint not supported by com.exedio.cope.HsqldbDialect",
 				"INFO s0 mutex seize for 1 patches",
 				"INFO s0 run 1/1 three",
 				"INFO s0 mutex release",
@@ -706,7 +706,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(id, actual.getPatch(), "id");
 		assertEquals(transactionName, actual.getTransactionName(), "transactionName");
 		assertEquals(getHost(), actual.getMutexHost(), "mutexHost");
-		assertEquals("FAILURE: not supported by com.exedio.cope.HsqldbDialect", actual.getMutexSavepoint(), "mutexSavepoint");
+		assertEquals("NOT AVAILABLE: not supported by com.exedio.cope.HsqldbDialect", actual.getMutexSavepoint(), "mutexSavepoint");
 		assertEquals(mutexNumberOfPatches, actual.getMutexNumberOfPatches(), "mutexNumberOfPatches");
 		return actual;
 	}
@@ -727,7 +727,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(0, actual.getStage(), "stage");
 		assertEquals(isTransactionally, actual.getIsTransactionally(), "isTransactionally");
 		assertEquals(getHost(), actual.getHost(), "host");
-		assertEquals("FAILURE: not supported by com.exedio.cope.HsqldbDialect", actual.getSavepoint(), "savepoint");
+		assertEquals("NOT AVAILABLE: not supported by com.exedio.cope.HsqldbDialect", actual.getSavepoint(), "savepoint");
 		return actual;
 	}
 
