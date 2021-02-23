@@ -204,6 +204,7 @@ final class Stage
 		}
 	}
 
+	@SuppressWarnings("deprecation") // will be fixed immediately afterwards
 	private String getSavepoint(final Model model)
 	{
 		final String result;

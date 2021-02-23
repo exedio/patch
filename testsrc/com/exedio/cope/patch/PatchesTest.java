@@ -68,7 +68,7 @@ public class PatchesTest
 			builder.insertAtStart(patch),
 			StringCharSetViolationException.class,
 			"character set violation, '01234\t6789' for CopePatchRun.patch, " +
-			"contains forbidden character '\t' on position 5.");
+			"contains forbidden character '\t' (U+0009) on position 5.");
 	}
 
 	@Test void idTrimmedStart()

@@ -706,7 +706,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(id, actual.getPatch(), "id");
 		assertEquals(transactionName, actual.getTransactionName(), "transactionName");
 		assertEquals(getHost(), actual.getMutexHost(), "mutexHost");
-		assertEquals("FAILURE: not supported", actual.getMutexSavepoint(), "mutexSavepoint");
+		assertEquals("FAILURE: not supported by com.exedio.cope.HsqldbDialect", actual.getMutexSavepoint(), "mutexSavepoint");
 		assertEquals(mutexNumberOfPatches, actual.getMutexNumberOfPatches(), "mutexNumberOfPatches");
 		return actual;
 	}
@@ -727,7 +727,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(0, actual.getStage(), "stage");
 		assertEquals(isTransactionally, actual.getIsTransactionally(), "isTransactionally");
 		assertEquals(getHost(), actual.getHost(), "host");
-		assertEquals("FAILURE: not supported", actual.getSavepoint(), "savepoint");
+		assertEquals("FAILURE: not supported by com.exedio.cope.HsqldbDialect", actual.getSavepoint(), "savepoint");
 		return actual;
 	}
 

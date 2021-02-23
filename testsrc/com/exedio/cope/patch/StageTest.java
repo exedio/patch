@@ -160,7 +160,7 @@ public class StageTest extends CopeModel4Test
 		assertEquals(stage, actual.getStage(), "stage");
 		assertEquals(true, actual.getIsTransactionally(), "isTransactionally");
 		assertEquals(getHost(), actual.getHost(), "host");
-		assertEquals("FAILURE: not supported", actual.getSavepoint(), "savepoint");
+		assertEquals("FAILURE: not supported by com.exedio.cope.HsqldbDialect", actual.getSavepoint(), "savepoint");
 		return actual;
 	}
 
