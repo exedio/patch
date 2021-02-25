@@ -19,13 +19,13 @@
 package com.exedio.cope.patch;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Objects.requireNonNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
-import java.util.Objects;
 
 public final class PatchesBuilder
 {
@@ -34,8 +34,7 @@ public final class PatchesBuilder
 
 	public void insertAtStart(final Patch patch)
 	{
-		if(patch==null)
-			throw new NullPointerException("patch");
+		requireNonNull(patch, "patch");
 
 		// NOTE
 		// this should be the only place in production code, where getID is called.
@@ -74,7 +73,7 @@ public final class PatchesBuilder
 	 */
 	public PatchesBuilder withDoneListener(final PatchesDoneListener listener)
 	{
-		Objects.requireNonNull(listener);
+		requireNonNull(listener);
 		if (doneListener != null)
 			throw new IllegalArgumentException("a doneListener >"+doneListener+"< is already set");
 

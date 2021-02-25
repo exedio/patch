@@ -18,6 +18,8 @@
 
 package com.exedio.cope.patch;
 
+import static java.util.Objects.requireNonNull;
+
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
 import java.util.ArrayList;
@@ -54,8 +56,7 @@ public final class Patches
 
 	public int run(final JobContext ctx)
 	{
-		if(ctx==null)
-			throw new NullPointerException("ctx");
+		requireNonNull(ctx, "ctx");
 
 		int result = 0;
 		for(final Stage stage : stages.values())

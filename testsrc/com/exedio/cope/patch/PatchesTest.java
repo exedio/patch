@@ -34,7 +34,6 @@ public class PatchesTest
 	@Test void patchNull()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
-		//noinspection ConstantConditions OK: testing bad API usage
 		assertFails(() ->
 			builder.insertAtStart(null),
 			NullPointerException.class, "patch");
