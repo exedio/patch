@@ -19,6 +19,7 @@
 package com.exedio.cope.patch;
 
 import static com.exedio.cope.misc.TimeUtil.toMillies;
+import static com.exedio.cope.util.Check.requireNonEmptyAndCopy;
 import static java.lang.System.nanoTime;
 
 import com.exedio.cope.ConstraintViolationException;
@@ -112,13 +113,8 @@ public abstract class SchemaPatch implements Patch
 		if(body!=null)
 			return body;
 
-		final String[] body = computeBody();
-		if(body==null)
-			throw new NullPointerException("body");
-		if(body.length==0)
-			throw new IllegalArgumentException("body must not be empty");
-
-		final String[] result = new String[body.length];
+		final String[] body =
+				requireNonEmptyAndCopy(computeBody(), "body");
 		for(int i = 0; i<body.length; i++)
 		{
 			try
@@ -129,11 +125,10 @@ public abstract class SchemaPatch implements Patch
 			{
 				throw new IllegalArgumentException("body[" + i + "]: " + e.getMessageWithoutFeature(), e);
 			}
-			result[i] = body[i];
 		}
 
-		this.body = result;
-		return result;
+		this.body = body;
+		return body;
 	}
 
 	@Override
