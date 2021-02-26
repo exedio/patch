@@ -114,7 +114,7 @@ public final class Patches
 	}
 
 	/**
-	 * Marks all patches as run, without actually running them.
+	 * Marks all open patches as run, without actually running them.
 	 * Is useful when you
 	 * {@link com.exedio.cope.Model#createSchema() created}
 	 * an empty schema.

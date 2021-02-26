@@ -211,6 +211,10 @@ final class Stage
 
 	void preempt()
 	{
+		final LinkedHashMap<String,Patch> patches = getPatchesPending();
+		if(patches.isEmpty())
+			return;
+
 		final String host = getHost();
 		final int numberOfPatches = patches.size();
 		final PatchMutex mutex = seizeMutex(host, null, numberOfPatches);

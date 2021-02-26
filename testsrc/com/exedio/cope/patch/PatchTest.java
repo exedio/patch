@@ -305,13 +305,12 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(true, isDone(patches));
 
 		log.assertEvents();
-		assertFails(() ->
-			preempt(patches),
-			UniqueViolationException.class,
-			"unique violation for CopePatchRun.patchImplicitUnique");
+
+		// test empty preempt
+		preempt(patches);
+
 		log.assertEvents(
-				"INFO preempt",
-				"INFO s0 mutex seize for 3 patches");
+				"INFO preempt");
 		{
 			final Iterator<PatchRun> runs = runs().iterator();
 			assertEquals(runOne  , runs.next());
@@ -320,6 +319,30 @@ public class PatchTest extends CopeModel4Test
 			assertFalse(runs.hasNext());
 		}
 		assertEquals(true, isDone(patches));
+
+		// test preempt continue
+		final PatchesBuilder builder2 = new PatchesBuilder();
+		builder2.insertAtStart(newSamplePatchNonTx("nonTx"));
+		builder2.insertAtStart(newSamplePatch("two"));
+		builder2.insertAtStart(newSamplePatch("one"));
+		builder2.insertAtStart(newSamplePatch("three"));
+		final Patches patches2 = builder2.build();
+		assertEquals(false, isDone(patches2));
+		log.assertEvents();
+		preempt(patches2);
+		log.assertEvents(
+				"INFO preempt",
+				"INFO s0 mutex seize for 1 patches",
+				"INFO s0 mutex release");
+		{
+			final Iterator<PatchRun> runs = runs().iterator();
+			assertEquals(runOne  , runs.next());
+			assertEquals(runTwo  , runs.next());
+			assertEquals(runNonTx, runs.next());
+			assertPreempt("three", true, runs.next());
+			assertFalse(runs.hasNext());
+		}
+		assertEquals(true, isDone(patches2));
 	}
 
 	@Test void preemptWithListener(final LogRule log)
