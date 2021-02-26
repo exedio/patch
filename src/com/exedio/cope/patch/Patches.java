@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
@@ -125,6 +126,25 @@ public final class Patches
 		for(final Stage stage : stages.values())
 			stage.preempt();
 		notifyListener();
+	}
+
+	/**
+	 * Marks the patch with given id as run.
+	 *
+	 * @return true if it was marked by the method or false if the patch has been
+	 *         already run (or preempted)
+	 * @throws NoSuchElementException if there is no patch with given id.
+	 */
+	boolean preempt(final String id)
+	{
+		requireNonNull(id, "id");
+		logger.info("preempt {}", id);
+		for (final Stage stage : stages.values())
+		{
+			if (stage.getPatches().containsKey(id))
+				return stage.preempt(id);
+		}
+		throw new NoSuchElementException("Patch with id " + id + " does not exist");
 	}
 
 

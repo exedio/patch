@@ -20,6 +20,7 @@ package com.exedio.cope.patch;
 
 import static com.exedio.cope.misc.TimeUtil.toMillies;
 import static java.lang.System.nanoTime;
+import static java.util.Objects.requireNonNull;
 
 import com.exedio.cope.Model;
 import com.exedio.cope.Query;
@@ -233,6 +234,35 @@ final class Stage
 		releaseMutex(mutex);
 	}
 
+	boolean preempt(final String patchId)
+	{
+		final Patch patch = patches.get(patchId);
+		requireNonNull(patch); // cannot happen, is tested by calling code
+
+		final boolean patchRunExists;
+		try (TransactionTry tx = startTransaction("query"))
+		{
+			patchRunExists = PatchRun.forPatch(patchId) != null;
+			tx.commit();
+		}
+
+		if (patchRunExists)
+			return false;
+
+		final String host = getHost();
+		final PatchMutex mutex = seizeMutex(host, null, 1);
+
+		try (TransactionTry tx = startTransaction("preempt"))
+		{
+			//noinspection ResultOfObjectAllocationIgnored persistent object
+			new PatchRun(patchId, stageNumber, patch.isTransactionally(), host);
+			tx.commit();
+		}
+
+		releaseMutex(mutex);
+
+		return true;
+	}
 
 	Map<String,Patch> getPatches()
 	{

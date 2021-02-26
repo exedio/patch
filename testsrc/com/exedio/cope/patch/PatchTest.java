@@ -23,6 +23,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.exedio.cope.Model;
 import com.exedio.cope.Query;
@@ -38,6 +39,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -369,6 +371,41 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(true, listener.patchesDone);
 	}
 
+	@Test void preemptSingle(final LogRule log)
+	{
+		log.listen(Patches.class);
+		assertEquals(emptyList(), runs());
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.insertAtStart(newSamplePatchNonTx("nonTx"));
+		builder.insertAtStart(newSamplePatch("theBadPatch"));
+		builder.insertAtStart(newSamplePatch("one"));
+		final Patches patches = builder.build();
+
+		assertEquals(false, isDone(patches));
+		assertTrue(preemptSingle(patches, "theBadPatch"));
+		log.assertEvents(
+				"INFO preempt theBadPatch",
+				"INFO s0 mutex seize for 1 patches",
+				"INFO s0 mutex release");
+
+		final Iterator<PatchRun> runs = runs().iterator();
+		assertPreempt("theBadPatch", true, runs.next());
+		assertFalse(runs.hasNext());
+
+		assertEquals(false, isDone(patches));
+
+		assertFalse(preemptSingle(patches, "theBadPatch"));
+		log.assertEvents(
+				"INFO preempt theBadPatch");
+
+		assertEquals(false, isDone(patches));
+
+		assertFails(
+				() -> preemptSingle(patches, "doesNotExist"),
+				NoSuchElementException.class,
+				"Patch with id doesNotExist does not exist");
+	}
+
 	@SuppressWarnings({"DuplicateExpressions", "RedundantSuppression"})
 	@Test void failure()
 	{
@@ -607,6 +644,22 @@ public class PatchTest extends CopeModel4Test
 			MODEL.startTransaction(PatchTest.class.getName());
 		}
 		assertEquals(0, PatchMutex.TYPE.newQuery().total());
+	}
+
+	private static boolean preemptSingle(final Patches patches, final String id)
+	{
+		MODEL.commit();
+		boolean result;
+		try
+		{
+			result = patches.preempt(id);
+		}
+		finally
+		{
+			MODEL.startTransaction(PatchTest.class.getName());
+		}
+		assertEquals(0, PatchMutex.TYPE.newQuery().total());
+		return result;
 	}
 
 	private static SamplePatch newSamplePatch(final String id)
