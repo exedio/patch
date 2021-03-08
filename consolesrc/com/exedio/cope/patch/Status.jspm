@@ -2,7 +2,7 @@
 package com.exedio.cope.patch;
 
 
-final class Job_Jspm
+final class Status_Jspm
 {
 	static void write(final Out out)
 	{

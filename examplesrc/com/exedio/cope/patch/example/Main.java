@@ -1,0 +1,28 @@
+
+package com.exedio.cope.patch.example;
+
+import com.exedio.cope.Model;
+import com.exedio.cope.patch.Patches;
+
+/**
+ *
+ *
+ */
+public class Main
+{
+
+	public static final Model model = initializeModel();
+
+	static
+	{
+		model.enableSerialization(Main.class, "model");
+	}
+
+	private static Model initializeModel()
+	{
+		return Model.builder().
+			add(new RevisionsFactory()).
+			add(Patches.types).
+			build();
+	}
+}

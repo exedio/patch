@@ -97,6 +97,22 @@
 		</compile>
 	</target>
 
+	<target name="examplesrc.jspm">
+		<jspm>
+			<fileset dir="examplesrc" includes="**/*.jspm" />
+		</jspm>
+	</target>
+
+	<target name="examplesrc.compile" depends="consolesrc.compile,examplesrc.jspm">
+		<compile srcdir="examplesrc">
+			<classpath>
+				<fileset dir="lib/example" />
+				<pathelement location="build/classes/src" />
+				<pathelement location="build/classes/consolesrc" />
+			</classpath>
+		</compile>
+	</target>
+
 	<target name="checkAntIfUnless">
 		<property name="antSupportsGenericIfUnless" value="true"/>
 		<fail message="ant 1.9.1 required: https://ant.apache.org/manual/ifunless.html" unless:set="antSupportsGenericIfUnless"/>
@@ -169,24 +185,82 @@
 		<plot file="build/exedio-cope-patch-src.zip" />
 	</target>
 
+	<target name="web" depends="examplesrc.compile">
+		<copy todir="build/web/WEB-INF/classes">
+			<fileset dir="build/classes/src" />
+			<fileset dir="build/classes/examplesrc" />
+			<fileset dir="build/classes/consolesrc" />
+		</copy>
+		<copy todir="build/web/WEB-INF/lib">
+			<fileset file="lib/example/*.jar" />
+		</copy>
+		<copy todir="build/web/WEB-INF" file="exampleconf/web.xml" />
+		<copy todir="build/web" file="exampleconf/index.html" />
+	</target>
+
+	<target name="catalina" depends="web">
+		<property name="catalina.root" value="apache-tomcat-8.5.63" />
+		<echo message="Decompressing Tomcat"/>
+		<untar src="lib/example/tomcat-tar.gz.tar.gz"
+				 compression="gzip"
+				 dest="${basedir}">
+			<patternset>
+				<exclude name="${catalina.root}/conf/server.xml" />
+				<exclude name="${catalina.root}/conf/tomcat-users.xml" />
+				<exclude name="${catalina.root}/webapps/ROOT/**" />
+				<exclude name="${catalina.root}/webapps/docs/**" />
+				<exclude name="${catalina.root}/webapps/examples/**" />
+			</patternset>
+			<mapper type="glob" from="${catalina.root}/*" to="tomcat/*" />
+		</untar>
+		<replace file="tomcat/bin/catalina.sh">
+			<replacetoken><![CDATA[$CATALINA_OPTS \]]></replacetoken>
+			<replacevalue><![CDATA[$CATALINA_OPTS -enableassertions\ -Djava.net.preferIPv4Stack="true"\]]></replacevalue>
+		</replace>
+		<replace file="tomcat/bin/catalina.bat">
+			<replacetoken><![CDATA[%CATALINA_OPTS% %]]></replacetoken>
+			<replacevalue><![CDATA[%CATALINA_OPTS% -enableassertions -Djava.net.preferIPv4Stack="true" %]]></replacevalue>
+		</replace>
+		<chmod dir="tomcat/bin" perm="ugo+x" includes="*.sh" />
+		<copy todir="tomcat/conf">
+			<fileset dir="exampleconf">
+				<include name="server.xml" />
+				<include name="tomcat-users.xml" />
+				<exclude name="context.xml" />
+			</fileset>
+		</copy>
+		<copy tofile="tomcat/conf/ROOT.properties" file="cope.properties" />
+	</target>
+
+	<target name="tomcat" depends="web, catalina">
+		<copy tofile="tomcat/conf/Catalina/localhost/ROOT.xml" file="exampleconf/context.xml" overwrite="true">
+			<filterset>
+				<filter token="PROPERTIES" value="${basedir}/tomcat/conf/ROOT.properties" />
+			</filterset>
+		</copy>
+	</target>
+
 	<target name="clean">
 		<delete>
 			<fileset dir="src"><!-- not created anymore -->
 				<include name="**/*_Jspm.java" />
 			</fileset>
-			<fileset dir="consolesrc"><!-- not created anymore -->
+			<fileset dir="consolesrc">
+				<include name="**/*_Jspm.java" />
+			</fileset>
+			<fileset dir="examplesrc">
 				<include name="**/*_Jspm.java" />
 			</fileset>
 		</delete>
 		<delete dir="build" />
 		<delete dir="webtestweb/WEB-INF/classes" /><!-- not created anymore -->
 		<delete dir="webtestweb/WEB-INF/lib" /><!-- not created anymore -->
-		<delete dir="tomcat" /><!-- not created anymore -->
+		<delete dir="tomcat" />
 	</target>
 
 	<target name="instrument" depends="src.instrument, testsrc.instrument" />
 
-	<target name="compile" depends="src.compile, consolesrc.compile, testsrc.compile" />
+	<target name="compile" depends="src.compile, consolesrc.compile, testsrc.compile, examplesrc.compile" />
 
 	<target name="api">
 		<api title="cope patch">
@@ -201,7 +275,7 @@
 		</api>
 	</target>
 
-	<target name="src" depends="consolesrc.jspm" description="creates all sources, so the IDE does not complain" />
+	<target name="src" depends="consolesrc.jspm,examplesrc.jspm" description="creates all sources, so the IDE does not complain" />
 
 	<target name="build"
 			depends="compile, test, jar" />

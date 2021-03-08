@@ -19,6 +19,7 @@
 		<conf visibility="private" name="jspm" />
 		<conf visibility="private" name="instrument" />
 		<conf visibility="private" name="test" extends="runtime" />
+		<conf visibility="private" name="example" extends="runtime,console" />
 		<conf visibility="private" name="ant" />
 		<conf visibility="private" name="jsr305" />
 		<conf visibility="private" name="ide" extends="runtime,test"
@@ -31,7 +32,7 @@
 	</publications>
 	<dependencies>
 		<dependency org="com.exedio" name="copeutil" rev="823" conf="runtime->runtime; ide->runtime,sources,changelog" />
-		<dependency org="com.exedio" name="cope" rev="10337" conf="runtime->runtime; test->hsqldb; instrument->instrument; ide->sources,changelog">
+		<dependency org="com.exedio" name="cope" rev="10337" conf="runtime->runtime; test->hsqldb; example->hsqldb; instrument->instrument; ide->sources,changelog">
 			<exclude org="com.exedio" module="copeservletutil" />
 			<exclude org="javax.servlet" module="javax.servlet-api"/>
 		</dependency>
@@ -47,5 +48,10 @@
 		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" conf="console->default; ide->default,sources" />
 		<dependency org="com.exedio" name="cops"     rev="394" conf="console->runtime; ide->runtime,sources,changelog" />
 		<dependency org="com.exedio" name="jspm"     rev="202" conf="jspm->runtime; ide->changelog" />
+		<dependency org="org.apache.tomcat" name="tomcat" rev="8.5.63" conf="example->default">
+			<artifact name="tomcat" type="tar.gz" />
+		</dependency>
+		<dependency org="com.exedio" name="copeconsole" rev="7051" conf="example->runtime" />
+		<dependency org="com.exedio" name="copeservletutil" rev="71" conf="example->runtime; ide->runtime,sources,changelog" />
 	</dependencies>
 </ivy-module>
