@@ -25,7 +25,9 @@ package com.exedio.cope.patch.example;
 import static com.exedio.cope.misc.ConnectToken.setProperties;
 
 import com.exedio.cope.ConnectProperties;
+import com.exedio.cope.misc.ConnectToken;
 import com.exedio.cope.servletutil.ServletSource;
+import com.exedio.dsmf.Node;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -33,10 +35,21 @@ import javax.servlet.ServletContextListener;
 public final class WebappListener implements ServletContextListener
 {
 	@Override
+	@SuppressWarnings("try") // ConnectToken#issue
 	public void contextInitialized(final ServletContextEvent sce)
 	{
 		final ServletContext ctx = sce.getServletContext();
 		setProperties(Main.model, ConnectProperties.create(ServletSource.create(ctx)));
+		// All example patches act on tables which are not part of the model, so we can create the model here
+		try(ConnectToken ct = ConnectToken.issue(Main.model, "renew schema"))
+		{
+			final boolean schemaHasIssues = Main.model.getVerifiedSchema().getCumulativeColor() != Node.Color.OK;
+			if (schemaHasIssues)
+			{
+				Main.model.tearDownSchema();
+				Main.model.createSchema();
+			}
+		}
 	}
 
 

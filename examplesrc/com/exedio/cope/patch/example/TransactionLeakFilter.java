@@ -46,16 +46,9 @@ public final class TransactionLeakFilter implements Filter
 
 	private final Model model = Main.model;
 
-	/**
-	 * @param name the {@link com.exedio.cope.Transaction#getName() name} of the transaction.
-	 */
-	private boolean ignoreTransactionName(final String name)
-	{
-		return (name!=null && name.startsWith("copeview") );
-	}
 
 	@Override
-	public final void doFilter(
+	public void doFilter(
 			final ServletRequest request,
 			final ServletResponse response,
 			final FilterChain chain)
@@ -74,13 +67,13 @@ public final class TransactionLeakFilter implements Filter
 	}
 
 	@Override
-	public final void init(final FilterConfig filterConfig)
+	public void init(final FilterConfig filterConfig)
 	{
 		logger.warn("init");
 	}
 
 	@Override
-	public final void destroy()
+	public void destroy()
 	{
 		logger.warn("destroy");
 	}
@@ -144,25 +137,20 @@ public final class TransactionLeakFilter implements Filter
 
 		private boolean needsLog()
 		{
-			if(!logger.isWarnEnabled())
-				return false;
-
-			if(!model.hasCurrentTransaction())
-				return false;
-
-			final Transaction tx = model.currentTransaction();
-
-			final String name = tx.getName();
-			return ! ignoreTransactionName(name);
+			return logger.isWarnEnabled() && model.hasCurrentTransaction();
 		}
 
 		private void log(final String name)
 		{
 			final Transaction tx = model.currentTransaction();
-			logger.warn(
-				"transaction leaked: " + tx.getID() + " (" + tx.getName() + ")" +
-				" at " + request.getContextPath() + '-' + request.getServletPath() + '-' + request.getPathInfo() +
-				" in " + name + "()");
+			logger.warn(String.format(
+					"transaction leaked: %d (%s) at %s-%s-%s in %s ()",
+					tx.getID(),
+					tx.getName(),
+					request.getContextPath(),
+					request.getServletPath(),
+					request.getPathInfo(),
+					name ));
 		}
 	}
 }

@@ -39,17 +39,23 @@
 	<servlet>
 		<servlet-name>frontend</servlet-name>
 		<servlet-class>com.exedio.cope.patch.example.FrontendServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>frontend</servlet-name>
 		<url-pattern>/frontend/*</url-pattern>
 	</servlet-mapping>
+	<filter>
+		<filter-name>frontend-filter</filter-name> <!-- mandatory -->
+		<filter-class>com.exedio.cope.patch.example.FrontendServletFilter</filter-class> <!-- mandatory -->
+	</filter>
+	<filter-mapping>
+		<filter-name>frontend-filter</filter-name> <!-- mandatory -->
+		<servlet-name>frontend</servlet-name>
+	</filter-mapping>
 
 	<servlet>
 		<servlet-name>backoffice</servlet-name>
 		<servlet-class>com.exedio.cope.patch.example.BackofficeServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>backoffice</servlet-name>

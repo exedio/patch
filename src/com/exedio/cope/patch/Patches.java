@@ -186,4 +186,12 @@ public final class Patches
 		Collections.reverse(result);
 		return Collections.unmodifiableList(result);
 	}
+
+	Map<String,Patch> getPatches()
+	{
+		final LinkedHashMap<String,Patch> result = new LinkedHashMap<>();
+		for(final Stage stage : stages.values())
+			result.putAll(stage.getPatches());
+		return result;
+	}
 }

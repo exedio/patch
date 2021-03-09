@@ -8,8 +8,11 @@ import com.exedio.cope.patch.Patches;
  *
  *
  */
-public class Main
+public final class Main
 {
+	private Main()
+	{
+	}
 
 	public static final Model model = initializeModel();
 

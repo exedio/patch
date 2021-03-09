@@ -7,6 +7,22 @@ omit bug fixes.
 The items are sorted inversely, i.e. latest items are on top
 
 --------------------------------------------------------------------------
+* New PatchConsoleServlet in own ivy configuration 'console'.
+	To use the new patch console create a class like below in your project:
+
+		public class MainPatchConsoleServlet extends PatchConsoleServlet
+		{
+			public Patches getPatches()
+			{
+				return MainPatches.getPatches();
+			}
+		}
+
+	and add it to your web.xml.
+
+	BEWARE:
+	Restrict access to this servlet to technical administrators only.
+
 * Patches#isDone does not return false on concurrent isDone calls but waits until these calls are finished.
 * Patches#preempt can be executed multiple times.
 * PatchesBuilder#withDoneListener added
