@@ -146,20 +146,25 @@ final class Stage
 		}
 	}
 
-	boolean isDone()
+	DoneResult getDone()
 	{
 		final boolean lockAcquired = runLock.tryLock(); // returns immediately
 		if(!lockAcquired)
-			return false;
+			return DoneResult.RUNNING;
 
+		final LinkedHashMap<String,Patch> pending;
 		try
 		{
-			return getPatchesPending().isEmpty();
+			pending = getPatchesPending();
 		}
 		finally
 		{
 			runLock.unlock();
 		}
+		return
+				pending.isEmpty()
+				? DoneResult.DONE
+				: DoneResult.PENDING;
 	}
 
 	private LinkedHashMap<String,Patch> getPatchesPending()

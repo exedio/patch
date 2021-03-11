@@ -101,20 +101,26 @@ public final class Patches
 	 */
 	public boolean isDone()
 	{
+		return getDone().isDone();
+	}
+
+	DoneResult getDone()
+	{
 		// TODO there is no test for being not connected
 		if(!PatchRun.TYPE.getModel().isConnected())
-			return false;
+			return DoneResult.NOT_CONNECTED;
 
 		synchronized(doneLock)
 		{
 			for(final Stage stage : stages.values())
 			{
-				if(!stage.isDone())
-					return false;
+				final DoneResult stageResult = stage.getDone();
+				if(!stageResult.isDone())
+					return stageResult;
 			}
 		}
 
-		return true;
+		return DoneResult.DONE;
 	}
 
 	/**

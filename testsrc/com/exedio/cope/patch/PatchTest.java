@@ -621,14 +621,17 @@ public class PatchTest extends CopeModel4Test
 	{
 		MODEL.commit();
 		boolean result;
+		DoneResult done;
 		try
 		{
 			result = patches.isDone();
+			done = patches.getDone();
 		}
 		finally
 		{
 			MODEL.startTransaction(PatchTest.class.getName());
 		}
+		assertEquals(result, done.isDone(), done.name());
 		return result;
 	}
 
