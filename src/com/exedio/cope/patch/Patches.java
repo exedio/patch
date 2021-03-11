@@ -40,6 +40,7 @@ public final class Patches
 	private final TreeMap<Integer,Stage> stages;
 	private final PatchesDoneListener doneListener;
 	private final AtomicBoolean doneListenerNotified = new AtomicBoolean(false);
+	private final Object doneLock = new Object();
 
 	Patches(final LinkedHashMap<String,Patch> patchesDescending,
 			  final PatchesDoneListener doneListener)
@@ -92,7 +93,6 @@ public final class Patches
 	 * <ul>
 	 * <li>There is at least one pending patch.</li>
 	 * <li>Method {@link #run(JobContext) run} is currently executed by another thread.</li>
-	 * <li>This method {@code isDone} is currently executed by another thread.</li>
 	 * <li>The model containing the {@link Patches#types types} of the patch framework
 	 *     is not yet {@link com.exedio.cope.Model#isConnected() connected}.</li>
 	 * </ul>
@@ -105,10 +105,13 @@ public final class Patches
 		if(!PatchRun.TYPE.getModel().isConnected())
 			return false;
 
-		for(final Stage stage : stages.values())
+		synchronized(doneLock)
 		{
-			if(!stage.isDone())
-				return false;
+			for(final Stage stage : stages.values())
+			{
+				if(!stage.isDone())
+					return false;
+			}
 		}
 
 		return true;
