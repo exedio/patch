@@ -7,6 +7,8 @@ omit bug fixes.
 The items are sorted inversely, i.e. latest items are on top
 
 --------------------------------------------------------------------------
+* Patches#isDone does not return false on concurrent isDone calls but waits until these calls are finished.
+* Patches#preempt can be executed multiple times.
 * PatchesBuilder#withDoneListener added
 * Patch ID is required to contain printable ASCII characters only and must be trimmed.
 * RevisionPatch added.
