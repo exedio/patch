@@ -54,13 +54,14 @@
 		</compile>
 	</target>
 
-	<target name="testsrc.instrument" depends="src.compile" unless="skip.instrument">
+	<target name="testsrc.instrument" depends="src.compile, consolesrc.compile" unless="skip.instrument">
 		<instrument
 				dir="${basedir}/testsrc"
 				verify="${instrument.verify}"
 				verbose="false">
 			<classpath>
 				<pathelement location="build/classes/src" />
+				<pathelement location="build/classes/consolesrc" />
 				<fileset dir="lib/test" />
 			</classpath>
 			<suppressWarnings>
@@ -71,10 +72,11 @@
 		</instrument>
 	</target>
 
-	<target name="testsrc.compile" depends="src.compile, testsrc.instrument">
+	<target name="testsrc.compile" depends="src.compile, consolesrc.compile, testsrc.instrument">
 		<compile srcdir="testsrc">
 			<classpath>
 				<pathelement location="build/classes/src" />
+				<pathelement location="build/classes/consolesrc" />
 				<fileset dir="lib/test" />
 				<pathelement location="lib/instrument/exedio-cope-instrument-annotations.jar" />
 			</classpath>
@@ -97,13 +99,7 @@
 		</compile>
 	</target>
 
-	<target name="examplesrc.jspm">
-		<jspm>
-			<fileset dir="examplesrc" includes="**/*.jspm" />
-		</jspm>
-	</target>
-
-	<target name="examplesrc.compile" depends="consolesrc.compile,examplesrc.jspm">
+	<target name="examplesrc.compile" depends="consolesrc.compile">
 		<compile srcdir="examplesrc">
 			<classpath>
 				<fileset dir="lib/example" />
@@ -128,6 +124,7 @@
 			<arg line="--disable-ansi-colors" if:set="disable-ansi-colors" />
 			<classpath>
 				<pathelement location="build/classes/src" />
+				<pathelement location="build/classes/consolesrc" />
 				<pathelement location="build/classes/testsrc" />
 				<fileset dir="lib/test" />
 			</classpath>
@@ -248,9 +245,6 @@
 			<fileset dir="consolesrc">
 				<include name="**/*_Jspm.java" />
 			</fileset>
-			<fileset dir="examplesrc">
-				<include name="**/*_Jspm.java" />
-			</fileset>
 		</delete>
 		<delete dir="build" />
 		<delete dir="webtestweb/WEB-INF/classes" /><!-- not created anymore -->
@@ -275,7 +269,7 @@
 		</api>
 	</target>
 
-	<target name="src" depends="consolesrc.jspm,examplesrc.jspm" description="creates all sources, so the IDE does not complain" />
+	<target name="src" depends="consolesrc.jspm" description="creates all sources, so the IDE does not complain" />
 
 	<target name="build"
 			depends="compile, test, jar" />

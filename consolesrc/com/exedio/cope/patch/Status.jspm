@@ -32,19 +32,18 @@ final class Status_Jspm
 		<h1>Patches</h1>
 
 		<h3>Status</h3>
-		Model:
 <%
 		if (servlet.isConnected())
 		{
-			%>Connected.<br><%
+			%><div id="modelStatus">Model: Connected.</div><%
 		}
 		else
 		{
-			%>Not connected. Connect to see status of mutex and patch runs.<br><%
+			%><div id="modelStatus">Model: Not connected. Connect to see status of mutex and patch runs.</div><%
 		}
 %>
-		Mutex: <%=servlet.getPatchMutexInfo()%><br>
-		Patches: <%=servlet.getPatchInfo()%>
+		<div id="mutexStatus">Mutex: <%=servlet.getPatchMutexInfo()%></div>
+		<div id="patchesStatus">Patches: <%=servlet.getPatchInfo()%></div>
 
 		<h3>Actions</h3>
 <%

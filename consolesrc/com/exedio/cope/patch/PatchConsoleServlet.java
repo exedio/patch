@@ -182,7 +182,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 
 	void connect()
 	{
-		if (connectToken == null)
+		if (!isConnected())
 		{
 			connectToken = ServletUtil.getConnectedModel(this);
 		}
@@ -221,7 +221,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 		{
 			final List<PatchMutex> seachResult = PatchMutex.TYPE.search();
 			final PatchMutex mutex = seachResult.isEmpty() ? null : seachResult.get(0);
-			return tx.commit( mutex == null ? "none"
+			return tx.commit( mutex == null ? "None"
 					: String.format(Locale.ENGLISH, "Stage: %d Patches: %d Host: %s Finished: %tF %tT SavePoint: %s",
 							mutex.getStage(), mutex.getNumberOfPatches(), mutex.getHost(), mutex.getFinished(),
 							mutex.getFinished(), mutex.getSavepoint()));
