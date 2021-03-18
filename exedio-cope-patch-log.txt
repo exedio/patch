@@ -7,6 +7,11 @@ omit bug fixes.
 The items are sorted inversely, i.e. latest items are on top
 
 --------------------------------------------------------------------------
+
+* Patches#run and Patches#preempt want a new PatchInitiator to log where patch executions are triggered.
+    Default factory method is PatchInitiator.createFromStackTrace() which inspects the execution stack, but we strongly recommend
+    to use one Method of ServletPatchInitiatorUtil to determine the Servlet or servlet.Filter which causes the patch run,
+    optionally together with the logged in user from a HttpServletRequest
 * New PatchConsoleServlet in own ivy configuration 'console'.
 	To use the new patch console create a class like below in your project:
 

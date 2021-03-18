@@ -98,7 +98,7 @@ public class StageTest extends CopeModel4Test
 		int result;
 		try
 		{
-			result = patches.run(ctx);
+			result = patches.run(ctx, new PatchInitiator("StageTestInitiator"));
 		}
 		finally
 		{

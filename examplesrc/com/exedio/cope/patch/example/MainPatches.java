@@ -25,6 +25,8 @@ package com.exedio.cope.patch.example;
 import com.exedio.cope.misc.ConnectToken;
 import com.exedio.cope.misc.ServletUtil;
 import com.exedio.cope.patch.Patch;
+import com.exedio.cope.patch.PatchInitiator;
+import com.exedio.cope.patch.ServletPatchInitiatorUtil;
 import com.exedio.cope.patch.Patches;
 import com.exedio.cope.patch.PatchesBuilder;
 import com.exedio.cope.patch.SchemaPatch;
@@ -72,9 +74,9 @@ public final class MainPatches
 		});
 	}
 
-	public static void run()
+	public static void run(final PatchInitiator initiator)
 	{
-		patches.run(new EmptyJobContext());
+		patches.run(new EmptyJobContext(), initiator);
 	}
 
 	public static Patches getPatches()
@@ -90,7 +92,7 @@ public final class MainPatches
 				throw new IllegalArgumentException("" + result.getModel() + ' ' + Main.model);
 
 			Main.model.reviseIfSupportedAndAutoEnabled();
-			run();
+			run(ServletPatchInitiatorUtil.create(servlet.getServletConfig()));
 		});
 		// DO NOT WRITE ANYTHING HERE, BUT IN returnOnFailureOf ABOVE ONLY
 		// OTHERWISE ConnectTokens MAY BE LOST

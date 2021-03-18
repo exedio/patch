@@ -13,12 +13,12 @@
 	</context-param>
 
 	<servlet>
-		<servlet-name>patch</servlet-name>
+		<servlet-name>patchConsole</servlet-name>
 		<servlet-class>com.exedio.cope.patch.example.MainPatchConsoleServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>patch</servlet-name>
+		<servlet-name>patchConsole</servlet-name>
 		<url-pattern>/patch/*</url-pattern>
 	</servlet-mapping>
 
@@ -28,11 +28,11 @@
 	</welcome-file-list>
 
 	<servlet>
-		<servlet-name>console</servlet-name>
+		<servlet-name>copeConsole</servlet-name>
 		<servlet-class>com.exedio.cope.console.ConsoleServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>console</servlet-name>
+		<servlet-name>copeConsole</servlet-name>
 		<url-pattern>/console/*</url-pattern>
 	</servlet-mapping>
 
@@ -62,6 +62,24 @@
 		<url-pattern>/backoffice/*</url-pattern>
 	</servlet-mapping>
 
+
+	<servlet>
+		<servlet-name>frontendRestricted</servlet-name>
+		<servlet-class>com.exedio.cope.patch.example.FrontendServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>frontendRestricted</servlet-name>
+		<url-pattern>/frontendRestricted/*</url-pattern>
+	</servlet-mapping>
+	<filter>
+		<filter-name>frontendRestricted-filter</filter-name> <!-- mandatory -->
+		<filter-class>com.exedio.cope.patch.example.FrontendServletFilter</filter-class> <!-- mandatory -->
+	</filter>
+	<filter-mapping>
+		<filter-name>frontendRestricted-filter</filter-name> <!-- mandatory -->
+		<servlet-name>frontendRestricted</servlet-name>
+	</filter-mapping>
+
 	<filter>
 		<filter-name>transaction-leak</filter-name>
 		<filter-class>com.exedio.cope.patch.example.TransactionLeakFilter</filter-class>
@@ -77,6 +95,10 @@
 
 	<security-constraint>
 		<web-resource-collection><web-resource-name/><url-pattern>/patch/*</url-pattern></web-resource-collection>
+		<auth-constraint><role-name>admin</role-name></auth-constraint>
+	</security-constraint>
+	<security-constraint>
+		<web-resource-collection><web-resource-name/><url-pattern>/frontendRestricted/*</url-pattern></web-resource-collection>
 		<auth-constraint><role-name>admin</role-name></auth-constraint>
 	</security-constraint>
 	<login-config>

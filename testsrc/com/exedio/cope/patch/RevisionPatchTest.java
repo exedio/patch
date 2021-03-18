@@ -162,7 +162,7 @@ public class RevisionPatchTest extends CopeModel4Test
 		MODEL.commit();
 		try
 		{
-			patches.run(ctx);
+			patches.run(ctx, new PatchInitiator("RevisionPatchTestInitiator"));
 		}
 		finally
 		{

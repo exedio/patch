@@ -9,4 +9,10 @@
 			value="@PROPERTIES@"
 	/>
 
+	<Resources cachingAllowed="false">
+		<PreResources base="${catalina.home}/conf/logback.xml"
+			className="org.apache.catalina.webresources.FileResourceSet"
+			webAppMount="/WEB-INF/classes/logback.xml"/>
+	</Resources>
+
 </Context>

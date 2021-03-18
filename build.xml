@@ -222,6 +222,7 @@
 		<copy todir="tomcat/conf">
 			<fileset dir="exampleconf">
 				<include name="server.xml" />
+				<include name="logback.xml" />
 				<include name="tomcat-users.xml" />
 				<exclude name="context.xml" />
 			</fileset>

@@ -56,9 +56,21 @@ public final class Patches
 		this.doneListener = doneListener;
 	}
 
+	/**
+	 * @deprecated use {@link #run(JobContext, PatchInitiator)}
+	 * For PatchInitiator creation see {@link PatchInitiator#createFromStackTrace()} or ServletPatchInitiatorUtil
+	 */
+	@Deprecated
 	public int run(final JobContext ctx)
 	{
+		return run(ctx, PatchInitiator.createFromStackTrace());
+	}
+
+	public int run(final JobContext ctx, final PatchInitiator initiator)
+	{
 		requireNonNull(ctx, "ctx");
+		requireNonNull(initiator, "initiator");
+		logger.info("run initiated by {}", initiator.getInitiator());
 
 		int result = 0;
 		for(final Stage stage : stages.values())
@@ -124,14 +136,25 @@ public final class Patches
 	}
 
 	/**
+	 * @deprecated use {@link #preempt(PatchInitiator)}
+	 * For PatchInitiator creation see {@link PatchInitiator#createFromStackTrace()} or ServletPatchInitiatorUtil
+	 */
+	@Deprecated
+	public void preempt()
+	{
+		preempt(PatchInitiator.createFromStackTrace());
+	}
+
+	/**
 	 * Marks all open patches as run, without actually running them.
 	 * Is useful when you
 	 * {@link com.exedio.cope.Model#createSchema() created}
 	 * an empty schema.
 	 */
-	public void preempt()
+	public void preempt(final PatchInitiator initiator)
 	{
-		logger.info("preempt");
+		requireNonNull(initiator, "initiator");
+		logger.info("preempt initiated by {}", initiator.getInitiator());
 		for(final Stage stage : stages.values())
 			stage.preempt();
 		notifyListener();
@@ -144,10 +167,11 @@ public final class Patches
 	 *         already run (or preempted)
 	 * @throws NoSuchElementException if there is no patch with given id.
 	 */
-	boolean preempt(final String id)
+	boolean preempt(final String id, final PatchInitiator initiator)
 	{
 		requireNonNull(id, "id");
-		logger.info("preempt {}", id);
+		requireNonNull(initiator, "initiator");
+		logger.info("preempt {} initiated by {}", id, initiator.getInitiator());
 		for (final Stage stage : stages.values())
 		{
 			if (stage.getPatches().containsKey(id))

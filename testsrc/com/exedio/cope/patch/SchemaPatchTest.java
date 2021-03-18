@@ -58,6 +58,7 @@ public class SchemaPatchTest extends CopeModel4Test
 		log.assertEvents();
 		assertEquals(1, run(patches, JobContexts.EMPTY));
 		log.assertEvents(
+				"pt: INFO run initiated by SchemaPatchTestInitiator",
 				"pt: ERROR savepoint",
 				"pt: INFO s0 mutex seize for 1 patches",
 				"pt: INFO s0 run 1/1 patchId",
@@ -86,6 +87,7 @@ public class SchemaPatchTest extends CopeModel4Test
 		log.assertEvents();
 		assertEquals(1, run(patches, ctx));
 		log.assertEvents(
+				"pt: INFO run initiated by SchemaPatchTestInitiator",
 				"pt: ERROR savepoint",
 				"pt: INFO s0 mutex seize for 1 patches",
 				"pt: INFO s0 run 1/1 patchId",
@@ -121,7 +123,7 @@ public class SchemaPatchTest extends CopeModel4Test
 		MODEL.commit();
 		try
 		{
-			return patches.run(ctx);
+			return patches.run(ctx, new PatchInitiator("SchemaPatchTestInitiator"));
 		}
 		finally
 		{

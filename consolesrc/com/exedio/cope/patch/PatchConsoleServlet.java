@@ -105,7 +105,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 			{
 				connect();
 				final Patches patches = getPatches();
-				patches.preempt();
+				patches.preempt(ServletPatchInitiatorUtil.create(getServletConfig(), request));
 			}
 			else if (PREEMPT_SINGLE_ACTION.equals(action))
 			{
@@ -114,11 +114,11 @@ public abstract class PatchConsoleServlet extends CopsServlet
 				if (id == null)
 					throw new NullPointerException("Request parameter " + PARAM_PATCH_ID + " must not be null");
 				final Patches patches = getPatches();
-				patches.preempt(id);
+				patches.preempt(id, ServletPatchInitiatorUtil.create(getServletConfig(), request));
 			}
 			else if (RUN_ACTION.equals(action))
 			{
-				executePatches(response);
+				executePatches(request, response);
 				return;
 			}
 
@@ -145,7 +145,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 	/**
 	 * Executes patches using the PatchExecutor and send a plain text output of the execution to client
 	 */
-	private void executePatches(final HttpServletResponse response)
+	private void executePatches(final HttpServletRequest request, final HttpServletResponse response)
 			throws IOException
 	{
 		response.setContentType("text/plain; charset=" + java.nio.charset.StandardCharsets.UTF_8.name());
@@ -159,7 +159,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 			final Patches patches = getPatches();
 			response.getWriter()
 						.println("Start patching, this will continue even if connection is interrupted.");
-			patches.run(execution);
+			patches.run(execution, ServletPatchInitiatorUtil.create(getServletConfig(), request));
 			execution.notifySuccess();
 		}
 		catch (final RuntimeException ex)
@@ -307,6 +307,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 			tx.commit();
 		}
 	}
+
 
 	/**
 	 * View class for a patch, identified by patch id and has sub views for the Java class of a patch

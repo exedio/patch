@@ -60,7 +60,7 @@ public class PatchesRealTest extends CopeModel4Test
 	{
 		assertEquals(DoneResult.PENDING, patches.getDone());
 		assertEquals(false, patches.isDone());
-		assertEquals(2, patches.run(JobContexts.EMPTY));
+		assertEquals(2, patches.run(JobContexts.EMPTY, new PatchInitiator("PatchesRealTestInitiator")));
 		assertEquals(DoneResult.DONE, patches.getDone());
 		assertEquals(true, patches.isDone());
 	}

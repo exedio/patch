@@ -69,6 +69,7 @@ public class PatchTest extends CopeModel4Test
 		log.assertEvents();
 		assertEquals(1, run(patches, JobContexts.EMPTY));
 		log.assertEvents(
+				"INFO run initiated by PatchTestInitiator",
 				"ERROR savepoint",
 				"INFO s0 mutex seize for 1 patches",
 				"INFO s0 run 1/1 one",
@@ -88,7 +89,7 @@ public class PatchTest extends CopeModel4Test
 		}
 		log.assertEvents();
 		assertEquals(0, run(patches, JobContexts.EMPTY));
-		log.assertEvents();
+		log.assertEvents("INFO run initiated by PatchTestInitiator");
 		assertEquals(asList(one), items());
 		assertEquals(asList(runOne), runs());
 		assertEquals(true, isDone(patches));
@@ -109,6 +110,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(false, listener.patchesDone);
 		assertEquals(1, run(patches, JobContexts.EMPTY));
 		log.assertEvents(
+				"INFO run initiated by PatchTestInitiator",
 				"ERROR savepoint",
 				"INFO s0 mutex seize for 1 patches",
 				"INFO s0 run 1/1 one",
@@ -133,6 +135,7 @@ public class PatchTest extends CopeModel4Test
 		log.assertEvents();
 		assertEquals(1, run(patches, JobContexts.EMPTY));
 		log.assertEvents(
+				"INFO run initiated by PatchTestInitiator",
 				"ERROR savepoint",
 				"INFO s0 mutex seize for 1 patches",
 				"INFO s0 run 1/1 one",
@@ -154,7 +157,7 @@ public class PatchTest extends CopeModel4Test
 
 		log.assertEvents();
 		assertEquals(0, run(patches, JobContexts.EMPTY));
-		log.assertEvents();
+		log.assertEvents("INFO run initiated by PatchTestInitiator");
 		assertEquals(asList(one), items());
 		assertEquals(asList(runOne), runs());
 		assertEquals(true, isDone(patches));
@@ -175,6 +178,7 @@ public class PatchTest extends CopeModel4Test
 		log.assertEvents();
 		assertEquals(2, run(patches, ctx));
 		log.assertEvents(
+				"INFO run initiated by PatchTestInitiator",
 				"ERROR savepoint",
 				"INFO s0 mutex seize for 2 patches",
 				"INFO s0 run 1/2 one",
@@ -205,7 +209,7 @@ public class PatchTest extends CopeModel4Test
 
 		log.assertEvents();
 		assertEquals(0, run(patches, ctx));
-		log.assertEvents();
+		log.assertEvents("INFO run initiated by PatchTestInitiator");
 		ctx.assertIt("");
 		assertEquals(asList(one, two), items());
 		assertEquals(asList(runOne, runTwo), runs());
@@ -221,6 +225,7 @@ public class PatchTest extends CopeModel4Test
 		log.assertEvents();
 		assertEquals(1, run(patches2, ctx));
 		log.assertEvents(
+				"INFO run initiated by PatchTestInitiator",
 				"ERROR savepoint",
 				"INFO s0 mutex seize for 1 patches",
 				"INFO s0 run 1/1 three",
@@ -293,7 +298,7 @@ public class PatchTest extends CopeModel4Test
 		log.assertEvents();
 		preempt(patches);
 		log.assertEvents(
-				"INFO preempt",
+				"INFO preempt initiated by PatchTestInitiator",
 				"INFO s0 mutex seize for 3 patches",
 				"INFO s0 mutex release");
 		final PatchRun runOne, runTwo, runNonTx;
@@ -312,7 +317,7 @@ public class PatchTest extends CopeModel4Test
 		preempt(patches);
 
 		log.assertEvents(
-				"INFO preempt");
+				"INFO preempt initiated by PatchTestInitiator");
 		{
 			final Iterator<PatchRun> runs = runs().iterator();
 			assertEquals(runOne  , runs.next());
@@ -333,7 +338,7 @@ public class PatchTest extends CopeModel4Test
 		log.assertEvents();
 		preempt(patches2);
 		log.assertEvents(
-				"INFO preempt",
+				"INFO preempt initiated by PatchTestInitiator",
 				"INFO s0 mutex seize for 1 patches",
 				"INFO s0 mutex release");
 		{
@@ -364,7 +369,7 @@ public class PatchTest extends CopeModel4Test
 		log.assertEvents();
 		preempt(patches);
 		log.assertEvents(
-				"INFO preempt",
+				"INFO preempt initiated by PatchTestInitiator",
 				"INFO s0 mutex seize for 3 patches",
 				"INFO s0 mutex release",
 				"INFO PatchesDoneListener was notified");
@@ -384,7 +389,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(false, isDone(patches));
 		assertTrue(preemptSingle(patches, "theBadPatch"));
 		log.assertEvents(
-				"INFO preempt theBadPatch",
+				"INFO preempt theBadPatch initiated by PatchTestInitiator",
 				"INFO s0 mutex seize for 1 patches",
 				"INFO s0 mutex release");
 
@@ -396,7 +401,7 @@ public class PatchTest extends CopeModel4Test
 
 		assertFalse(preemptSingle(patches, "theBadPatch"));
 		log.assertEvents(
-				"INFO preempt theBadPatch");
+				"INFO preempt theBadPatch initiated by PatchTestInitiator");
 
 		assertEquals(false, isDone(patches));
 
@@ -598,6 +603,11 @@ public class PatchTest extends CopeModel4Test
 		}
 	}
 
+	private static PatchInitiator createPatchInitiator()
+	{
+		return new PatchInitiator("PatchTestInitiator");
+	}
+
 	private static int run(
 			final Patches patches,
 			final JobContext ctx)
@@ -606,7 +616,7 @@ public class PatchTest extends CopeModel4Test
 		int result;
 		try
 		{
-			result = patches.run(ctx);
+			result = patches.run(ctx, createPatchInitiator());
 		}
 		finally
 		{
@@ -640,7 +650,7 @@ public class PatchTest extends CopeModel4Test
 		MODEL.commit();
 		try
 		{
-			patches.preempt();
+			patches.preempt(createPatchInitiator());
 		}
 		finally
 		{
@@ -655,7 +665,7 @@ public class PatchTest extends CopeModel4Test
 		boolean result;
 		try
 		{
-			result = patches.preempt(id);
+			result = patches.preempt(id, createPatchInitiator());
 		}
 		finally
 		{

@@ -7,7 +7,7 @@ public interface PatchesDoneListener
 {
 	/**
 	 * This method is called once when all patches are marked as done,
-	 * so either after the patches {@link Patches#run(JobContext) ran} or were {@link Patches#preempt() preempted}.
+	 * so either after the patches {@link Patches#run(JobContext, PatchInitiator) ran} or were {@link Patches#preempt(PatchInitiator) preempted}.
 	 */
 	void notifyPatchesDone();
 }

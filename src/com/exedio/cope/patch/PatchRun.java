@@ -41,7 +41,7 @@ final class PatchRun extends Item
 	static final LongField elapsed = new LongField().toFinal();
 
 	/**
-	 * for {@link Patches#preempt()} only
+	 * for {@link Patches#preempt(PatchInitiator)} only
 	 */
 	PatchRun(
 			final String patch,
