@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="testsrc"/>
+	<classpathentry kind="src" path="consolesrc"/>
+	<classpathentry kind="src" path="examplesrc"/>
+	<classpathentry kind="lib" path="lib/ide/apiguardian-api.jar"/>
+	<classpathentry kind="lib" path="lib/ide/exedio-cope-hsqldb.jar"/>
+	<classpathentry kind="lib" path="lib/ide/exedio-cope-util.jar" sourcepath="lib/ide/exedio-cope-util-src.zip"/>
+	<classpathentry kind="lib" path="lib/ide/exedio-cope.jar" sourcepath="lib/ide/exedio-cope-src.zip"/>
+	<classpathentry kind="lib" path="lib/ide/hsqldb.jar"/>
+	<classpathentry kind="lib" path="lib/ide/junit-jupiter-api.jar"/>
+	<classpathentry kind="lib" path="lib/ide/junit-jupiter-engine.jar"/>
+	<classpathentry kind="lib" path="lib/ide/junit-platform-commons.jar"/>
+	<classpathentry kind="lib" path="lib/ide/junit-platform-console.jar"/>
+	<classpathentry kind="lib" path="lib/ide/junit-platform-engine.jar"/>
+	<classpathentry kind="lib" path="lib/ide/junit-platform-launcher.jar"/>
+	<classpathentry kind="lib" path="lib/ide/LatencyUtils.jar"/>
+	<classpathentry kind="lib" path="lib/ide/logback-classic.jar"/>
+	<classpathentry kind="lib" path="lib/ide/logback-core.jar"/>
+	<classpathentry kind="lib" path="lib/ide/micrometer-core.jar"/>
+	<classpathentry kind="lib" path="lib/ide/opentest4j.jar"/>
+	<classpathentry kind="lib" path="lib/ide/slf4j-api.jar"/>
+	<classpathentry kind="lib" path="lib/ide/trove4j.jar"/>
+	<classpathentry kind="lib" path="lib/jsr305/jsr305.jar"/>
+	<classpathentry kind="lib" path="lib/ide/javax.servlet-api.jar" sourcepath="lib/ide/javax.servlet-api-source.jar"/>
+	<classpathentry kind="lib" path="lib/ide/exedio-cops.jar" sourcepath="lib/ide/exedio-cops-src.zip"/>
+	<classpathentry kind="lib" path="lib/instrument/exedio-cope-instrument-annotations.jar"/>
+	<classpathentry kind="lib" path="lib/ide/exedio-cope-servletutil.jar"/>
+	<classpathentry kind="lib" path="lib/ide/mockito-core.jar" sourcepath="lib/ide/mockito-core-source.jar"/>
+	<classpathentry kind="lib" path="lib/ide/mockito-junit-jupiter.jar"/>
+	<classpathentry kind="lib" path="lib/ide/hamcrest.jar"/>
+	<classpathentry kind="lib" path="lib/ide/hamcrest-core.jar"/>
+	<classpathentry kind="output" path=".eclipse-output"/>
+</classpath>

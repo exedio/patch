@@ -1,3 +1,6 @@
+*_Jspm.java
 /build
+/tomcat
 /nbproject/private/
 /.idea-output/
+/.eclipse-output

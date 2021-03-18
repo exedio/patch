@@ -57,6 +57,7 @@ timestamps
 						"--security-opt no-new-privileges " +
 						"--network none")
 					{
+						sh "java -jar lib/ant/ant-launcher.jar -noinput src"
 						sh "/opt/idea/bin/inspect.sh " + env.WORKSPACE + " 'Project Default' idea-inspection-output"
 					}
 				archiveArtifacts 'idea-inspection-output/**'

@@ -67,6 +67,7 @@ timestamps
 						propertiesSeries: [
 							[ file: 'build/exedio-cope-patch.jar-plot.properties',     label: 'exedio-cope-patch.jar' ],
 							[ file: 'build/exedio-cope-patch-src.zip-plot.properties', label: 'exedio-cope-patch-src.zip' ],
+							[ file: 'build/exedio-cope-patch-console.jar-plot.properties', label: 'exedio-cope-patch-console.jar' ],
 						],
 				)
 			}

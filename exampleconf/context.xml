@@ -1,0 +1,12 @@
+
+<Context docBase="../../build/web"
+			debug="0"
+			privileged="true"
+			cookies="false">
+
+	<Parameter
+			name="root.com.exedio.cope.servletutil.ServletSource.propertiesFile"
+			value="@PROPERTIES@"
+	/>
+
+</Context>
