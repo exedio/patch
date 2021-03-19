@@ -27,6 +27,7 @@
 	</configurations>
 	<publications>
 		<artifact name="exedio-cope-patch" conf="runtime"   type="jar" ext="jar" />
+		<artifact name="exedio-cope-patch-console" conf="console"   type="jar" ext="jar" />
 		<artifact name="exedio-cope-patch" conf="sources"   type="src" ext="zip" />
 		<artifact name="exedio-cope-patch" conf="changelog" type="log" ext="txt" />
 	</publications>
