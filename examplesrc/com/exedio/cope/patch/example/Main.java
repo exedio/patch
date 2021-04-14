@@ -20,7 +20,7 @@ public final class Main
 	private static Model initializeModel()
 	{
 		return Model.builder().
-			add(new RevisionsFactory()).
+			add(RevisionsFactory.INSTANCE).
 			add(Patches.types).
 			build();
 	}
