@@ -175,6 +175,11 @@ public abstract class PatchConsoleServlet extends CopsServlet
 	 */
 	public abstract Patches getPatches();
 
+	private static Model getModel()
+	{
+		return PatchMutex.TYPE.getModel();
+	}
+
 	boolean isConnected()
 	{
 		return connectToken != null;
@@ -185,6 +190,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 		if (!isConnected())
 		{
 			connectToken = ServletUtil.getConnectedModel(this);
+			getModel().reviseIfSupportedAndAutoEnabled();
 		}
 	}
 
@@ -216,7 +222,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 	{
 		if (!isConnected())
 			return "Unknown (not connected)";
-		final Model model = PatchMutex.TYPE.getModel();
+		final Model model = getModel();
 		try (TransactionTry tx = model.startTransactionTry("AbstractPatchServlet#getPatchMutexInfo"))
 		{
 			final List<PatchMutex> seachResult = PatchMutex.TYPE.search();
@@ -237,7 +243,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 
 		if (isConnected())
 		{
-			final Model model = PatchMutex.TYPE.getModel();
+			final Model model = getModel();
 			try (final TransactionTry tx = model.startTransactionTry("AbstractPatchServlet#getPatchList"))
 			{
 				final List<PatchRun> patchRuns = PatchRun.TYPE.search(null, PatchRun.finished, true);
@@ -291,7 +297,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 
 	boolean isPatchMutexPresent()
 	{
-		final Model model = PatchMutex.TYPE.getModel();
+		final Model model = getModel();
 		try (TransactionTry tx = model.startTransactionTry("AbstractPatchServlet#isPatchMutexPresent"))
 		{
 			return tx.commit(PatchMutex.TYPE.newQuery().total())>0;
@@ -300,7 +306,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 
 	void releasePatchMutex()
 	{
-		final Model model = PatchMutex.TYPE.getModel();
+		final Model model = getModel();
 		try (TransactionTry tx = model.startTransactionTry("AbstractPatchServlet#releasePatchMutex"))
 		{
 			PatchMutex.release();

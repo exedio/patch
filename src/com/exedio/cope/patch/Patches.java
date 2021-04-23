@@ -20,6 +20,7 @@ package com.exedio.cope.patch;
 
 import static java.util.Objects.requireNonNull;
 
+import com.exedio.cope.Model;
 import com.exedio.cope.TypeSet;
 import com.exedio.cope.util.JobContext;
 import java.util.ArrayList;
@@ -71,6 +72,7 @@ public final class Patches
 		requireNonNull(ctx, "ctx");
 		requireNonNull(initiator, "initiator");
 		logger.info("run initiated by {}", initiator.getInitiator());
+		getModel().reviseIfSupportedAndAutoEnabled();
 
 		int result = 0;
 		for(final Stage stage : stages.values())
@@ -122,6 +124,7 @@ public final class Patches
 		if(!PatchRun.TYPE.getModel().isConnected())
 			return DoneResult.NOT_CONNECTED;
 
+		getModel().reviseIfSupportedAndAutoEnabled();
 		synchronized(doneLock)
 		{
 			for(final Stage stage : stages.values())
@@ -155,6 +158,7 @@ public final class Patches
 	{
 		requireNonNull(initiator, "initiator");
 		logger.info("preempt initiated by {}", initiator.getInitiator());
+		getModel().reviseIfSupportedAndAutoEnabled();
 		for(final Stage stage : stages.values())
 			stage.preempt();
 		notifyListener();
@@ -172,6 +176,7 @@ public final class Patches
 		requireNonNull(id, "id");
 		requireNonNull(initiator, "initiator");
 		logger.info("preempt {} initiated by {}", id, initiator.getInitiator());
+		getModel().reviseIfSupportedAndAutoEnabled();
 		for (final Stage stage : stages.values())
 		{
 			if (stage.getPatches().containsKey(id))
@@ -217,5 +222,10 @@ public final class Patches
 		for(final Stage stage : stages.values())
 			result.putAll(stage.getPatches());
 		return result;
+	}
+
+	private static Model getModel()
+	{
+		return PatchMutex.TYPE.getModel();
 	}
 }
