@@ -47,7 +47,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 public class PatchTest extends CopeModel4Test
 {
 	static final Model MODEL = Model.builder().
-			add(ctx -> new Revisions(0)).
+			add(ctx -> new Revisions(200)). // 200 is greater than 100/101 in RevisionPatchTest
 			add(Patches.types).
 			add(SampleItem.TYPE, SchemaSampleItem.TYPE).
 			build();
