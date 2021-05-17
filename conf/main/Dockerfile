@@ -8,8 +8,8 @@ RUN \
 	rm -rf /var/lib/apt/lists/*
 
 RUN \
-	mkdir /var/dependencies-cache && \
-	chown 1001:1001 /var/dependencies-cache
+	mkdir /var/jenkins-build-survivor && \
+	chown 1001:1001 /var/jenkins-build-survivor
 
 LABEL purpose=jenkins
 LABEL jdk=${JDK}
