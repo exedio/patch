@@ -9,6 +9,7 @@ def dockerNamePrefix = env.JOB_NAME.replace("/", "-").replace(" ", "_") + "-" + 
 def dockerDate = new Date().format("yyyyMMdd")
 
 properties([
+		gitLabConnection(env.GITLAB_CONNECTION),
 		buildDiscarder(logRotator(
 				numToKeepStr         : isRelease ? '1000' : '30',
 				artifactNumToKeepStr : isRelease ?  '100' :  '2'
@@ -173,6 +174,7 @@ finally
 				recipients: emailextrecipients([isRelease ? culprits() : developers(), requestor()]),
 				notifyEveryUnstableBuild: true])
 	}
+	updateGitlabCommitStatus state: currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "success" : "failed" // https://docs.gitlab.com/ee/api/commits.html#post-the-build-status-to-a-commit
 }
 
 def lockNodeCheckoutAndDelete(resource, Closure body)
@@ -191,6 +193,7 @@ def nodeCheckoutAndDelete(Closure body)
 		{
 			deleteDir()
 			def scmResult = checkout scm
+			updateGitlabCommitStatus state: 'running'
 
 			body.call(scmResult)
 		}
