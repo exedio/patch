@@ -1,4 +1,4 @@
-FROM debian:stretch-20200607
+FROM debian:stretch-20210511
 
 ARG JDK
 RUN \
