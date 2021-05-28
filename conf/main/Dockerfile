@@ -7,9 +7,10 @@ RUN \
 		${JDK}-jdk-headless && \
 	rm -rf /var/lib/apt/lists/*
 
+ARG JENKINS_OWNER
 RUN \
 	mkdir /var/jenkins-build-survivor && \
-	chown 1001:1001 /var/jenkins-build-survivor
+	chown ${JENKINS_OWNER} /var/jenkins-build-survivor
 
 LABEL purpose=jenkins
 LABEL jdk=${JDK}

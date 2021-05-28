@@ -30,6 +30,7 @@ try
 			def mainImage = docker.build(
 					'exedio-jenkins:' + dockerName + '-' + dockerDate,
 					'--build-arg JDK=' + jdk + ' ' +
+					'--build-arg JENKINS_OWNER=' + env.JENKINS_OWNER + ' ' +
 					'conf/main')
 			mainImage.inside(
 					"--name '" + dockerName + "' " +
@@ -143,6 +144,7 @@ try
 			def mainImage = docker.build(
 					'exedio-jenkins:' + dockerName + '-' + dockerDate,
 					'--build-arg JDK=' + jdk + ' ' +
+					'--build-arg JENKINS_OWNER=' + env.JENKINS_OWNER + ' ' +
 					'conf/main')
 			mainImage.inside(
 					"--name '" + dockerName + "' " +
@@ -189,6 +191,9 @@ def nodeCheckoutAndDelete(Closure body)
 {
 	node('GitCloneExedio && docker')
 	{
+		env.JENKINS_OWNER =
+			sh (script: "id --user",  returnStdout: true).trim() + ':' +
+			sh (script: "id --group", returnStdout: true).trim()
 		try
 		{
 			deleteDir()
