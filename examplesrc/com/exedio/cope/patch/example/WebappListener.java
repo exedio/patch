@@ -35,12 +35,21 @@ import javax.servlet.ServletContextListener;
 public final class WebappListener implements ServletContextListener
 {
 	@Override
-	@SuppressWarnings("try") // ConnectToken#issue
 	public void contextInitialized(final ServletContextEvent sce)
 	{
 		final ServletContext ctx = sce.getServletContext();
 		setProperties(Main.model, ConnectProperties.create(ServletSource.create(ctx)));
 		// All example patches act on tables which are not part of the model, so we can create the model here
+		createSchemaIfInvalid();
+	}
+
+	/**
+	 *  Note: we suppress the revisions during initialization
+	 */
+	@SuppressWarnings("try") // ConnectToken#issue
+	private static void createSchemaIfInvalid()
+	{
+		RevisionsFactory.INSTANCE.setSuppress(true);
 		try(ConnectToken ct = ConnectToken.issue(Main.model, "renew schema"))
 		{
 			final boolean schemaHasIssues = Main.model.getVerifiedSchema().getCumulativeColor() != Node.Color.OK;
@@ -50,8 +59,11 @@ public final class WebappListener implements ServletContextListener
 				Main.model.createSchema();
 			}
 		}
+		finally
+		{
+			RevisionsFactory.INSTANCE.setSuppress(false);
+		}
 	}
-
 
 	@Override
 	public void contextDestroyed(final ServletContextEvent sce)

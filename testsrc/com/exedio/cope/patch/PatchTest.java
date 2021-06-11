@@ -46,8 +46,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(LogRule.class)
 public class PatchTest extends CopeModel4Test
 {
+	// 200 is greater than 100/101 in RevisionPatchTest
+	static final int REVISION_START_ID = 200;
+
+	static final ProxyRevisionsFactory REVISION_FACTORY = new ProxyRevisionsFactory();
+
 	static final Model MODEL = Model.builder().
-			add(ctx -> new Revisions(0)).
+			add(REVISION_FACTORY).
 			add(Patches.types).
 			add(SampleItem.TYPE, SchemaSampleItem.TYPE).
 			build();
@@ -608,7 +613,7 @@ public class PatchTest extends CopeModel4Test
 		return new PatchInitiator("PatchTestInitiator");
 	}
 
-	private static int run(
+	static int run(
 			final Patches patches,
 			final JobContext ctx)
 	{
@@ -626,7 +631,7 @@ public class PatchTest extends CopeModel4Test
 		return result;
 	}
 
-	private static boolean isDone(
+	static boolean isDone(
 			final Patches patches)
 	{
 		MODEL.commit();
@@ -645,7 +650,7 @@ public class PatchTest extends CopeModel4Test
 		return result;
 	}
 
-	private static void preempt(final Patches patches)
+	static void preempt(final Patches patches)
 	{
 		MODEL.commit();
 		try
@@ -659,7 +664,7 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(0, PatchMutex.TYPE.newQuery().total());
 	}
 
-	private static boolean preemptSingle(final Patches patches, final String id)
+	static boolean preemptSingle(final Patches patches, final String id)
 	{
 		MODEL.commit();
 		boolean result;
@@ -795,6 +800,29 @@ public class PatchTest extends CopeModel4Test
 		{
 			assertEquals(false, patchesDone);
 			patchesDone = true;
+		}
+	}
+
+	/**
+	 * Revisions.Factory which initializes by default with a static revision number but also allows tests
+	 * to override this with a delegate.
+	 */
+	static class ProxyRevisionsFactory implements Revisions.Factory
+	{
+		private Revisions.Factory delegate = null;
+
+		@Override
+		public Revisions create(final Context ctx)
+		{
+			if (delegate != null)
+				return delegate.create(ctx);
+			else
+				return new Revisions(REVISION_START_ID);
+		}
+
+		public void setDelegate(final Revisions.Factory delegate)
+		{
+			this.delegate = delegate;
 		}
 	}
 }
