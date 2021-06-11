@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 public class PatchRevisionExecutionTest extends CopeModel4Test
 {
 	static final Model MODEL = PatchTest.MODEL;
-	static final Revisions.Factory DELEGATE_REVISIONS_FACTORY = ctx -> new Revisions(new Revision(PatchTest.REVISION_START_ID + 1, "Create SchemaSampleItem", SchemaSampleItem.create("foo")));
+	private static final Revisions.Factory DELEGATE_REVISIONS_FACTORY = ctx -> new Revisions(new Revision(PatchTest.REVISION_START_ID + 1, "Create SchemaSampleItem", SchemaSampleItem.create("foo")));
 
 	public PatchRevisionExecutionTest()
 	{
@@ -33,73 +33,45 @@ public class PatchRevisionExecutionTest extends CopeModel4Test
 	@Test void revisionExecutionOnRun()
 	{
 		PatchTest.REVISION_FACTORY.setDelegate(DELEGATE_REVISIONS_FACTORY);
-		try
-		{
-			final Patches emptyPatches = new PatchesBuilder().build();
-			PatchTest.run(emptyPatches, JobContexts.EMPTY);
-			final Iterator<SchemaSampleItem> items = items().iterator();
-			assertEquals("foo", items.next().getContent(), "content");
-			assertFalse(items.hasNext());
-		}
-		finally
-		{
-			PatchTest.REVISION_FACTORY.setDelegate(null);
-		}
+		final Patches emptyPatches = new PatchesBuilder().build();
+		PatchTest.run(emptyPatches, JobContexts.EMPTY);
+		final Iterator<SchemaSampleItem> items = items().iterator();
+		assertEquals("foo", items.next().getContent(), "content");
+		assertFalse(items.hasNext());
 	}
 
 	@Test void revisionExecutionOnPreempt()
 	{
 		PatchTest.REVISION_FACTORY.setDelegate(DELEGATE_REVISIONS_FACTORY);
-		try
-		{
-			final Patches emptyPatches = new PatchesBuilder().build();
-			PatchTest.preempt(emptyPatches);
-			final Iterator<SchemaSampleItem> items = items().iterator();
-			assertEquals("foo", items.next().getContent(), "content");
-			assertFalse(items.hasNext());
-		}
-		finally
-		{
-			PatchTest.REVISION_FACTORY.setDelegate(null);
-		}
+		final Patches emptyPatches = new PatchesBuilder().build();
+		PatchTest.preempt(emptyPatches);
+		final Iterator<SchemaSampleItem> items = items().iterator();
+		assertEquals("foo", items.next().getContent(), "content");
+		assertFalse(items.hasNext());
 	}
 
 	@Test void revisionExecutionOnPreemptSingle()
 	{
 		PatchTest.REVISION_FACTORY.setDelegate(DELEGATE_REVISIONS_FACTORY);
-		try
-		{
-			final PatchesBuilder builder = new PatchesBuilder();
-			builder.insertAtStart(newSamplePatch("one"));
-			final Patches patches = builder.build();
-			PatchTest.preemptSingle(patches, "one");
-			final Iterator<SchemaSampleItem> items = items().iterator();
-			assertEquals("foo", items.next().getContent(), "content");
-			assertFalse(items.hasNext());
-		}
-		finally
-		{
-			PatchTest.REVISION_FACTORY.setDelegate(null);
-		}
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.insertAtStart(newSamplePatch("one"));
+		final Patches patches = builder.build();
+		PatchTest.preemptSingle(patches, "one");
+		final Iterator<SchemaSampleItem> items = items().iterator();
+		assertEquals("foo", items.next().getContent(), "content");
+		assertFalse(items.hasNext());
 	}
 
 	@Test void revisionExecutionOnIsDone()
 	{
 		PatchTest.REVISION_FACTORY.setDelegate(DELEGATE_REVISIONS_FACTORY);
-		try
-		{
-			final PatchesBuilder builder = new PatchesBuilder();
-			builder.insertAtStart(newSamplePatch("one"));
-			final Patches patches = builder.build();
-			PatchTest.isDone(patches);
-			final Iterator<SchemaSampleItem> items = items().iterator();
-			assertEquals("foo", items.next().getContent(), "content");
-			assertFalse(items.hasNext());
-		}
-		finally
-		{
-			PatchTest.REVISION_FACTORY.setDelegate(null);
-		}
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.insertAtStart(newSamplePatch("one"));
+		final Patches patches = builder.build();
+		PatchTest.isDone(patches);
+		final Iterator<SchemaSampleItem> items = items().iterator();
+		assertEquals("foo", items.next().getContent(), "content");
+		assertFalse(items.hasNext());
 	}
 
 	private static SamplePatch newSamplePatch(final String id)
@@ -129,8 +101,10 @@ public class PatchRevisionExecutionTest extends CopeModel4Test
 		MODEL.startTransaction(PatchRevisionExecutionTest.class.getName());
 	}
 
-	@AfterEach void resetThisSourceAndCleanupWhile() throws SQLException
+	@AfterEach void resetDelegateAndThisSourceAndCleanupWhile() throws SQLException
 	{
+		PatchTest.REVISION_FACTORY.setDelegate(null);
+
 		// reset thisSource of the SchemaSampleItem to let new items start with PK 0 in other tests
 		SchemaSampleItem.thisSource.set(0);
 
