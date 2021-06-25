@@ -7,6 +7,7 @@ import com.exedio.cope.misc.ServletUtil;
 import com.exedio.cope.util.EmptyJobContext;
 import com.exedio.cops.CopsServlet;
 import com.exedio.cops.Resource;
+import com.exedio.dsmf.Node.Color;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -279,13 +280,14 @@ public abstract class PatchConsoleServlet extends CopsServlet
 		if (!isConnected())
 			return "Unknown (not connected)";
 		// we could return Node.COLOR.name() instead of the switch but then we miss when this enum is refactored
-		switch(getModel().getVerifiedSchema().getCumulativeColor())
+		final Color cumulativeColor = getModel().getVerifiedSchema().getCumulativeColor();
+		switch(cumulativeColor)
 		{
 			case OK: return "Ok";
 			case WARNING: return "Warning";
 			case ERROR: return "Error";
 			default:
-				throw new RuntimeException();
+				throw new RuntimeException("Unexpected schema color: "+cumulativeColor);
 		}
 	}
 
