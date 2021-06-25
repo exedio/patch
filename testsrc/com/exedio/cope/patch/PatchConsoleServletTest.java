@@ -73,9 +73,6 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 					"Patches: Unknown (not connected)",
 					call.getDivContent("patchesStatus"));
 			assertEquals(
-					"Schema: Unknown (not connected)",
-					call.getDivContent("schemaStatus"));
-			assertEquals(
 					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/connect", CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
 			assertEquals("Not connected\n", requestGetStatus(servlet, "model"));
@@ -113,9 +110,6 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 		assertEquals(
 				"Patches: Not Done",
 				call.getDivContent("patchesStatus"));
-		assertEquals(
-				"Schema: Ok",
-				call.getDivContent("schemaStatus"));
 		assertEquals(
 				Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 				call.getGlobalActions());
@@ -159,9 +153,6 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			assertEquals(
 					"Patches: Done",
 					call.getDivContent("patchesStatus"));
-			assertEquals(
-					"Schema: Ok",
-					call.getDivContent("schemaStatus"));
 			assertEquals(
 					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
@@ -222,9 +213,6 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			assertEquals(
 					"Patches: Done",
 					call.getDivContent("patchesStatus"));
-			assertEquals(
-					"Schema: Ok",
-					call.getDivContent("schemaStatus"));
 			assertEquals(
 					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
@@ -287,9 +275,6 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 					"Patches: Failed",
 					call.getDivContent("patchesStatus"));
 			assertEquals(
-					"Schema: Ok",
-					call.getDivContent("schemaStatus"));
-			assertEquals(
 					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/releaseMutex", CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
 			assertEquals("Connected\n", requestGetStatus(servlet, "model"));
@@ -322,9 +307,6 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			assertEquals(
 					"Patches: Not Done",
 					call.getDivContent("patchesStatus"));
-			assertEquals(
-					"Schema: Ok",
-					call.getDivContent("schemaStatus"));
 			assertEquals(
 					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
@@ -371,9 +353,6 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			assertEquals(
 					"Patches: Not Done",
 					call.getDivContent("patchesStatus"));
-			assertEquals(
-					"Schema: Ok",
-					call.getDivContent("schemaStatus"));
 			assertEquals(
 					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());

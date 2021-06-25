@@ -44,7 +44,6 @@ final class Status_Jspm
 %>
 		<div id="mutexStatus">Mutex: <%=servlet.getPatchMutexInfo()%></div>
 		<div id="patchesStatus">Patches: <%=servlet.getPatchInfo()%></div>
-		<div id="schemaStatus">Schema: <%=servlet.getSchemaInfo()%></div>
 
 		<h3>Actions</h3>
 <%
