@@ -117,6 +117,11 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 		assertEquals("None\n", requestGetStatus(servlet, "mutex"));
 		assertEquals("Not Done\n", requestGetStatus(servlet, "patches"));
 		assertEquals("Ok\n", requestGetStatus(servlet, "schema"));
+
+		// check invalid status url
+		final TestHttpCall invalidStatusCall = createRequestResponse("GET", "/status/invalid");
+		servlet.doRequest(invalidStatusCall.request, invalidStatusCall.response);
+		verify(invalidStatusCall.response).sendError(HttpServletResponse.SC_NOT_FOUND);
 	}
 
 	@NoTransaction

@@ -162,9 +162,11 @@ public abstract class PatchConsoleServlet extends CopsServlet
 						return;
 				}
 			}
-			catch (final IllegalArgumentException ignored)
+			catch (final IllegalArgumentException ie)
 			{
-				// ignore invalid enum value here, request with /status/ but no valid option gets redirected later
+				// send an empty 404
+				response.sendError(HttpServletResponse.SC_NOT_FOUND);
+				return;
 			}
 		}
 
