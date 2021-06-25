@@ -9,9 +9,9 @@ The items are sorted inversely, i.e. latest items are on top
 --------------------------------------------------------------------------
 * Patch console servlet provides four URLs (paths) to get the global status as plain text:
   /status/model (Connected or Not connected)
-  /status/mutex (none or mutex content, only available if connected)
-  /status/patches (Not Done, Currently executing, Done or Failed, only available if connected)
-  /status/schema (Ok, Warning, Error, only available if connected)
+  /status/mutex (none or mutex content, or Unknown (not connected))
+  /status/patches (Not Done, Currently executing, Done, Failed or Unknown (not connected))
+  /status/schema (Ok, Warning, Error or Unknown (not connected))
 * Patch console servlet show status of schema (Ok, Warning, Error)
 * Patches#run and Patches#preempt want a new PatchInitiator to log where patch executions are triggered.
     Default factory method is PatchInitiator.createFromStackTrace() which inspects the execution stack, but we strongly recommend
