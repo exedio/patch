@@ -45,6 +45,16 @@ final class Status_Jspm
 		<div id="mutexStatus">Mutex: <%=servlet.getPatchMutexInfo()%></div>
 		<div id="patchesStatus">Patches: <%=servlet.getPatchInfo()%></div>
 
+
+		<h3>Links</h3>
+		
+		<div>REST-Links for status:<br>
+		<a href="status/model">Model</a> <small>[Connected | Not connected]</small><br> 
+		<a href="status/mutex">Mutex</a> <small>[None | <i>Mutex content</i> | Unknown (not connected)]</small><br> 
+		<a href="status/patches">Patches</a> <small>[Not Done | Currently executing | Done | Failed | Unknown (not connected)]</small><br> 
+		<a href="status/schema">Schema</a> <small>[Ok | Warning | Error | Unknown (not connected)]</small> 
+		</div>
+
 		<h3>Actions</h3>
 <%
 		if (servlet.isConnected())
