@@ -3,6 +3,7 @@ package com.exedio.cope.patch.example;
 import com.exedio.cope.Item;
 import com.exedio.cope.StringField;
 
+@SuppressWarnings("StaticMethodOnlyUsedInOneClass") // needed for TYPE
 public class ExampleItem extends Item
 {
 	static final StringField name = new StringField().toFinal().optional();
