@@ -75,6 +75,10 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			assertEquals(
 					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/connect", CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
+			assertEquals("Not connected\n", requestGetStatus(servlet, "model"));
+			assertEquals("Unknown (not connected)\n", requestGetStatus(servlet, "mutex"));
+			assertEquals("Unknown (not connected)\n", requestGetStatus(servlet, "patches"));
+			assertEquals("Unknown (not connected)\n", requestGetStatus(servlet, "schema"));
 		}
 		finally
 		{
@@ -109,6 +113,15 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 		assertEquals(
 				Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 				call.getGlobalActions());
+		assertEquals("Connected\n", requestGetStatus(servlet, "model"));
+		assertEquals("None\n", requestGetStatus(servlet, "mutex"));
+		assertEquals("Not Done\n", requestGetStatus(servlet, "patches"));
+		assertEquals("Ok\n", requestGetStatus(servlet, "schema"));
+
+		// check invalid status url
+		final TestHttpCall invalidStatusCall = createRequestResponse("GET", "/status/invalid");
+		servlet.doRequest(invalidStatusCall.request, invalidStatusCall.response);
+		verify(invalidStatusCall.response).sendError(HttpServletResponse.SC_NOT_FOUND);
 	}
 
 	@NoTransaction
@@ -148,6 +161,10 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			assertEquals(
 					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
+			assertEquals("Connected\n", requestGetStatus(servlet, "model"));
+			assertEquals("None\n", requestGetStatus(servlet, "mutex"));
+			assertEquals("Done\n", requestGetStatus(servlet, "patches"));
+			assertEquals("Ok\n", requestGetStatus(servlet, "schema"));
 		}
 
 		// POST preempt again
@@ -204,6 +221,10 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			assertEquals(
 					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
+			assertEquals("Connected\n", requestGetStatus(servlet, "model"));
+			assertEquals("None\n", requestGetStatus(servlet, "mutex"));
+			assertEquals("Done\n", requestGetStatus(servlet, "patches"));
+			assertEquals("Ok\n", requestGetStatus(servlet, "schema"));
 		}
 
 		// POST run again
@@ -261,6 +282,11 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			assertEquals(
 					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/releaseMutex", CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
+			assertEquals("Connected\n", requestGetStatus(servlet, "model"));
+			assertThat(requestGetStatus(servlet, "mutex"), matchesPattern(
+					"Stage: 0 Patches: 2 Host: .+ Finished: .+ SavePoint: FAILURE: not supported\\n"));
+			assertEquals("Failed\n", requestGetStatus(servlet, "patches"));
+			assertEquals("Ok\n", requestGetStatus(servlet, "schema"));
 		}
 
 		// POST release mutex
@@ -289,6 +315,10 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			assertEquals(
 					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
+			assertEquals("Connected\n", requestGetStatus(servlet, "model"));
+			assertEquals("None\n", requestGetStatus(servlet, "mutex"));
+			assertEquals("Not Done\n", requestGetStatus(servlet, "patches"));
+			assertEquals("Ok\n", requestGetStatus(servlet, "schema"));
 		}
 	}
 
@@ -331,6 +361,10 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			assertEquals(
 					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
+			assertEquals("Connected\n", requestGetStatus(servlet, "model"));
+			assertEquals("None\n", requestGetStatus(servlet, "mutex"));
+			assertEquals("Not Done\n", requestGetStatus(servlet, "patches"));
+			assertEquals("Ok\n", requestGetStatus(servlet, "schema"));
 		}
 
 		// no param
@@ -476,5 +510,17 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 	private static SamplePatch newSamplePatch(final String id)
 	{
 		return new SamplePatch(MODEL, id, null, true);
+	}
+
+	/**
+	 * Run a HTTP-GET request to the plain text status URL of the given option
+	 */
+	private static String requestGetStatus(final TestServlet servlet, final String option) throws IOException
+	{
+		final TestHttpCall call = createRequestResponse("GET", "/status/"+option);
+		servlet.doRequest(call.request, call.response);
+		verify(call.response).setStatus(HttpServletResponse.SC_OK);
+		verify(call.response).setContentType("text/plain; charset=UTF-8");
+		return call.output.toString();
 	}
 }

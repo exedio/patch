@@ -7,6 +7,7 @@ import com.exedio.cope.misc.ServletUtil;
 import com.exedio.cope.util.EmptyJobContext;
 import com.exedio.cops.CopsServlet;
 import com.exedio.cops.Resource;
+import com.exedio.dsmf.Node.Color;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -43,9 +44,19 @@ public abstract class PatchConsoleServlet extends CopsServlet
 	static final String PREEMPT_SINGLE_ACTION = "preemptSingle";
 	static final String RELEASE_MUTEX_ACTION = "releaseMutex";
 
+	static final String STATUS_PATH = "/status/";
+
 	static final String PARAM_PATCH_ID = "patchid";
 
 	private ConnectToken connectToken = null;
+
+	enum StatusOption
+	{
+		model,
+		mutex,
+		patches,
+		schema
+	}
 
 	private static void setHeaders(final HttpServletResponse response)
 	{
@@ -126,8 +137,40 @@ public abstract class PatchConsoleServlet extends CopsServlet
 			return;
 		}
 
+		if (request.getPathInfo().startsWith(STATUS_PATH))
+		{
+			try
+			{
+				final StatusOption option = StatusOption.valueOf(request.getPathInfo().substring(STATUS_PATH.length()));
+				response.setContentType("text/plain; charset=" + java.nio.charset.StandardCharsets.UTF_8.name());
+				response.setCharacterEncoding(java.nio.charset.StandardCharsets.UTF_8.name());
+				response.setStatus(HttpServletResponse.SC_OK);
+				final PrintWriter writer = response.getWriter();
+				switch (option)
+				{
+					case model:
+						writer.println(isConnected() ? "Connected" : "Not connected");
+						return;
+					case mutex:
+						writer.println(getPatchMutexInfo());
+						return;
+					case patches:
+						writer.println(getPatchInfo());
+						return;
+					case schema:
+						writer.println(getSchemaInfo());
+						return;
+				}
+			}
+			catch (final IllegalArgumentException ie)
+			{
+				// send an empty 404
+				response.sendError(HttpServletResponse.SC_NOT_FOUND);
+				return;
+			}
+		}
 
-		// invalid requests to /view or all invalid path's will get redirected to root path of this servlet
+		// all invalid path's will get redirected to root path of this servlet
 		//noinspection LiteralAsArgToStringEquals
 		if (!request.getPathInfo().equals("/"))
 		{
@@ -231,6 +274,22 @@ public abstract class PatchConsoleServlet extends CopsServlet
 					: String.format(Locale.ENGLISH, "Stage: %d Patches: %d Host: %s Finished: %tF %tT SavePoint: %s",
 							mutex.getStage(), mutex.getNumberOfPatches(), mutex.getHost(), mutex.getFinished(),
 							mutex.getFinished(), mutex.getSavepoint()));
+		}
+	}
+
+	String getSchemaInfo()
+	{
+		if (!isConnected())
+			return "Unknown (not connected)";
+		// we could return Node.COLOR.name() instead of the switch but then we miss when this enum is refactored
+		final Color cumulativeColor = getModel().getVerifiedSchema().getCumulativeColor();
+		switch(cumulativeColor)
+		{
+			case OK: return "Ok";
+			case WARNING: return "Warning";
+			case ERROR: return "Error";
+			default:
+				throw new RuntimeException("Unexpected schema color: "+cumulativeColor);
 		}
 	}
 

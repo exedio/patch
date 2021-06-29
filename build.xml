@@ -99,12 +99,32 @@
 		</compile>
 	</target>
 
-	<target name="examplesrc.compile" depends="consolesrc.compile">
+	<target name="examplesrc.instrument" depends="src.compile, consolesrc.compile" unless="skip.instrument">
+		<instrument
+				dir="${basedir}/examplesrc"
+				verify="${instrument.verify}"
+				verbose="false">
+			<classpath>
+				<pathelement location="build/classes/src" />
+				<pathelement location="build/classes/consolesrc" />
+				<fileset dir="lib/example" />
+			</classpath>
+			<suppressWarnings>
+				<constructor>RedundantArrayCreation</constructor>
+				<wrapper>FinalMethodInFinalClass</wrapper>
+				<wrapper>RedundantSuppression</wrapper>
+				<wrapper>UnnecessarilyQualifiedStaticUsage</wrapper>
+			</suppressWarnings>
+		</instrument>
+	</target>
+
+	<target name="examplesrc.compile" depends="consolesrc.compile, examplesrc.instrument">
 		<compile srcdir="examplesrc">
 			<classpath>
 				<fileset dir="lib/example" />
 				<pathelement location="build/classes/src" />
 				<pathelement location="build/classes/consolesrc" />
+				<pathelement location="lib/instrument/exedio-cope-instrument-annotations.jar" />
 			</classpath>
 		</compile>
 	</target>
@@ -253,7 +273,7 @@
 		<delete dir="tomcat" />
 	</target>
 
-	<target name="instrument" depends="src.instrument, testsrc.instrument" />
+	<target name="instrument" depends="src.instrument, testsrc.instrument, examplesrc.instrument" />
 
 	<target name="compile" depends="src.compile, consolesrc.compile, testsrc.compile, examplesrc.compile" />
 

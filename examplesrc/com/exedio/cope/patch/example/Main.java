@@ -22,6 +22,7 @@ public final class Main
 		return Model.builder().
 			add(RevisionsFactory.INSTANCE).
 			add(Patches.types).
+			add(ExampleItem.TYPE).
 			build();
 	}
 }
