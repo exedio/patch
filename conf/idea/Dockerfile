@@ -15,7 +15,7 @@ ARG JDK
 RUN \
 	apt-get update && \
 	apt-get install --no-install-recommends --assume-yes \
-	${JDK}-jdk-headless && \
+		${JDK}-jdk-headless && \
 	rm -rf /var/lib/apt/lists/*
 
 COPY --from=idea-fetcher /tmp/ideaIC.tar.gz /tmp
