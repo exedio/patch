@@ -175,7 +175,12 @@ final class Stage
 		{
 			final List<String> idsDone = new Query<>(PatchRun.patch).search();
 			tx.commit();
-			result.keySet().removeAll(idsDone);
+
+			// Do not use result.keySet().removeAll(idsDone) as it can be slow when idsDone.size()
+			// is greater than or equal to result.size(). In this case, idsDone.contains()
+			// is called for each element in "result", which will perform a linear search.
+			// Found by idea inspection Call to 'set.removeAll(list)' may work slowly.
+			idsDone.forEach(result::remove);
 		}
 		return result;
 	}
