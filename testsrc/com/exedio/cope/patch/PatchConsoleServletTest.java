@@ -513,7 +513,7 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 	}
 
 	/**
-	 * Run a HTTP-GET request to the plain text status URL of the given option
+	 * Run an HTTP-GET request to the plain text status URL of the given option
 	 */
 	private static String requestGetStatus(final TestServlet servlet, final String option) throws IOException
 	{
