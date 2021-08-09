@@ -281,7 +281,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 	{
 		if (!isConnected())
 			return "Unknown (not connected)";
-		// we could return Node.COLOR.name() instead of the switch but then we miss when this enum is refactored
+		// we could return Node.COLOR.name() instead of the switch, but then we miss when this enum is refactored
 		final Color cumulativeColor = getModel().getVerifiedSchema().getCumulativeColor();
 		switch(cumulativeColor)
 		{

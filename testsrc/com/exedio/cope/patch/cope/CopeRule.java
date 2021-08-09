@@ -74,7 +74,7 @@ public final class CopeRule implements
 		if(!model.isConnected())
 			ModelConnector.connectAndCreate(model, config.getConnectProperties());
 		else
-			model.deleteSchemaForTest(); // typically faster than checkEmptySchema
+			model.deleteSchemaForTest(); // typically, faster than checkEmptySchema
 
 		if(!context.getTags().contains(NO_TRANSACTION))
 			model.startTransaction(context.getUniqueId());

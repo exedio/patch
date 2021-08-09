@@ -59,8 +59,8 @@ public abstract class SchemaPatch implements Patch
 	 * So you may use connection states within a patch.
 	 * <p>
 	 * For each patch a new {@link java.sql.Connection connection} is created.
-	 * That connection is not used for any other purpose afterwards
-	 * so you don't have to cleanup connection state at the end of each patch.
+	 * That connection is not used for any other purpose afterwards,
+	 * so you don't have to clean up connection state at the end of each patch.
 	 * This is for minimizing effects between patches.
 	 * <p>
 	 * This behaviour is consistent to {@link Revision#getBody()}.
