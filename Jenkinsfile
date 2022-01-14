@@ -122,7 +122,7 @@ try
 					"--security-opt no-new-privileges " +
 					"--network none")
 				{
-					shSilent ant  + " src"
+					shSilent ant + " src"
 					shSilent "/opt/idea/bin/inspect.sh " + env.WORKSPACE + " 'Project Default' idea-inspection-output"
 				}
 			archiveArtifacts 'idea-inspection-output/**'
