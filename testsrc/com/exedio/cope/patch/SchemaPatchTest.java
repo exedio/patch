@@ -59,7 +59,7 @@ public class SchemaPatchTest extends CopeModel4Test
 		assertEquals(1, run(patches, JobContexts.EMPTY));
 		log.assertEvents(
 				"pt: INFO run initiated by SchemaPatchTestInitiator",
-				"pt: ERROR savepoint",
+				"pt: WARN savepoint not supported by com.exedio.cope.HsqldbDialect",
 				"pt: INFO s0 mutex seize for 1 patches",
 				"pt: INFO s0 run 1/1 patchId",
 				"spt: INFO executing 1 statements for patchId",
@@ -88,7 +88,7 @@ public class SchemaPatchTest extends CopeModel4Test
 		assertEquals(1, run(patches, ctx));
 		log.assertEvents(
 				"pt: INFO run initiated by SchemaPatchTestInitiator",
-				"pt: ERROR savepoint",
+				"pt: WARN savepoint not supported by com.exedio.cope.HsqldbDialect",
 				"pt: INFO s0 mutex seize for 1 patches",
 				"pt: INFO s0 run 1/1 patchId",
 				"spt: INFO executing 3 statements for patchId",
