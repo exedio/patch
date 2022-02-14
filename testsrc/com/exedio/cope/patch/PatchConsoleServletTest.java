@@ -5,6 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.MatchesPattern.matchesPattern;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -121,7 +122,13 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 		// check invalid status url
 		final TestHttpCall invalidStatusCall = createRequestResponse("GET", "/status/invalid");
 		servlet.doRequest(invalidStatusCall.request, invalidStatusCall.response);
-		verify(invalidStatusCall.response).sendError(HttpServletResponse.SC_NOT_FOUND);
+		verify(invalidStatusCall.response).setStatus(HttpServletResponse.SC_NOT_FOUND);
+		verify(invalidStatusCall.response).setContentType("text/html");
+		final String errorOutput = invalidStatusCall.output.toString();
+		assertNotNull(errorOutput);
+		// we expect html which contains "Not Found" somewhere
+		final Pattern errorOutPattern = Pattern.compile(".*<html>.*Not\\sFound.*</html>.*", Pattern.DOTALL);
+		assertTrue(errorOutPattern.matcher(errorOutput).find());
 	}
 
 	@NoTransaction

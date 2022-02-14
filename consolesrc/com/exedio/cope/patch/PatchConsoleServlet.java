@@ -1,9 +1,12 @@
 package com.exedio.cope.patch;
 
+import static java.nio.charset.StandardCharsets.US_ASCII;
+
 import com.exedio.cope.Model;
 import com.exedio.cope.TransactionTry;
 import com.exedio.cope.misc.ConnectToken;
 import com.exedio.cope.misc.ServletUtil;
+import com.exedio.cope.pattern.MediaUtil;
 import com.exedio.cope.util.EmptyJobContext;
 import com.exedio.cops.CopsServlet;
 import com.exedio.cops.Resource;
@@ -164,8 +167,20 @@ public abstract class PatchConsoleServlet extends CopsServlet
 			}
 			catch (final IllegalArgumentException ie)
 			{
-				// send an empty 404
-				response.sendError(HttpServletResponse.SC_NOT_FOUND);
+				@SuppressWarnings("HardcodedLineSeparator") // OK unix newline in html
+				final String body =
+						"<html>\n" +
+							"<head>\n" +
+								"<title>Not Found</title>\n" +
+								"<meta http-equiv=\"content-type\" content=\"text/html;charset=us-ascii\">\n" +
+							"</head>\n" +
+							"<body>\n" +
+								"<h1>Not Found</h1>\n" +
+							"</body>\n" +
+						"</html>\n";
+
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				MediaUtil.send("text/html", US_ASCII, body, response);
 				return;
 			}
 		}
