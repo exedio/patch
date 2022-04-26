@@ -28,7 +28,7 @@ final class Status_Jspm
 		<script src="<%=PatchConsoleServlet.script%>"></script>
 	</head>
 	<body>
-		<a href="http://www.exedio.com/" target="_blank"><img src="<%=PatchConsoleServlet.logo%>" alt="Exedio Logo" class="logo"></a>
+		<a href="https://www.exedio.com/" target="_blank"><img src="<%=PatchConsoleServlet.logo%>" alt="Exedio Logo" class="logo"></a>
 		<h1>Patches</h1>
 
 		<h3>Status</h3>
