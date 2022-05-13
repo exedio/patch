@@ -2,8 +2,8 @@
 
 def projectName = env.JOB_NAME.substring(0, env.JOB_NAME.indexOf("/")) // depends on name and location of multibranch pipeline in jenkins
 def jdk = 'openjdk-8'
-def idea = '2021.2'
-def ideaSHA256 = '7c27799861fb1ba0d43a3565a1ec2be789e1871191be709f0e79f1e17d3571fe'
+def idea = '2022.1'
+def ideaSHA256 = '0400e6152fa0173e4e9a514c6398eef8f19150893298658c0b3eb1427e5bcbe5'
 def isRelease = env.BRANCH_NAME=="master"
 def dockerNamePrefix = env.JOB_NAME.replace("/", "-").replace(" ", "_") + "-" + env.BUILD_NUMBER
 def dockerDate = new Date().format("yyyyMMdd")
@@ -22,6 +22,7 @@ try
 {
 	def parallelBranches = [:]
 
+	//noinspection GroovyAssignabilityCheck
 	parallelBranches["Main"] =
 	{
 		//noinspection GroovyAssignabilityCheck
@@ -87,6 +88,7 @@ try
 		}
 	}
 
+	//noinspection GroovyAssignabilityCheck
 	parallelBranches["Idea"] =
 	{
 		//noinspection GroovyAssignabilityCheck
@@ -140,6 +142,7 @@ try
 		}
 	}
 
+	//noinspection GroovyAssignabilityCheck
 	parallelBranches["Ivy"] =
 	{
 		def cache = 'jenkins-build-survivor-' + projectName + "-Ivy"
