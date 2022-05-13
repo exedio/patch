@@ -22,6 +22,7 @@ try
 {
 	def parallelBranches = [:]
 
+	//noinspection GroovyAssignabilityCheck
 	parallelBranches["Main"] =
 	{
 		//noinspection GroovyAssignabilityCheck
@@ -87,6 +88,7 @@ try
 		}
 	}
 
+	//noinspection GroovyAssignabilityCheck
 	parallelBranches["Idea"] =
 	{
 		//noinspection GroovyAssignabilityCheck
@@ -140,6 +142,7 @@ try
 		}
 	}
 
+	//noinspection GroovyAssignabilityCheck
 	parallelBranches["Ivy"] =
 	{
 		def cache = 'jenkins-build-survivor-' + projectName + "-Ivy"
