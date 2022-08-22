@@ -3,6 +3,7 @@ package com.exedio.cope.patch;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
 import com.exedio.cope.Model;
+import com.exedio.cope.Query;
 import com.exedio.cope.TransactionTry;
 import com.exedio.cope.misc.ConnectToken;
 import com.exedio.cope.misc.ServletUtil;
@@ -58,7 +59,8 @@ public abstract class PatchConsoleServlet extends CopsServlet
 		model,
 		mutex,
 		patches,
-		schema
+		schema,
+		staleids
 	}
 
 	private static void setHeaders(final HttpServletResponse response)
@@ -162,6 +164,9 @@ public abstract class PatchConsoleServlet extends CopsServlet
 						return;
 					case schema:
 						writer.println(getSchemaInfo());
+						return;
+					case staleids:
+						writeStaleIds(writer);
 						return;
 				}
 			}
@@ -306,6 +311,21 @@ public abstract class PatchConsoleServlet extends CopsServlet
 			default:
 				throw new RuntimeException("Unexpected schema color: "+cumulativeColor);
 		}
+	}
+
+	void writeStaleIds(final PrintWriter writer)
+	{
+		// select patch from CopePatchRun order by this desc
+		final Query<String> q = new Query<>(PatchRun.patch);
+		q.setOrderBy(PatchRun.TYPE.getThis(), false);
+		final List<String> patches;
+		try(TransactionTry tx = getModel().startTransactionTry("PatchConsoleServlet staleids"))
+		{
+			patches = q.search();
+			tx.commit();
+		}
+		for(final String patch : patches)
+			writer.println(patch);
 	}
 
 	List<PatchView> getPatchList()

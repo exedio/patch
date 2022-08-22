@@ -87,6 +87,8 @@ public final class PatchesBuilder
 	 * This file is typically the result of
 	 * <p>
 	 * {@code select patch from CopePatchRun order by this desc}
+	 * <p>
+	 * or follow the link "Stale Ids" in Patch Console.
 	 *
 	 * @see #insertStaleFromResource(Class)
 	 */
@@ -109,6 +111,8 @@ public final class PatchesBuilder
 	 * This file is typically the result of
 	 * <p>
 	 * {@code select patch from CopePatchRun order by this desc}
+	 * <p>
+	 * or follow the link "Stale Ids" in Patch Console.
 	 *
 	 * @see #withStaleFromResource(Class)
 	 */

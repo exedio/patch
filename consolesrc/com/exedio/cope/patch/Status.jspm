@@ -71,6 +71,16 @@ final class Status_Jspm
 %>
 
 		<h3>Patches</h3>
+<%
+		if (servlet.isConnected())
+		{
+			%>
+			<a href="status/staleids">Stale Ids</a>
+			<small>To be put into <tt>stale-patch-ids.txt</tt>
+				when dropping patches already run on production.
+				Refer to PatchesBuilder#withStaleFromResource</small>.<%
+		}
+%>
 
 		<table>
 		<tr><th rowspan="2">ID</th><th colspan="3">Java</th><th colspan="6">Database</th></tr>

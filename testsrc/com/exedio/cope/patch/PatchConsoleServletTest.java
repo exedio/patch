@@ -408,6 +408,37 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 		}
 	}
 
+	@NoTransaction
+	@Test void staleIds() throws ServletException,IOException
+	{
+		final PatchesBuilder builder = new PatchesBuilder();
+		builder.insertAtStart(newSamplePatch("one"));
+		builder.insertAtStart(newSamplePatch("two"));
+		final Patches patches = builder.build();
+		final TestServlet servlet = new TestServlet(patches);
+		servlet.init(createServletConfig());
+		servlet.setConnectedOverwrite(Boolean.TRUE);
+		{
+			final TestHttpCall call = createRequestResponse("GET", "/status/staleids");
+			servlet.doRequest(call.request, call.response);
+			verify(call.response).setStatus(HttpServletResponse.SC_OK);
+			call.verifyContentType("text/plain; charset=UTF-8");
+			assertEquals("", call.getBody());
+		}
+
+		patches.preempt(new PatchInitiator("testInitiator"));
+		{
+			final TestHttpCall call = createRequestResponse("GET", "/status/staleids");
+			servlet.doRequest(call.request, call.response);
+			verify(call.response).setStatus(HttpServletResponse.SC_OK);
+			call.verifyContentType("text/plain; charset=UTF-8");
+			assertEquals(
+					"one\n" +
+					"two\n",
+					call.getBody());
+		}
+	}
+
 	private static final class TestServlet extends PatchConsoleServlet
 	{
 		private static final long serialVersionUID = 1L;
@@ -487,6 +518,16 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			this.request = request;
 			this.response = response;
 			this.output = output;
+		}
+
+		private void verifyContentType(final String contentType)
+		{
+			verify(response).setContentType(contentType);
+		}
+
+		private String getBody()
+		{
+			return output.toString();
 		}
 
 		private String getDivContent(final String id)
