@@ -19,6 +19,7 @@
 package com.exedio.cope.patch;
 
 import static com.exedio.cope.junit.Assert.assertFails;
+import static java.time.Month.AUGUST;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,6 +30,7 @@ import com.exedio.cope.Model;
 import com.exedio.cope.Query;
 import com.exedio.cope.Revisions;
 import com.exedio.cope.UniqueViolationException;
+import com.exedio.cope.junit.ClockRule;
 import com.exedio.cope.junit.LogRule;
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.AssertionErrorJobContext;
@@ -37,6 +39,7 @@ import com.exedio.cope.util.JobContexts;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -44,6 +47,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(LogRule.class)
+@ExtendWith(ClockRule.class)
 public class PatchTest extends CopeModel4Test
 {
 	// 200 is greater than 100/101 in RevisionPatchTest
@@ -417,7 +421,7 @@ public class PatchTest extends CopeModel4Test
 	}
 
 	@SuppressWarnings({"DuplicateExpressions", "RedundantSuppression"})
-	@Test void failure()
+	@Test void failure(final ClockRule clock)
 	{
 		assertEquals(emptyList(), items());
 		assertEquals(emptyList(), runs());
@@ -427,10 +431,12 @@ public class PatchTest extends CopeModel4Test
 		final Patches patches = builder.build();
 		assertEquals(false, isDone(patches));
 
+		clock.overrideUTC(LocalDateTime.of(2019, AUGUST, 25, 12, 33, 44));
 		assertFails(() ->
 			run(patches, JobContexts.EMPTY),
 			RuntimeException.class,
 			"failed");
+		clock.clearOverride();
 		final SampleItem ok;
 		{
 			final Iterator<SampleItem> items = items().iterator();
@@ -447,8 +453,12 @@ public class PatchTest extends CopeModel4Test
 
 		assertFails(() ->
 			run(patches, JobContexts.EMPTY),
-			UniqueViolationException.class,
-			"unique violation for CopePatchMutex.idImplicitUnique");
+			IllegalStateException.class,
+			"Patch Mutex is locked since 2019-08-25 12:33:44 (UTC) by " + getHost() + ". Probably " +
+			"a previous attempt to run patches failed (refer to your logs), or patching is currently " +
+			"run by another thread (may be on another server). Mutex has been locked for running the " +
+			"2 patches of stage 0.",
+			UniqueViolationException.class);
 		assertEquals(asList(ok), items());
 		assertEquals(asList(runOk), runs());
 		assertEquals(false, isDone(patches));
@@ -464,7 +474,7 @@ public class PatchTest extends CopeModel4Test
 	}
 
 	@SuppressWarnings({"DuplicateExpressions", "RedundantSuppression"})
-	@Test void failureNonTx()
+	@Test void failureNonTx(final ClockRule clock)
 	{
 		assertEquals(emptyList(), items());
 		assertEquals(emptyList(), runs());
@@ -474,10 +484,12 @@ public class PatchTest extends CopeModel4Test
 		final Patches patches = builder.build();
 		assertEquals(false, isDone(patches));
 
+		clock.overrideUTC(LocalDateTime.of(2009, AUGUST, 26, 12, 33, 44));
 		assertFails(() ->
 			run(patches, JobContexts.EMPTY),
 			RuntimeException.class,
 			"failed");
+		clock.clearOverride();
 		final SampleItem ok;
 		final SampleItem fail1;
 		{
@@ -496,8 +508,12 @@ public class PatchTest extends CopeModel4Test
 
 		assertFails(() ->
 			run(patches, JobContexts.EMPTY),
-			UniqueViolationException.class,
-			"unique violation for CopePatchMutex.idImplicitUnique");
+			IllegalStateException.class,
+			"Patch Mutex is locked since 2009-08-26 12:33:44 (UTC) by " + getHost() + ". Probably " +
+			"a previous attempt to run patches failed (refer to your logs), or patching is currently " +
+			"run by another thread (may be on another server). Mutex has been locked for running the " +
+			"2 patches of stage 0.",
+			UniqueViolationException.class);
 		assertEquals(asList(ok, fail1), items());
 		assertEquals(asList(runOk), runs());
 		assertEquals(false, isDone(patches));

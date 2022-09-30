@@ -19,18 +19,25 @@
 package com.exedio.cope.patch;
 
 import static com.exedio.cope.instrument.Visibility.NONE;
+import static com.exedio.cope.instrument.Visibility.PRIVATE;
+import static java.time.LocalDateTime.ofInstant;
+import static java.time.ZoneOffset.UTC;
+import static java.time.format.DateTimeFormatter.ofPattern;
 
 import com.exedio.cope.CopeName;
 import com.exedio.cope.DateField;
 import com.exedio.cope.IntegerField;
 import com.exedio.cope.Item;
 import com.exedio.cope.StringField;
+import com.exedio.cope.UniqueViolationException;
 import com.exedio.cope.instrument.WrapInterim;
 import com.exedio.cope.instrument.Wrapper;
+import com.exedio.cope.instrument.WrapperType;
 import com.exedio.cope.misc.Computed;
 
 @CopeName("CopePatchMutex")
 @Computed
+@WrapperType(constructor=PRIVATE)
 final class PatchMutex extends Item
 {
 	private static final int THE_ONE = 42;
@@ -43,6 +50,37 @@ final class PatchMutex extends Item
 	private static final IntegerField id =
 		new IntegerField().toFinal().unique().
 				defaultTo(THE_ONE_OBJECT).range(THE_ONE, THE_ONE+1);
+
+	static PatchMutex seize(
+			final int stage,
+			final String host,
+			final String savepoint,
+			final int numberOfPatches)
+	{
+		try
+		{
+			return new PatchMutex(stage, host, savepoint, numberOfPatches);
+		}
+		catch(final UniqueViolationException e)
+		{
+			final PatchMutex mutex = forId(THE_ONE);
+			throw new IllegalStateException(
+					"Patch Mutex is locked" +
+					(mutex!=null ? (
+							" since " + ofPattern("uuuu-MM-dd HH:mm:ss").
+									format(ofInstant(mutex.getFinished().toInstant(), UTC)) + " (UTC)" +
+							" by " + mutex.getHost())
+					: "") + ". " +
+					"Probably a previous attempt to run patches failed (refer to your logs), " +
+					"or patching is currently run by another thread (may be on another server)." +
+					(mutex!=null
+							? " Mutex has been locked for running" +
+							  " the " + mutex.getNumberOfPatches() + " patches" +
+							  " of stage " + mutex.getStage() + '.'
+							: ""),
+					e);
+		}
+	}
 
 	static void release()
 	{
@@ -70,7 +108,7 @@ final class PatchMutex extends Item
 	 */
 	@com.exedio.cope.instrument.Generated // customize with @WrapperType(constructor=...) and @WrapperInitial
 	@java.lang.SuppressWarnings({"RedundantArrayCreation","RedundantSuppression"})
-	PatchMutex(
+	private PatchMutex(
 				final int stage,
 				final java.lang.String host,
 				final java.lang.String savepoint,

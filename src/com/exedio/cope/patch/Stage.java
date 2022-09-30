@@ -133,7 +133,7 @@ final class Stage
 		try(TransactionTry tx = startTransaction("mutex seize"))
 		{
 			return tx.commit(
-					new PatchMutex(stageNumber, host, savepoint, numberOfPatches));
+					PatchMutex.seize(stageNumber, host, savepoint, numberOfPatches));
 		}
 	}
 
