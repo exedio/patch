@@ -42,12 +42,6 @@ abstract class AbstractPatch implements Patch
 	}
 
 	@Override
-	public final void check()
-	{
-		// empty
-	}
-
-	@Override
 	public boolean isTransactionally()
 	{
 		return true;

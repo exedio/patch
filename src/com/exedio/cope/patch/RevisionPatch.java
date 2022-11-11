@@ -53,12 +53,6 @@ public final class RevisionPatch implements Patch
 	}
 
 	@Override
-	public void check()
-	{
-		// empty
-	}
-
-	@Override
 	public boolean isTransactionally()
 	{
 		return false;

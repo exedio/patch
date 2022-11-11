@@ -42,12 +42,6 @@ final class StalePatch implements Patch
 	}
 
 	@Override
-	public void check()
-	{
-		// empty
-	}
-
-	@Override
 	public boolean isTransactionally()
 	{
 		return false;
