@@ -22,6 +22,7 @@ import static com.exedio.cope.junit.Assert.assertFails;
 import static java.time.Month.AUGUST;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,6 +33,7 @@ import com.exedio.cope.Revisions;
 import com.exedio.cope.UniqueViolationException;
 import com.exedio.cope.junit.ClockRule;
 import com.exedio.cope.junit.LogRule;
+import com.exedio.cope.patch.SamplePatch.IsSuppressedResult;
 import com.exedio.cope.patch.cope.CopeModel4Test;
 import com.exedio.cope.util.AssertionErrorJobContext;
 import com.exedio.cope.util.JobContext;
@@ -538,6 +540,114 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(false, isDone(patches));
 	}
 
+	@Test void suppressedRun(final LogRule log)
+	{
+		log.listen(Patches.class);
+		assertEquals(emptyList(), runs());
+		final JC ctx = new JC();
+		final PatchesBuilder builder = new PatchesBuilder();
+		final SamplePatch suppressed;
+		//noinspection NestedAssignment
+		builder.insertAtStart(suppressed = newSamplePatch("twoSuppressed").isSuppressedResult(IsSuppressedResult.BLOCKED));
+		builder.insertAtStart(newSamplePatch("one"));
+		final Patches patches = builder.build();
+		suppressed.isSuppressedResult(IsSuppressedResult.SUPPRESSED);
+		assertEquals(false, isDone(patches));
+
+		log.assertEvents();
+		assertEquals(1, run(patches, ctx));
+		log.assertEvents(
+				"INFO run initiated by PatchTestInitiator",
+				"INFO s0 skipped suppressed twoSuppressed",
+				"WARN savepoint not supported by com.exedio.cope.HsqldbDialect",
+				"INFO s0 mutex seize for 1 patches",
+				"INFO s0 run 1/1 one",
+				"INFO s0 mutex release",
+				"INFO run finished after 1 patches");
+		ctx.assertIt(
+				"stop()" +
+				"stop()" + "message(run s0 1/1 one)" + "progress()" );
+		assertEquals(asList("one"), runIds());
+		assertEquals(true, isDone(patches));
+
+		log.assertEvents();
+		assertEquals(0, run(patches, ctx));
+		log.assertEvents(
+				"INFO run initiated by PatchTestInitiator",
+				"INFO s0 skipped suppressed twoSuppressed");
+		ctx.assertIt("");
+		assertEquals(asList("one"), runIds());
+		assertEquals(true, isDone(patches));
+
+		suppressed.isSuppressedResult(IsSuppressedResult.SUPER);
+		assertEquals(false, isDone(patches));
+
+		log.assertEvents();
+		assertEquals(1, run(patches, ctx));
+		log.assertEvents(
+				"INFO run initiated by PatchTestInitiator",
+				"WARN savepoint not supported by com.exedio.cope.HsqldbDialect",
+				"INFO s0 mutex seize for 1 patches",
+				"INFO s0 run 1/1 twoSuppressed",
+				"INFO s0 mutex release",
+				"INFO run finished after 1 patches");
+		ctx.assertIt(
+				"stop()" +
+				"stop()" + "message(run s0 1/1 twoSuppressed)" + "progress()" );
+		assertEquals(asList("one", "twoSuppressed"), runIds());
+		assertEquals(true, isDone(patches));
+	}
+
+	@Test void suppressedPreempt(final LogRule log)
+	{
+		log.listen(Patches.class);
+		assertEquals(emptyList(), runs());
+		final JC ctx = new JC();
+		final PatchesBuilder builder = new PatchesBuilder();
+		final SamplePatch suppressed;
+		//noinspection NestedAssignment
+		builder.insertAtStart(suppressed = newSamplePatch("twoSuppressed").isSuppressedResult(IsSuppressedResult.BLOCKED));
+		builder.insertAtStart(newSamplePatch("one"));
+		final Patches patches = builder.build();
+		suppressed.isSuppressedResult(IsSuppressedResult.SUPPRESSED);
+		assertEquals(false, isDone(patches));
+
+		log.assertEvents();
+		preempt(patches);
+		log.assertEvents(
+				"INFO preempt initiated by PatchTestInitiator",
+				"INFO s0 skipped 1 suppressed patches",
+				"INFO s0 mutex seize for 1 patches",
+				"INFO s0 mutex release");
+		ctx.assertIt(
+				"" );
+		assertEquals(asList("one"), runIds());
+		assertEquals(true, isDone(patches));
+
+		log.assertEvents();
+		preempt(patches);
+		log.assertEvents(
+				"INFO preempt initiated by PatchTestInitiator",
+				"INFO s0 skipped 1 suppressed patches");
+		ctx.assertIt("");
+		assertEquals(asList("one"), runIds());
+		assertEquals(true, isDone(patches));
+
+		suppressed.isSuppressedResult(IsSuppressedResult.SUPER);
+		assertEquals(false, isDone(patches));
+
+		log.assertEvents();
+		preempt(patches);
+		log.assertEvents(
+				"INFO preempt initiated by PatchTestInitiator",
+				"INFO s0 mutex seize for 1 patches",
+				"INFO s0 mutex release");
+		ctx.assertIt(
+				"" );
+		assertEquals(asList("one", "twoSuppressed"), runIds());
+		assertEquals(true, isDone(patches));
+	}
+
 	@Test void stale()
 	{
 		final String id = "staleID";
@@ -686,7 +796,7 @@ public class PatchTest extends CopeModel4Test
 		boolean result;
 		try
 		{
-			result = patches.preempt(id, createPatchInitiator());
+			result = patches.preemptEvenIfSuppressed(id, createPatchInitiator());
 		}
 		finally
 		{
@@ -732,6 +842,11 @@ public class PatchTest extends CopeModel4Test
 		final Query<PatchRun> q = PatchRun.TYPE.newQuery();
 		q.setOrderByThis(true);
 		return q.search();
+	}
+
+	private static List<String> runIds()
+	{
+		return runs().stream().map(PatchRun::getPatch).collect(toList());
 	}
 
 	private static PatchRun assertIt(

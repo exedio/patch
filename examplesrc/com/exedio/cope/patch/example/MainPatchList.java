@@ -129,6 +129,26 @@ final class MainPatchList
 				"INSERT INTO TestTable values (0, SLEEP(15000),'test')",
 				"ALTER TABLE TestTable ADD COLUMN description varchar(80)");
 		add("CreateHSQLFunction", "CREATE FUNCTION SLEEP(v BIGINT) RETURNS INT LANGUAGE JAVA DETERMINISTIC NO SQL EXTERNAL NAME 'CLASSPATH:com.exedio.cope.patch.example.HSQLSleep.sleep'");
+		add(new AbstractPatch()
+		{
+			@Override
+			public boolean isSuppressed()
+			{
+				return true;
+			}
+
+			@Override
+			public void run(final JobContext context)
+			{
+				throw new RuntimeException("suppressed patch must not be run");
+			}
+
+			@Override
+			public String getID()
+			{
+				return "Suppressed Patch";
+			}
+		} );
 	}
 
 	private MainPatchList()

@@ -34,6 +34,28 @@ public interface Patch
 	}
 
 	/**
+	 * If this method returns {@code false} this patch is treated normally.
+	 * The default implementation returns {@code false}.
+	 * <p>
+	 * If this methods returns {@code true} this patch is treated as if the
+	 * patch did not exist at all by
+	 * {@link Patches#run(JobContext, PatchInitiator) Patches#run},
+	 * {@link Patches#preempt(PatchInitiator) Patches#preempt}, and
+	 * {@link Patches#isDone() Patches#isDone()}.
+	 * As an exception the methods named above may emit log events
+	 * when skipping suppressed patches.
+	 * <p>
+	 * This method is guaranteed not to be called within
+	 * {@link PatchesBuilder#build()},
+	 * so the implementation may rely on information
+	 * that becomes available only later.
+	 */
+	default boolean isSuppressed()
+	{
+		return false;
+	}
+
+	/**
 	 * Specifies, whether the framework shall manage
 	 * {@link com.exedio.cope.Transaction transactions}
 	 * for the patch.
