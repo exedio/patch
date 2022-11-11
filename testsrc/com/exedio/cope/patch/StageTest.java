@@ -125,12 +125,6 @@ public class StageTest extends CopeModel4Test
 			}
 
 			@Override
-			public void check()
-			{
-				// empty
-			}
-
-			@Override
 			public boolean isTransactionally()
 			{
 				return true;

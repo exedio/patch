@@ -24,7 +24,14 @@ public interface Patch
 {
 	String getID();
 	int getStage();
-	void check();
+
+	/**
+	 * The default implementation is empty.
+	 */
+	default void check()
+	{
+		// empty
+	}
 
 	/**
 	 * Specifies, whether the framework shall manage
