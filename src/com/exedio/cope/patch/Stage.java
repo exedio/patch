@@ -66,19 +66,19 @@ final class Stage
 		runLock.lock(); // blocks until available
 		try
 		{
-			final LinkedHashMap<String,Patch> patches = getPatchesPending();
-			if(patches.isEmpty())
+			final LinkedHashMap<String,Patch> pending = getPatchesPending();
+			if(pending.isEmpty())
 				return 0;
 
 			ctx.stopIfRequested();
 			final String host = getHost();
 			final String savepoint = getSavepoint(model);
-			final int numberOfPatches = patches.size();
+			final int numberOfPatches = pending.size();
 			final PatchMutex mutex = seizeMutex(host, savepoint, numberOfPatches);
 
 			int numberOfPatch = 1;
 			int result = 0;
-			for(final Map.Entry<String, Patch> entry : patches.entrySet())
+			for(final Map.Entry<String, Patch> entry : pending.entrySet())
 			{
 				final String id = entry.getKey();
 
@@ -228,17 +228,17 @@ final class Stage
 
 	void preempt()
 	{
-		final LinkedHashMap<String,Patch> patches = getPatchesPending();
-		if(patches.isEmpty())
+		final LinkedHashMap<String,Patch> pending = getPatchesPending();
+		if(pending.isEmpty())
 			return;
 
 		final String host = getHost();
-		final int numberOfPatches = patches.size();
+		final int numberOfPatches = pending.size();
 		final PatchMutex mutex = seizeMutex(host, null, numberOfPatches);
 
 		try(TransactionTry tx = startTransaction("preempt"))
 		{
-			for(final Map.Entry<String, Patch> entry : patches.entrySet())
+			for(final Map.Entry<String, Patch> entry : pending.entrySet())
 			{
 				final Patch patch = entry.getValue();
 				//noinspection ResultOfObjectAllocationIgnored persistent object
