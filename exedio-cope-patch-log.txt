@@ -7,6 +7,8 @@ omit bug fixes.
 The items are sorted inversely, i.e. latest items are on top
 
 --------------------------------------------------------------------------
+* Class-Path removed from jar manifest:
+	- exedio-cope-patch.jar drops "Class-Path: exedio-cope.jar"
 * Patch#check() gets empty default implementation.
 * Patch console servlet provides four URLs (paths) to get the global status as plain text:
   /status/model (Connected or Not connected)
