@@ -45,18 +45,18 @@ final class Stage
 
 	private final int stageNumber;
 	private final String txName;
-	private final LinkedHashMap<String,Patch> patches;
+	private final LinkedHashMap<String,Patch> patchesModifiable;
 
 	Stage(final int stageNumber)
 	{
 		this.stageNumber = stageNumber;
 		this.txName = "patch stage " + stageNumber + ' ';
-		this.patches = new LinkedHashMap<>();
+		this.patchesModifiable = new LinkedHashMap<>();
 	}
 
 	void put(final String id, final Patch patch)
 	{
-		patches.put(id, patch);
+		patchesModifiable.put(id, patch);
 	}
 
 	int run(final JobContext ctx)
@@ -170,7 +170,7 @@ final class Stage
 
 	private LinkedHashMap<String,Patch> getPatchesPending()
 	{
-		final LinkedHashMap<String,Patch> result = new LinkedHashMap<>(patches);
+		final LinkedHashMap<String,Patch> result = new LinkedHashMap<>(patchesModifiable);
 
 		try(TransactionTry tx = startTransaction("query"))
 		{
@@ -252,7 +252,7 @@ final class Stage
 
 	boolean preempt(final String patchId)
 	{
-		final Patch patch = patches.get(patchId);
+		final Patch patch = patchesModifiable.get(patchId);
 		requireNonNull(patch); // cannot happen, is tested by calling code
 
 		final boolean patchRunExists;
@@ -282,6 +282,6 @@ final class Stage
 
 	Map<String,Patch> getPatches()
 	{
-		return Collections.unmodifiableMap(patches);
+		return Collections.unmodifiableMap(patchesModifiable);
 	}
 }
