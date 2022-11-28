@@ -51,7 +51,7 @@ public final class CopeRule implements
 	public void beforeAll(final ExtensionContext context)
 	{
 		final Optional<Class<?>> clazz = context.getTestClass();
-		if(!clazz.isPresent())
+		if(clazz.isEmpty())
 			throw new IllegalArgumentException("does not have a test class");
 		if(!(Config.class.isAssignableFrom(clazz.get())))
 			throw new IllegalArgumentException("test class must implement " + Config.class + ", but was " + clazz.get());

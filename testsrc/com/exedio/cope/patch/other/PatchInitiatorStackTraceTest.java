@@ -66,7 +66,7 @@ public class PatchInitiatorStackTraceTest
 	void testAnonymousClass()
 	{
 		@SuppressWarnings("Convert2Lambda")
-		final Supplier<String> anonymous = new Supplier<String>()
+		final Supplier<String> anonymous = new Supplier<>()
 		{
 			@Override
 			public String get()

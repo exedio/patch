@@ -426,7 +426,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 			this.id = id;
 			this.javaView = patch == null ? null : new PatchViewJava(patch);
 			this.databaseView = run == null ? null : new PatchViewDatabase(run);
-			this.schemaViews = schemaViews == null ? Collections.emptyList() : Collections.unmodifiableList(new ArrayList<>(schemaViews));
+			this.schemaViews = schemaViews == null ? Collections.emptyList() : List.copyOf(schemaViews);
 		}
 
 		String getId()
