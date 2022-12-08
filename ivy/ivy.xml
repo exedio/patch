@@ -50,7 +50,7 @@
 		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" conf="console->default; ide->default,sources" />
 		<dependency org="com.exedio" name="cops"     rev="394" conf="console->runtime; ide->runtime,sources,changelog" />
 		<dependency org="com.exedio" name="jspm"     rev="202" conf="jspm->runtime; ide->changelog" />
-		<dependency org="org.apache.tomcat" name="tomcat" rev="8.5.63" conf="example->default">
+		<dependency org="org.apache.tomcat" name="tomcat" rev="9.0.31" conf="example->default">
 			<artifact name="tomcat" type="tar.gz" />
 		</dependency>
 		<dependency org="com.exedio" name="copeconsole" rev="7051" conf="example->runtime" />
