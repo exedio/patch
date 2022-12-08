@@ -215,7 +215,7 @@
 	</target>
 
 	<target name="catalina" depends="web">
-		<property name="catalina.root" value="apache-tomcat-8.5.63" />
+		<property name="catalina.root" value="apache-tomcat-9.0.31" />
 		<echo message="Decompressing Tomcat"/>
 		<untar src="lib/example/tomcat-tar.gz.tar.gz"
 				 compression="gzip"
