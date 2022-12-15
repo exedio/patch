@@ -245,26 +245,36 @@ final class Stage
 
 	void preempt()
 	{
-		final LinkedHashMap<String,Patch> pending = getPatchesPending(PendingLog.SUMMARY);
-		if(pending.isEmpty())
-			return;
-
-		final String host = getHost();
-		final int numberOfPatches = pending.size();
-		final PatchMutex mutex = seizeMutex(host, null, numberOfPatches);
-
-		try(TransactionTry tx = startTransaction("preempt"))
+		final boolean lockAcquired = runLock.tryLock(); // returns immediately
+		if(!lockAcquired)
+			throw new IllegalStateException("run lock held by another thread");
+		try
 		{
-			for(final Map.Entry<String, Patch> entry : pending.entrySet())
-			{
-				final Patch patch = entry.getValue();
-				//noinspection ResultOfObjectAllocationIgnored persistent object
-				new PatchRun(entry.getKey(), stageNumber, patch.isTransactionally(), host);
-			}
-			tx.commit();
-		}
+			final LinkedHashMap<String,Patch> pending = getPatchesPending(PendingLog.SUMMARY);
+			if(pending.isEmpty())
+				return;
 
-		releaseMutex(mutex);
+			final String host = getHost();
+			final int numberOfPatches = pending.size();
+			final PatchMutex mutex = seizeMutex(host, null, numberOfPatches);
+
+			try(TransactionTry tx = startTransaction("preempt"))
+			{
+				for(final Map.Entry<String, Patch> entry : pending.entrySet())
+				{
+					final Patch patch = entry.getValue();
+					//noinspection ResultOfObjectAllocationIgnored persistent object
+					new PatchRun(entry.getKey(), stageNumber, patch.isTransactionally(), host);
+				}
+				tx.commit();
+			}
+
+			releaseMutex(mutex);
+		}
+		finally
+		{
+			runLock.unlock();
+		}
 	}
 
 	boolean preemptEvenIfSuppressed(final String patchId)
@@ -272,27 +282,37 @@ final class Stage
 		final Patch patch = patchesModifiable.get(patchId);
 		requireNonNull(patch); // cannot happen, is tested by calling code
 
-		final boolean patchRunExists;
-		try (TransactionTry tx = startTransaction("query"))
+		final boolean lockAcquired = runLock.tryLock(); // returns immediately
+		if(!lockAcquired)
+			throw new IllegalStateException("run lock held by another thread");
+		try
 		{
-			patchRunExists = PatchRun.forPatch(patchId) != null;
-			tx.commit();
+			final boolean patchRunExists;
+			try (TransactionTry tx = startTransaction("query"))
+			{
+				patchRunExists = PatchRun.forPatch(patchId) != null;
+				tx.commit();
+			}
+
+			if (patchRunExists)
+				return false;
+
+			final String host = getHost();
+			final PatchMutex mutex = seizeMutex(host, null, 1);
+
+			try (TransactionTry tx = startTransaction("preempt"))
+			{
+				//noinspection ResultOfObjectAllocationIgnored persistent object
+				new PatchRun(patchId, stageNumber, patch.isTransactionally(), host);
+				tx.commit();
+			}
+
+			releaseMutex(mutex);
 		}
-
-		if (patchRunExists)
-			return false;
-
-		final String host = getHost();
-		final PatchMutex mutex = seizeMutex(host, null, 1);
-
-		try (TransactionTry tx = startTransaction("preempt"))
+		finally
 		{
-			//noinspection ResultOfObjectAllocationIgnored persistent object
-			new PatchRun(patchId, stageNumber, patch.isTransactionally(), host);
-			tx.commit();
+			runLock.unlock();
 		}
-
-		releaseMutex(mutex);
 
 		return true;
 	}
