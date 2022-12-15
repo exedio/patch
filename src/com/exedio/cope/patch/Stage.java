@@ -31,6 +31,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +67,7 @@ final class Stage
 		runLock.lock(); // blocks until available
 		try
 		{
-			final LinkedHashMap<String,Patch> pending = getPatchesPending();
+			final LinkedHashMap<String,Patch> pending = getPatchesPending(PendingLog.DETAIL);
 			if(pending.isEmpty())
 				return 0;
 
@@ -156,7 +157,7 @@ final class Stage
 		final LinkedHashMap<String,Patch> pending;
 		try
 		{
-			pending = getPatchesPending();
+			pending = getPatchesPending(PendingLog.NONE);
 		}
 		finally
 		{
@@ -168,7 +169,9 @@ final class Stage
 				: DoneResult.PENDING;
 	}
 
-	private LinkedHashMap<String,Patch> getPatchesPending()
+	private enum PendingLog { NONE, DETAIL, SUMMARY }
+
+	private LinkedHashMap<String,Patch> getPatchesPending(final PendingLog log)
 	{
 		final LinkedHashMap<String,Patch> result = new LinkedHashMap<>(patchesModifiable);
 
@@ -183,6 +186,20 @@ final class Stage
 			// Found by idea inspection Call to 'set.removeAll(list)' may work slowly.
 			idsDone.forEach(result::remove);
 		}
+		int suppressedCount = 0;
+		for(final Iterator<Map.Entry<String,Patch>> i = result.entrySet().iterator(); i.hasNext(); )
+		{
+			final Map.Entry<String,Patch> e = i.next();
+			if(e.getValue().isSuppressed())
+			{
+				i.remove();
+				if(log==PendingLog.DETAIL)
+					logger.info("s{} skipped suppressed {}", new Object[]{stageNumber, e.getKey()});
+				suppressedCount++;
+			}
+		}
+		if(log==PendingLog.SUMMARY && suppressedCount>0)
+			logger.info("s{} skipped {} suppressed patches", new Object[]{stageNumber, suppressedCount});
 		return result;
 	}
 
@@ -228,7 +245,7 @@ final class Stage
 
 	void preempt()
 	{
-		final LinkedHashMap<String,Patch> pending = getPatchesPending();
+		final LinkedHashMap<String,Patch> pending = getPatchesPending(PendingLog.SUMMARY);
 		if(pending.isEmpty())
 			return;
 
@@ -250,7 +267,7 @@ final class Stage
 		releaseMutex(mutex);
 	}
 
-	boolean preempt(final String patchId)
+	boolean preemptEvenIfSuppressed(final String patchId)
 	{
 		final Patch patch = patchesModifiable.get(patchId);
 		requireNonNull(patch); // cannot happen, is tested by calling code

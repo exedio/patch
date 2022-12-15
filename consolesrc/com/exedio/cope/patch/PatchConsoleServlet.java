@@ -130,7 +130,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 				if (id == null)
 					throw new NullPointerException("Request parameter " + PARAM_PATCH_ID + " must not be null");
 				final Patches patches = getPatches();
-				patches.preempt(id, ServletPatchInitiatorUtil.create(getServletConfig(), request));
+				patches.preemptEvenIfSuppressed(id, ServletPatchInitiatorUtil.create(getServletConfig(), request));
 			}
 			else if (RUN_ACTION.equals(action))
 			{
@@ -434,6 +434,11 @@ public abstract class PatchConsoleServlet extends CopsServlet
 			return id;
 		}
 
+		boolean isSuppressed()
+		{
+			return javaView!=null && javaView.isSuppressed();
+		}
+
 		PatchViewJava getJavaView()
 		{
 			return javaView;
@@ -457,6 +462,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 	{
 		private final String className;
 		private final int stage;
+		private final boolean suppressed;
 		private final boolean transactionally;
 
 		PatchViewJava(final Patch patch)
@@ -474,6 +480,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 				fullName = fullName.substring(fullName.lastIndexOf('.') + 1);
 			className = fullName;
 			stage = patch.getStage();
+			suppressed = patch.isSuppressed();
 			transactionally = patch.isTransactionally();
 		}
 
@@ -485,6 +492,11 @@ public abstract class PatchConsoleServlet extends CopsServlet
 		int getStage()
 		{
 			return stage;
+		}
+
+		boolean isSuppressed()
+		{
+			return suppressed;
 		}
 
 		boolean isTransactionally()

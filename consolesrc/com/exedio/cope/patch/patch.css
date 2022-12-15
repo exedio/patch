@@ -81,10 +81,9 @@ table td.preconditionMissed
 	background-color:#f0f372;
 }
 
-table td.inactive
+table tr.suppressed td
 {
-	border-color:#ccf;
-	background-color:#ccf;
+	background:#ccb;
 }
 
 table input

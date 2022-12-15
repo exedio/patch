@@ -18,11 +18,13 @@
 
 package com.exedio.cope.patch;
 
+import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.exedio.cope.Model;
 import com.exedio.cope.TransactionTry;
 import com.exedio.cope.util.JobContext;
+import org.opentest4j.AssertionFailedError;
 
 public class SamplePatch implements Patch
 {
@@ -61,6 +63,31 @@ public class SamplePatch implements Patch
 		if(checkExceptionMessage!=null)
 			throw new RuntimeException(checkExceptionMessage);
 	}
+
+
+	enum IsSuppressedResult { SUPER, BLOCKED, SUPPRESSED }
+
+	private IsSuppressedResult isSuppressedResult = IsSuppressedResult.SUPER;
+
+	@Override
+	public boolean isSuppressed()
+	{
+		switch(isSuppressedResult)
+		{
+			case SUPER: return Patch.super.isSuppressed();
+			case BLOCKED: throw new AssertionFailedError("isSuppressed is blocked");
+			case SUPPRESSED: return true;
+			default:
+				throw new AssertionFailedError("" + isSuppressedResult);
+		}
+	}
+
+	SamplePatch isSuppressedResult(final IsSuppressedResult isSuppressedResult)
+	{
+		this.isSuppressedResult = requireNonNull(isSuppressedResult);
+		return this;
+	}
+
 
 	@Override
 	public boolean isTransactionally()

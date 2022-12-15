@@ -58,6 +58,7 @@ public final class Patches
 	}
 
 	/**
+	 * Skips {@link Patch#isSuppressed() suppressed} patches.
 	 * @deprecated use {@link #run(JobContext, PatchInitiator)}
 	 * For PatchInitiator creation see {@link PatchInitiator#createFromStackTrace()} or ServletPatchInitiatorUtil
 	 */
@@ -67,6 +68,9 @@ public final class Patches
 		return run(ctx, PatchInitiator.createFromStackTrace());
 	}
 
+	/**
+	 * Skips {@link Patch#isSuppressed() suppressed} patches.
+	 */
 	public int run(final JobContext ctx, final PatchInitiator initiator)
 	{
 		requireNonNull(ctx, "ctx");
@@ -112,6 +116,8 @@ public final class Patches
 	 * </ul>
 	 * This implies, that the result is not monotonous:
 	 * After this method returned true, subsequent calls may return false.
+	 * <p>
+	 * Does not consider {@link Patch#isSuppressed() suppressed} patches.
 	 */
 	public boolean isDone()
 	{
@@ -139,6 +145,7 @@ public final class Patches
 	}
 
 	/**
+	 * Skips {@link Patch#isSuppressed() suppressed} patches.
 	 * @deprecated use {@link #preempt(PatchInitiator)}
 	 * For PatchInitiator creation see {@link PatchInitiator#createFromStackTrace()} or ServletPatchInitiatorUtil
 	 */
@@ -153,6 +160,8 @@ public final class Patches
 	 * Is useful when you
 	 * {@link com.exedio.cope.Model#createSchema() created}
 	 * an empty schema.
+	 * <p>
+	 * Skips {@link Patch#isSuppressed() suppressed} patches.
 	 */
 	public void preempt(final PatchInitiator initiator)
 	{
@@ -171,7 +180,7 @@ public final class Patches
 	 *         already run (or preempted)
 	 * @throws NoSuchElementException if there is no patch with given id.
 	 */
-	boolean preempt(final String id, final PatchInitiator initiator)
+	boolean preemptEvenIfSuppressed(final String id, final PatchInitiator initiator)
 	{
 		requireNonNull(id, "id");
 		requireNonNull(initiator, "initiator");
@@ -180,7 +189,7 @@ public final class Patches
 		for (final Stage stage : stages.values())
 		{
 			if (stage.getPatches().containsKey(id))
-				return stage.preempt(id);
+				return stage.preemptEvenIfSuppressed(id);
 		}
 		throw new NoSuchElementException("Patch with id " + id + " does not exist");
 	}

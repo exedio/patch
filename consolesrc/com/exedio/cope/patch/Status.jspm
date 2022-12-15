@@ -91,7 +91,18 @@ final class Status_Jspm
 		for (final PatchView patchView : patchList)
 		{
 			lineCnt++;
-%><tr><td><%=patchView.getId()%></td><%
+			final boolean suppressed = patchView.isSuppressed();
+			%><tr<%
+				if(suppressed)
+				{
+					%> class="suppressed"<%
+				}
+				%>><td><%=patchView.getId()%><%
+					if(suppressed)
+					{
+						%><br><small>(suppressed)</small><%
+					}
+				%></td><%
 			if (patchView.getJavaView() == null)
 			{
 				%><td colspan="3"></td><%
