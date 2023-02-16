@@ -67,7 +67,7 @@ final class SchemaSampleItem extends Item
 				com.exedio.cope.StringLengthViolationException
 	{
 		this(new com.exedio.cope.SetValue<?>[]{
-			SchemaSampleItem.content.map(content),
+			com.exedio.cope.SetValue.map(SchemaSampleItem.content,content),
 		});
 	}
 

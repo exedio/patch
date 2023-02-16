@@ -82,12 +82,12 @@ final class PatchRun extends Item
 				com.exedio.cope.UniqueViolationException
 	{
 		this(new com.exedio.cope.SetValue<?>[]{
-			PatchRun.patch.map(patch),
-			PatchRun.stage.map(stage),
-			PatchRun.isTransactionally.map(isTransactionally),
-			PatchRun.host.map(host),
-			PatchRun.savepoint.map(savepoint),
-			PatchRun.elapsed.map(elapsed),
+			com.exedio.cope.SetValue.map(PatchRun.patch,patch),
+			com.exedio.cope.SetValue.map(PatchRun.stage,stage),
+			com.exedio.cope.SetValue.map(PatchRun.isTransactionally,isTransactionally),
+			com.exedio.cope.SetValue.map(PatchRun.host,host),
+			com.exedio.cope.SetValue.map(PatchRun.savepoint,savepoint),
+			com.exedio.cope.SetValue.map(PatchRun.elapsed,elapsed),
 		});
 	}
 

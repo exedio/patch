@@ -74,11 +74,11 @@ public final class SampleItem extends Item
 				com.exedio.cope.StringLengthViolationException
 	{
 		this(new com.exedio.cope.SetValue<?>[]{
-			SampleItem.patch.map(patch),
-			SampleItem.transactionName.map(transactionName),
-			SampleItem.mutexHost.map(mutexHost),
-			SampleItem.mutexSavepoint.map(mutexSavepoint),
-			SampleItem.mutexNumberOfPatches.map(mutexNumberOfPatches),
+			com.exedio.cope.SetValue.map(SampleItem.patch,patch),
+			com.exedio.cope.SetValue.map(SampleItem.transactionName,transactionName),
+			com.exedio.cope.SetValue.map(SampleItem.mutexHost,mutexHost),
+			com.exedio.cope.SetValue.map(SampleItem.mutexSavepoint,mutexSavepoint),
+			com.exedio.cope.SetValue.map(SampleItem.mutexNumberOfPatches,mutexNumberOfPatches),
 		});
 	}
 

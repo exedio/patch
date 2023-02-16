@@ -63,11 +63,11 @@ final class SchemaPatchRun extends Item
 				com.exedio.cope.StringLengthViolationException
 	{
 		this(new com.exedio.cope.SetValue<?>[]{
-			SchemaPatchRun.patch.map(patch),
-			SchemaPatchRun.position.map(position),
-			SchemaPatchRun.sql.map(sql),
-			SchemaPatchRun.rows.map(rows),
-			SchemaPatchRun.elapsed.map(elapsed),
+			com.exedio.cope.SetValue.map(SchemaPatchRun.patch,patch),
+			com.exedio.cope.SetValue.map(SchemaPatchRun.position,position),
+			com.exedio.cope.SetValue.map(SchemaPatchRun.sql,sql),
+			com.exedio.cope.SetValue.map(SchemaPatchRun.rows,rows),
+			com.exedio.cope.SetValue.map(SchemaPatchRun.elapsed,elapsed),
 		});
 	}
 
