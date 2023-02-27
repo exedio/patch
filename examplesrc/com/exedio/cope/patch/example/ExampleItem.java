@@ -22,7 +22,7 @@ public class ExampleItem extends Item
 				com.exedio.cope.StringLengthViolationException
 	{
 		this(new com.exedio.cope.SetValue<?>[]{
-			ExampleItem.name.map(name),
+			com.exedio.cope.SetValue.map(ExampleItem.name,name),
 		});
 	}
 

@@ -118,10 +118,10 @@ final class PatchMutex extends Item
 				com.exedio.cope.StringLengthViolationException
 	{
 		this(new com.exedio.cope.SetValue<?>[]{
-			PatchMutex.stage.map(stage),
-			PatchMutex.host.map(host),
-			PatchMutex.savepoint.map(savepoint),
-			PatchMutex.numberOfPatches.map(numberOfPatches),
+			com.exedio.cope.SetValue.map(PatchMutex.stage,stage),
+			com.exedio.cope.SetValue.map(PatchMutex.host,host),
+			com.exedio.cope.SetValue.map(PatchMutex.savepoint,savepoint),
+			com.exedio.cope.SetValue.map(PatchMutex.numberOfPatches,numberOfPatches),
 		});
 	}
 

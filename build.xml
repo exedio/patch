@@ -32,6 +32,7 @@
 	<target name="src.instrument" unless="skip.instrument">
 		<instrument
 				dir="${basedir}/src"
+				directSetValueMap="true"
 				verify="${instrument.verify}"
 				verbose="false">
 			<suppressWarnings>
@@ -57,6 +58,7 @@
 	<target name="testsrc.instrument" depends="src.compile, consolesrc.compile" unless="skip.instrument">
 		<instrument
 				dir="${basedir}/testsrc"
+				directSetValueMap="true"
 				verify="${instrument.verify}"
 				verbose="false">
 			<classpath>
@@ -102,6 +104,7 @@
 	<target name="examplesrc.instrument" depends="src.compile, consolesrc.compile" unless="skip.instrument">
 		<instrument
 				dir="${basedir}/examplesrc"
+				directSetValueMap="true"
 				verify="${instrument.verify}"
 				verbose="false">
 			<classpath>
