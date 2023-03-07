@@ -13,7 +13,7 @@
 	</info>
 	<configurations>
 		<conf name="runtime" />
-		<conf name="console" />
+		<conf name="console" extends="runtime" />
 		<conf name="sources" />
 		<conf name="changelog" />
 		<conf visibility="private" name="jspm" />
