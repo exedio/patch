@@ -12,6 +12,7 @@
 				url="https://opensource.org/licenses/lgpl-license.html" />
 	</info>
 	<configurations>
+		<!-- There should be an assertIvyExtends in Jenkinsfile for each <conf name="abc" extends="def" /> here. -->
 		<conf name="runtime" />
 		<conf name="console" extends="runtime" />
 		<conf name="sources" />
