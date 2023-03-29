@@ -17,7 +17,7 @@ public final class PatchInitiator
 	/**
 	 * Creates a new PatchInitiator based on execution stack.
 	 * Takes the simple class name from first stack element which belongs not to this framework.
-	 *
+	 * <p>
 	 * If you are acting with any Servlet or servlet.Filter it's recommended to use ServletPatchInitiatorUtil
 	 */
 	public static PatchInitiator createFromStackTrace()
