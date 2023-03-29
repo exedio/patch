@@ -43,6 +43,7 @@ final class PatchMutex extends Item
 {
 	private static final int THE_ONE = 42;
 	@WrapInterim
+	@SuppressWarnings("unused")
 	private static final Integer THE_ONE_OBJECT = THE_ONE;
 
 	@Wrapper(wrap="get", visibility=NONE)

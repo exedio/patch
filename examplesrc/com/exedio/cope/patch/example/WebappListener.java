@@ -50,7 +50,7 @@ public final class WebappListener implements ServletContextListener
 	private static void createSchemaIfInvalid()
 	{
 		RevisionsFactory.INSTANCE.setSuppress(true);
-		try(ConnectToken ct = ConnectToken.issue(Main.model, "renew schema"))
+		try(ConnectToken ignored = ConnectToken.issue(Main.model, "renew schema"))
 		{
 			final boolean schemaHasIssues = Main.model.getVerifiedSchema().getCumulativeColor() != Node.Color.OK;
 			if (schemaHasIssues)
