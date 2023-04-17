@@ -106,7 +106,7 @@ final class MainPatchList
 					{
 						context.sleepAndStopIfRequested(Duration.ofSeconds(1));
 						if (context.supportsMessage())
-							context.setMessage("Did nothing in "+(cnt == 1 ? "1st" : (cnt == 2 ? "2nd" : (cnt == 3 ? "3rd" : (""+cnt+"th")))) +" iteration.");
+							context.setMessage("Did nothing in "+(cnt == 1 ? "1st" : (cnt == 2 ? "2nd" : (cnt == 3 ? "3rd" : (cnt+"th")))) +" iteration.");
 					}
 				}
 				catch (final JobStop e)

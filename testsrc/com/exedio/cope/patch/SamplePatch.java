@@ -78,7 +78,7 @@ public class SamplePatch implements Patch
 			case BLOCKED: throw new AssertionFailedError("isSuppressed is blocked");
 			case SUPPRESSED: return true;
 			default:
-				throw new AssertionFailedError("" + isSuppressedResult);
+				throw new AssertionFailedError(String.valueOf(isSuppressedResult));
 		}
 	}
 

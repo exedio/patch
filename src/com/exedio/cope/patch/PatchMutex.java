@@ -34,6 +34,7 @@ import com.exedio.cope.instrument.WrapInterim;
 import com.exedio.cope.instrument.Wrapper;
 import com.exedio.cope.instrument.WrapperType;
 import com.exedio.cope.misc.Computed;
+import java.util.Locale;
 
 @CopeName("CopePatchMutex")
 @Computed
@@ -42,6 +43,7 @@ final class PatchMutex extends Item
 {
 	private static final int THE_ONE = 42;
 	@WrapInterim
+	@SuppressWarnings("unused")
 	private static final Integer THE_ONE_OBJECT = THE_ONE;
 
 	@Wrapper(wrap="get", visibility=NONE)
@@ -67,7 +69,7 @@ final class PatchMutex extends Item
 			throw new IllegalStateException(
 					"Patch Mutex is locked" +
 					(mutex!=null ? (
-							" since " + ofPattern("uuuu-MM-dd HH:mm:ss").
+							" since " + ofPattern("uuuu-MM-dd HH:mm:ss", Locale.US).
 									format(ofInstant(mutex.getFinished().toInstant(), UTC)) + " (UTC)" +
 							" by " + mutex.getHost())
 					: "") + ". " +

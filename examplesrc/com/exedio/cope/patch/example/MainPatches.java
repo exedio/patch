@@ -89,7 +89,7 @@ public final class MainPatches
 		return ServletUtil.getConnectedModel(servlet).returnOnFailureOf(result ->
 		{
 			if(result.getModel()!=Main.model)
-				throw new IllegalArgumentException("" + result.getModel() + ' ' + Main.model);
+				throw new IllegalArgumentException(result.getModel() + " " + Main.model);
 
 			Main.model.reviseIfSupportedAndAutoEnabled();
 			run(ServletPatchInitiatorUtil.create(servlet.getServletConfig()));
