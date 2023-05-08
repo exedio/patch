@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 
-import com.exedio.cope.MandatoryViolationException;
 import com.exedio.cope.StringLengthViolationException;
 import org.junit.jupiter.api.Test;
 
@@ -69,30 +68,20 @@ public class SchemaPatchesTest
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final SchemaPatch patch = patch("one", null);
-		final Exception e = assertFails(() ->
+		assertFails(() ->
 			builder.insertAtStart(patch),
-			IllegalArgumentException.class,
-			"body[1]: mandatory violation",
-			MandatoryViolationException.class);
-		assertEquals(
-				"mandatory violation for CopePatchSchemaRun.sql",
-				e.getCause().getMessage());
+			NullPointerException.class,
+			"body[1]");
 	}
 
 	@Test void emptyBodyElement()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
 		final SchemaPatch patch = patch("one", "");
-		final Exception e = assertFails(() ->
+		assertFails(() ->
 			builder.insertAtStart(patch),
 			IllegalArgumentException.class,
-			"body[1]: length violation, " +
-			"'' is too short, must be at least 1 characters, but was 0.",
-			StringLengthViolationException.class);
-		assertEquals(
-				"length violation, '' is too short for CopePatchSchemaRun.sql, " +
-				"must be at least 1 characters, but was 0.",
-				e.getCause().getMessage());
+			"body[1] must not be empty");
 	}
 
 	@Test void longBodyElement()
