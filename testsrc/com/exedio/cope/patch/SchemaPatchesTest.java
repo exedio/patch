@@ -95,6 +95,32 @@ public class SchemaPatchesTest
 				e.getCause().getMessage());
 	}
 
+	@Test void longBodyElement()
+	{
+		final PatchesBuilder builder = new PatchesBuilder();
+		final SchemaPatch patch = patch("one", "X".repeat(10*1000*1000 + 1));
+		final String valueTruncated =
+				"'" +
+				"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" +
+				"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ... " +
+				"XXXXXXXXXXXXXXXXXXXX'" +
+				" (truncated, was 10000001 characters)";
+		final Exception e = assertFails(() ->
+			builder.insertAtStart(patch),
+			IllegalArgumentException.class,
+			"body[1]: length violation, " +
+			valueTruncated + " is too long, " +
+			"must be at most 10000000 characters, " +
+			"but was 10000001.",
+			StringLengthViolationException.class);
+		assertEquals(
+				"length violation, " +
+				valueTruncated + " is too long for CopePatchSchemaRun.sql, " +
+				"must be at most 10000000 characters, " +
+				"but was 10000001.",
+				e.getCause().getMessage());
+	}
+
 	private static SchemaPatch patch(final String... body)
 	{
 		return new SchemaPatch()
