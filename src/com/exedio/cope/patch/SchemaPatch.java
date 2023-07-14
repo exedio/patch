@@ -147,7 +147,7 @@ public abstract class SchemaPatch implements Patch
 			{
 				final String sql = body[position];
 				if(logger.isInfoEnabled())
-					logger.info("{}/{}: {}", new Object[]{position+1, body.length, sql});
+					logger.info("{}/{}: {}", position+1, body.length, sql);
 				if(ctx.supportsMessage())
 					ctx.setMessage("SchemaPatch " + (position+1) + '/' + body.length + ' ' + sql);
 				final long start = nanoTime();
