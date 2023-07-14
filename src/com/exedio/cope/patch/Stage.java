@@ -84,7 +84,7 @@ final class Stage
 				final String id = entry.getKey();
 
 				ctx.stopIfRequested();
-				logger.info("s{} run {}/{} {}", new Object[]{stageNumber, numberOfPatch, numberOfPatches, id});
+				logger.info("s{} run {}/{} {}", stageNumber, numberOfPatch, numberOfPatches, id);
 				if(ctx.supportsMessage())
 					ctx.setMessage("run s" + stageNumber + ' ' + numberOfPatch + '/' + numberOfPatches + ' ' + id);
 				numberOfPatch++;
@@ -194,12 +194,12 @@ final class Stage
 			{
 				i.remove();
 				if(log==PendingLog.DETAIL)
-					logger.info("s{} skipped suppressed {}", new Object[]{stageNumber, e.getKey()});
+					logger.info("s{} skipped suppressed {}", stageNumber, e.getKey());
 				suppressedCount++;
 			}
 		}
 		if(log==PendingLog.SUMMARY && suppressedCount>0)
-			logger.info("s{} skipped {} suppressed patches", new Object[]{stageNumber, suppressedCount});
+			logger.info("s{} skipped {} suppressed patches", stageNumber, suppressedCount);
 		return result;
 	}
 
