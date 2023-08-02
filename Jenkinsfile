@@ -180,7 +180,7 @@ finally
 // ------------------- LIBRARY ----------------------------
 // The code below is meant to be equal across all projects.
 
-void lockNodeCheckoutAndDelete(resource, Closure body)
+void lockNodeCheckoutAndDelete(String resource, Closure body)
 {
 	lock(resource) {
 		nodeCheckoutAndDelete(body)
@@ -268,7 +268,7 @@ void assertIvyExtends(String extendingConf, String parentConf)
 	}
 }
 
-void shSilent(script)
+void shSilent(String script)
 {
 	try
 	{
