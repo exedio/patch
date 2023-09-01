@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ivy-module version="2.0"
-				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-				xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+<ivy-module
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		version="2.0"
+		xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
 	<info
 			organisation="com.exedio"
 			module="copepatch"
@@ -33,7 +34,7 @@
 		<artifact name="exedio-cope-patch" conf="sources"   type="src" ext="zip" />
 		<artifact name="exedio-cope-patch" conf="changelog" type="log" ext="txt" />
 	</publications>
-	<dependencies>
+	<dependencies defaultconf="SPECIFY_A_CONFIGURATION">
 		<dependency org="com.exedio" name="copeutil" rev="930" conf="runtime->runtime; ide->runtime,sources,changelog" />
 		<dependency org="com.exedio" name="cope" rev="10515" conf="runtime->runtime; test->hsqldb; example->hsqldb; instrument->instrument; ide->sources,changelog">
 			<exclude org="com.exedio" module="copeservletutil" /><!-- redundant dependency of cope since r10333 -->
