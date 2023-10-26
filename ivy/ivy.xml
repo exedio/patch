@@ -35,7 +35,7 @@
 		<artifact name="exedio-cope-patch" conf="changelog" type="log" ext="txt" />
 	</publications>
 	<dependencies defaultconf="SPECIFY_A_CONFIGURATION">
-		<dependency org="com.exedio" name="copeutil" rev="930" conf="runtime->runtime; ide->runtime,sources,changelog" />
+		<dependency org="com.exedio" name="copeutil" rev="987" conf="runtime->runtime; ide->runtime,sources,changelog" />
 		<dependency org="com.exedio" name="cope" rev="10874" conf="runtime->runtime; test->hsqldb; example->hsqldb; instrument->instrument; ide->sources,changelog">
 			<exclude org="javax.servlet" module="javax.servlet-api"/>
 		</dependency>
