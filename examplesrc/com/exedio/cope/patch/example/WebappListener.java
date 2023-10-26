@@ -26,7 +26,7 @@ import static com.exedio.cope.misc.ConnectToken.setProperties;
 
 import com.exedio.cope.ConnectProperties;
 import com.exedio.cope.misc.ConnectToken;
-import com.exedio.cope.servletutil.ServletSource;
+import com.exedio.cope.util.servlet.ServletSource;
 import com.exedio.dsmf.Node;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
