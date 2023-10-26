@@ -28,10 +28,12 @@ import java.util.regex.Pattern;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
+import org.opentest4j.AssertionFailedError;
 
 @SuppressWarnings("HardcodedLineSeparator") // ok as line break correspond to jspm
 public class PatchConsoleServletTest  extends CopeModel4Test
@@ -497,6 +499,18 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			public void write(final int b)
 			{
 				write(new byte[] { (byte)b }, 0, 1);
+			}
+
+			@Override
+			public boolean isReady()
+			{
+				throw new AssertionFailedError();
+			}
+
+			@Override
+			public void setWriteListener(final WriteListener writeListener)
+			{
+				throw new AssertionFailedError();
 			}
 		};
 		when(response.getOutputStream()).thenReturn(outputStream);
