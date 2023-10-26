@@ -57,7 +57,6 @@
 			<artifact name="tomcat" type="tar.gz" />
 		</dependency>
 		<dependency org="com.exedio" name="copeconsole" rev="7051" conf="example->runtime" />
-		<dependency org="com.exedio" name="copeservletutil" rev="71" conf="example->runtime; ide->runtime,sources,changelog" />
 		<dependency org="org.mockito" name="mockito-core" rev="3.4.6" conf="test->default; ide->sources" />
 		<dependency org="org.mockito" name="mockito-junit-jupiter" rev="3.4.6" conf="test->default; ide->sources" />
 		<dependency org="com.exedio" name="pipeline-gdsl" rev="26" conf="jenkins->runtime; ide->changelog" />
