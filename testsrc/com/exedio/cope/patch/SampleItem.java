@@ -109,7 +109,7 @@ public final class SampleItem extends Item
 	}
 
 	/**
-	 * Finds a sampleItem by it's {@link #number}.
+	 * Finds a sampleItem by its {@link #number}.
 	 * @param number shall be equal to field {@link #number}.
 	 * @return null if there is no matching item.
 	 */

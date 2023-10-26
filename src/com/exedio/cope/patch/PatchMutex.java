@@ -134,7 +134,7 @@ final class PatchMutex extends Item
 	private PatchMutex(final com.exedio.cope.SetValue<?>... setValues){super(setValues);}
 
 	/**
-	 * Finds a patchMutex by it's {@link #id}.
+	 * Finds a patchMutex by its {@link #id}.
 	 * @param id shall be equal to field {@link #id}.
 	 * @return null if there is no matching item.
 	 */
