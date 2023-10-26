@@ -100,13 +100,13 @@ public class SchemaPatchesTest
 			"body[1]: length violation, " +
 			valueTruncated + " is too long, " +
 			"must be at most 10000000 characters, " +
-			"but was 10000001.",
+			"but was 10000001",
 			StringLengthViolationException.class);
 		assertEquals(
 				"length violation, " +
 				valueTruncated + " is too long for CopePatchSchemaRun.sql, " +
 				"must be at most 10000000 characters, " +
-				"but was 10000001.",
+				"but was 10000001",
 				e.getCause().getMessage());
 	}
 

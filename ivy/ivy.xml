@@ -36,7 +36,7 @@
 	</publications>
 	<dependencies defaultconf="SPECIFY_A_CONFIGURATION">
 		<dependency org="com.exedio" name="copeutil" rev="930" conf="runtime->runtime; ide->runtime,sources,changelog" />
-		<dependency org="com.exedio" name="cope" rev="10515" conf="runtime->runtime; test->hsqldb; example->hsqldb; instrument->instrument; ide->sources,changelog">
+		<dependency org="com.exedio" name="cope" rev="10874" conf="runtime->runtime; test->hsqldb; example->hsqldb; instrument->instrument; ide->sources,changelog">
 			<exclude org="com.exedio" module="copeservletutil" /><!-- redundant dependency of cope since r10333 -->
 			<exclude org="javax.servlet" module="javax.servlet-api"/>
 		</dependency>

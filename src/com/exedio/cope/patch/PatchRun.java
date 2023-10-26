@@ -108,7 +108,7 @@ final class PatchRun extends Item
 	}
 
 	/**
-	 * Finds a patchRun by it's {@link #patch}.
+	 * Finds a patchRun by its {@link #patch}.
 	 * @param patch shall be equal to field {@link #patch}.
 	 * @return null if there is no matching item.
 	 */

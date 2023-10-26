@@ -57,7 +57,7 @@ public class PatchesTest
 			builder.insertAtStart(patch),
 			StringLengthViolationException.class,
 			"length violation, '' is too short for CopePatchRun.patch, " +
-			"must be at least 1 characters, but was 0.");
+			"must be at least 1 characters, but was 0");
 	}
 
 	@Test void idCharset()
@@ -68,7 +68,7 @@ public class PatchesTest
 			builder.insertAtStart(patch),
 			StringCharSetViolationException.class,
 			"character set violation, '01234\t6789' for CopePatchRun.patch, " +
-			"contains forbidden character '\t' (U+0009) on position 5.");
+			"contains forbidden character '\t' (U+0009) on position 5");
 	}
 
 	@Test void idTrimmedStart()
@@ -143,7 +143,7 @@ public class PatchesTest
 		assertFails(() ->
 			Patches.stale(""),
 			StringLengthViolationException.class,
-			"length violation, '' is too short for CopePatchRun.patch, must be at least 1 characters, but was 0.");
+			"length violation, '' is too short for CopePatchRun.patch, must be at least 1 characters, but was 0");
 	}
 
 	@Test void getIDs()
