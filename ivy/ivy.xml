@@ -43,8 +43,8 @@
 		<!-- build dependencies -->
 		<dependency org="org.apache.ant" name="ant" rev="1.10.9" conf="ant->default" />
 		<dependency org="org.apache.ivy" name="ivy" rev="2.5.2" conf="ivy->default" />
-		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.25" conf="runtime->default; ide->default,sources" />
-		<dependency org="org.slf4j" name="slf4j-nop" rev="1.7.25" conf="instrument->default" />
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.26" conf="runtime->default; ide->default,sources" />
+		<dependency org="org.slf4j" name="slf4j-nop" rev="1.7.26" conf="instrument->default" />
 		<dependency org="ch.qos.logback" name="logback-classic" rev="1.2.3" conf="test->default;example->default" />
 		<dependency org="org.junit.jupiter"  name="junit-jupiter-api"      rev="5.3.2" conf="test->default; ide->sources" />
 		<dependency org="org.junit.jupiter"  name="junit-jupiter-engine"   rev="5.3.2" conf="test->default" />
