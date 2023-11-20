@@ -63,8 +63,7 @@ try
 				testResults: 'build/testresults/*.xml',
 				skipPublishingChecks: true
 			)
-			if (isRelease || env.BRANCH_NAME.contains("archiveSuccessArtifacts"))
-				archiveArtifacts fingerprint: true, artifacts: 'build/success/*'
+			archiveArtifacts fingerprint: true, artifacts: 'build/success/*'
 			plot(
 				csvFileName: 'plots.csv',
 				exclZero: false,
