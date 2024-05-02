@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ivy-module [
+		<!ENTITY artifacts.name "exedio-cope-patch">
+		]>
 <ivy-module
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		version="2.0"
@@ -30,10 +33,10 @@
 				description="classpath for IDEs such as Eclipse and IntelliJ, includes java sources and changelogs" />
 	</configurations>
 	<publications>
-		<artifact name="exedio-cope-patch" conf="runtime"   type="jar" ext="jar" />
-		<artifact name="exedio-cope-patch-console" conf="console"   type="jar" ext="jar" />
-		<artifact name="exedio-cope-patch" conf="sources"   type="src" ext="zip" />
-		<artifact name="exedio-cope-patch" conf="changelog" type="log" ext="txt" />
+		<artifact name="&artifacts.name;" conf="runtime"   type="jar" ext="jar" />
+		<artifact name="&artifacts.name;-console" conf="console"   type="jar" ext="jar" />
+		<artifact name="&artifacts.name;" conf="sources"   type="src" ext="zip" />
+		<artifact name="&artifacts.name;" conf="changelog" type="log" ext="txt" />
 	</publications>
 	<dependencies defaultconf="SPECIFY_A_CONFIGURATION">
 		<dependency org="com.exedio" name="copeutil" rev="987" conf="runtime->runtime; ide->runtime,sources,changelog" />
