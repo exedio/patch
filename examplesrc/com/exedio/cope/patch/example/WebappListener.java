@@ -64,9 +64,4 @@ public final class WebappListener implements ServletContextListener
 			RevisionsFactory.INSTANCE.setSuppress(false);
 		}
 	}
-
-	@Override
-	public void contextDestroyed(final ServletContextEvent sce)
-	{
-	}
 }
