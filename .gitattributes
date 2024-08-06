@@ -6,3 +6,13 @@
 *.java diff=java
 *.html diff=html
 *.css diff=css
+
+# Allows diffing jars by diffing their manifests. To make it work do:
+#
+#   git config --global diff.jar.textconv /path/to/executable
+#
+# with /path/to/executable being an executable file containing single line:
+#
+#   unzip -q -c "$1" META-INF/MANIFEST.MF | dos2unix
+#
+*.jar diff=jar
