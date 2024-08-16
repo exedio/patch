@@ -1,7 +1,7 @@
 <%
 package com.exedio.cope.patch;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import com.exedio.cope.patch.PatchConsoleServlet.PatchView;
