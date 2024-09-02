@@ -205,12 +205,14 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			servlet.doRequest(call.request, call.response);
 			assertTrue(patches.isDone());
 			verify(call.response).setContentType("text/plain; charset=UTF-8");
-			assertEquals("Start patching, this will continue even if connection is interrupted.\n"
-					+ "run s0 1/2 two\n"
-					+ ".\n"
-					+ "run s0 2/2 one\n"
-					+ ".\n"
-					+ "ok\n", call.output.toString());
+			assertEquals("""
+					Start patching, this will continue even if connection is interrupted.
+					run s0 1/2 two
+					.
+					run s0 2/2 one
+					.
+					ok
+					""", call.output.toString());
 		}
 
 		// GET after POST
@@ -244,8 +246,10 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			servlet.doRequest(call.request, call.response);
 			assertTrue(patches.isDone());
 			verify(call.response).setContentType("text/plain; charset=UTF-8");
-			assertEquals("Start patching, this will continue even if connection is interrupted.\n"
-					+ "ok\n", call.output.toString());
+			assertEquals("""
+					Start patching, this will continue even if connection is interrupted.
+					ok
+					""", call.output.toString());
 		}
 	}
 
@@ -268,11 +272,13 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			assertFalse(patches.isDone());
 			verify(call.response).setContentType("text/plain; charset=UTF-8");
 			assertThat(call.output.toString(), matchesPattern(
-					"Start patching, this will continue even if connection is interrupted.\n"
-					+ "run s0 1/2 fail\n"
-					+ "java.lang.RuntimeException: failed\n"
-					+ "(?:\tat .+\n)*"
-					+ "failed\n"));
+					"""
+					Start patching, this will continue even if connection is interrupted.
+					run s0 1/2 fail
+					java.lang.RuntimeException: failed
+					(?:\tat .+
+					)*failed
+					"""));
 		}
 
 		// GET after POST
@@ -436,8 +442,10 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 			verify(call.response).setStatus(HttpServletResponse.SC_OK);
 			call.verifyContentType("text/plain; charset=UTF-8");
 			assertEquals(
-					"one\n" +
-					"two\n",
+					"""
+					one
+					two
+					""",
 					call.getBody());
 		}
 	}

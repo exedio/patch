@@ -174,17 +174,18 @@ public abstract class PatchConsoleServlet extends CopsServlet
 			}
 			catch (final IllegalArgumentException ie)
 			{
-				@SuppressWarnings("HardcodedLineSeparator") // OK unix newline in html
 				final String body =
-						"<html>\n" +
-							"<head>\n" +
-								"<title>Not Found</title>\n" +
-								"<meta http-equiv=\"content-type\" content=\"text/html;charset=us-ascii\">\n" +
-							"</head>\n" +
-							"<body>\n" +
-								"<h1>Not Found</h1>\n" +
-							"</body>\n" +
-						"</html>\n";
+						"""
+						<html>
+						<head>
+						<title>Not Found</title>
+						<meta http-equiv="content-type" content="text/html;charset=us-ascii">
+						</head>
+						<body>
+						<h1>Not Found</h1>
+						</body>
+						</html>
+						""";
 
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				MediaUtil.send("text/html", US_ASCII, body, response);
