@@ -41,6 +41,7 @@ public class PatchInitiatorStackTraceTest
 	{
 		final class Local
 		{
+			@SuppressWarnings("MethodMayBeStatic")
 			private String getInitiator()
 			{
 				return PatchInitiator.createFromStackTrace().toString();
@@ -101,6 +102,7 @@ public class PatchInitiatorStackTraceTest
 
 	private final class Inner
 	{
+		@SuppressWarnings("MethodMayBeStatic")
 		private String getInitiator()
 		{
 			return PatchInitiator.createFromStackTrace().toString();
