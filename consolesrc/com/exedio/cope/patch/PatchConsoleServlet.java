@@ -14,6 +14,7 @@ import com.exedio.cops.Resource;
 import com.exedio.dsmf.Node.Color;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -33,6 +34,7 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("StaticMethodOnlyUsedInOneClass") // OK: when used by jspms
 public abstract class PatchConsoleServlet extends CopsServlet
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = LoggerFactory.getLogger(PatchConsoleServlet.class);
