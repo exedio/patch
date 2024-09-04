@@ -2,12 +2,14 @@ package com.exedio.cope.patch.example;
 
 import com.exedio.cope.misc.ConnectToken;
 import java.io.IOException;
+import java.io.Serial;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class BackofficeServlet extends HttpServlet
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private ConnectToken connectToken = null;

@@ -17,6 +17,7 @@ import com.exedio.cope.patch.cope.CopeRule.NoTransaction;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Serial;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -443,6 +444,7 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 
 	private static final class TestServlet extends PatchConsoleServlet
 	{
+		@Serial
 		private static final long serialVersionUID = 1L;
 		private final Patches patches;
 		private Boolean connectedOverwrite;
