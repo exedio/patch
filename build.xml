@@ -33,6 +33,7 @@
 		<instrument
 				dir="${basedir}/src"
 				directSetValueMap="true"
+				serialAnnotation="true"
 				verify="${instrument.verify}"
 				verbose="false">
 			<suppressWarnings>
@@ -59,6 +60,7 @@
 		<instrument
 				dir="${basedir}/testsrc"
 				directSetValueMap="true"
+				serialAnnotation="true"
 				verify="${instrument.verify}"
 				verbose="false">
 			<classpath>
@@ -104,6 +106,7 @@
 		<instrument
 				dir="${basedir}/examplesrc"
 				directSetValueMap="true"
+				serialAnnotation="true"
 				verify="${instrument.verify}"
 				verbose="false">
 			<classpath>
