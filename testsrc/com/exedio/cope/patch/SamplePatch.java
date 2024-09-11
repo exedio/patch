@@ -72,14 +72,14 @@ public class SamplePatch implements Patch
 	@Override
 	public boolean isSuppressed()
 	{
-		switch(isSuppressedResult)
+		return switch(isSuppressedResult)
 		{
-			case SUPER: return Patch.super.isSuppressed();
-			case BLOCKED: throw new AssertionFailedError("isSuppressed is blocked");
-			case SUPPRESSED: return true;
-			default:
-				throw new AssertionFailedError(String.valueOf(isSuppressedResult));
-		}
+			case SUPER -> Patch.super.isSuppressed();
+			case BLOCKED -> throw new AssertionFailedError("isSuppressed is blocked");
+			case SUPPRESSED -> true;
+
+
+		};
 	}
 
 	SamplePatch isSuppressedResult(final IsSuppressedResult isSuppressedResult)

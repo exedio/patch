@@ -155,21 +155,21 @@ public abstract class PatchConsoleServlet extends CopsServlet
 				final PrintWriter writer = response.getWriter();
 				switch (option)
 				{
-					case model:
+					case model -> {
 						writer.println(isConnected() ? "Connected" : "Not connected");
-						return;
-					case mutex:
+						return; }
+					case mutex -> {
 						writer.println(getPatchMutexInfo());
-						return;
-					case patches:
+						return; }
+					case patches -> {
 						writer.println(getPatchInfo());
-						return;
-					case schema:
+						return; }
+					case schema -> {
 						writer.println(getSchemaInfo());
-						return;
-					case staleids:
+						return; }
+					case staleids -> {
 						writeStaleIds(writer);
-						return;
+						return; }
 				}
 			}
 			catch (final IllegalArgumentException ie)
@@ -273,15 +273,15 @@ public abstract class PatchConsoleServlet extends CopsServlet
 
 	String getPatchInfo()
 	{
-		switch(getPatches().getDone())
+		return switch(getPatches().getDone())
 		{
-			case NOT_CONNECTED: return "Unknown (not connected)";
-			case PENDING: return isPatchMutexPresent() ? "Failed" : "Not Done";
-			case RUNNING: return "Currently executing";
-			case DONE: return "Done";
-			default:
-				throw new RuntimeException();
-		}
+			case NOT_CONNECTED -> "Unknown (not connected)";
+			case PENDING -> isPatchMutexPresent() ? "Failed" : "Not Done";
+			case RUNNING -> "Currently executing";
+			case DONE -> "Done";
+
+
+		};
 	}
 
 	String getPatchMutexInfo()
@@ -306,14 +306,14 @@ public abstract class PatchConsoleServlet extends CopsServlet
 			return "Unknown (not connected)";
 		// we could return Node.COLOR.name() instead of the switch, but then we miss when this enum is refactored
 		final Color cumulativeColor = getModel().getVerifiedSchema().getCumulativeColor();
-		switch(cumulativeColor)
+		return switch(cumulativeColor)
 		{
-			case OK: return "Ok";
-			case WARNING: return "Warning";
-			case ERROR: return "Error";
-			default:
-				throw new RuntimeException("Unexpected schema color: "+cumulativeColor);
-		}
+			case OK -> "Ok";
+			case WARNING -> "Warning";
+			case ERROR -> "Error";
+			//noinspection UnnecessaryDefault
+			default -> throw new RuntimeException("Unexpected schema color: "+cumulativeColor);
+		};
 	}
 
 	void writeStaleIds(final PrintWriter writer)
