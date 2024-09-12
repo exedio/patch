@@ -31,6 +31,7 @@ import java.util.Map;
  * This patch stores information from {@link RevisionInfo} into patch logs.
  * For preserving this information after dropping revisions.
  */
+@SuppressWarnings("ClassCanBeRecord")
 public final class RevisionPatch implements Patch
 {
 	private final int stage;
