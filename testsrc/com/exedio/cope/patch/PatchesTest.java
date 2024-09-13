@@ -188,7 +188,9 @@ public class PatchesTest
 		final PatchesBuilder builder = new PatchesBuilder();
 		assertFails(() ->
 			builder.insertStaleFromResource(null),
-			NullPointerException.class, null);
+			NullPointerException.class,
+			"Cannot invoke \"java.lang.Class.getResourceAsStream(String)\" " +
+			"because \"clazz\" is null");
 	}
 
 	@Test void patchesDoneListenerNull()
