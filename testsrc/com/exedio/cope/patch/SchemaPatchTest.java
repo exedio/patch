@@ -18,6 +18,7 @@
 
 package com.exedio.cope.patch;
 
+import static com.exedio.cope.junit.Assert.assertFails;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -115,6 +116,105 @@ public class SchemaPatchTest extends CopeModel4Test
 		assertFalse(runs.hasNext());
 	}
 
+	@Test void checkOk(final LogRule log)
+	{
+		log.listen(Patches.class, "pt");
+		log.listen(SchemaPatch.class, "spt");
+		assertEquals(List.of(), items());
+		final PatchesBuilder builder = new PatchesBuilder();
+		final SchemaPatch patch = patchCheck(
+				new String[]{
+						"VALUES(0) -- first",
+						"VALUES(0) -- second"
+				},
+				SchemaSampleItem.create("body"));
+		builder.insertAtStart(patch);
+		final Patches patches = builder.build();
+		log.assertEvents();
+		assertEquals(1, run(patches, JobContexts.EMPTY));
+		log.assertEvents(
+				"pt: INFO run initiated by SchemaPatchTestInitiator",
+				"pt: WARN savepoint not supported by com.exedio.cope.HsqldbDialect",
+				"pt: INFO s0 mutex seize for 1 patches",
+				"pt: INFO s0 run 1/1 patchId",
+				"spt: INFO check 1/2: VALUES(0) -- first",
+				"spt: INFO check 2/2: VALUES(0) -- second",
+				"spt: INFO executing 1 statements for patchId",
+				"spt: INFO 1/1: INSERT INTO \"SchemaSampleItem\" ( \"this\", \"content\" ) VALUES ( 0, 'body' )",
+				"pt: INFO s0 mutex release",
+				"pt: INFO run finished after 1 patches");
+		final Iterator<SchemaSampleItem> items = items().iterator();
+		assertIt("body", items.next());
+		assertFalse(items.hasNext());
+		final Iterator<SchemaPatchRun> runs = runs().iterator();
+		assertIt(0, patch.getBody()[0], runs.next());
+		assertFalse(runs.hasNext());
+	}
+
+	@Test void checkEmpty(final LogRule log)
+	{
+		assertCheckFails(log,
+				SchemaSampleItem.select(),
+				"Check failed, returned empty result set: ");
+	}
+
+	@Test void checkNull(final LogRule log)
+	{
+		assertCheckFails(log,
+				"VALUES(NULL)",
+				"Check failed, returned null: ");
+	}
+
+	@Test void checkOne(final LogRule log)
+	{
+		assertCheckFails(log,
+				"VALUES(1)",
+				"Check failed, returned 1: ");
+	}
+
+	@Test void checkMoreThanOne(final LogRule log)
+	{
+		assertCheckFails(log,
+				"VALUES(55)",
+				"Check failed, returned 55: ");
+	}
+
+	@Test void checkTwoRows(final LogRule log)
+	{
+		assertCheckFails(log,
+				"VALUES(0),(0)",
+				"Check failed, returned result set with more than one line: ");
+	}
+
+	private static void assertCheckFails(
+			final LogRule log,
+			final String check,
+			final String failure)
+	{
+		log.listen(Patches.class, "pt");
+		log.listen(SchemaPatch.class, "spt");
+		assertEquals(List.of(), items());
+		final PatchesBuilder builder = new PatchesBuilder();
+		final SchemaPatch patch = patchCheck(
+				new String[]{ check },
+				SchemaSampleItem.create("body"));
+		builder.insertAtStart(patch);
+		final Patches patches = builder.build();
+		log.assertEvents();
+		assertFails(
+				() -> run(patches, JobContexts.EMPTY),
+				IllegalStateException.class,
+				failure + check);
+		log.assertEvents(
+				"pt: INFO run initiated by SchemaPatchTestInitiator",
+				"pt: WARN savepoint not supported by com.exedio.cope.HsqldbDialect",
+				"pt: INFO s0 mutex seize for 1 patches",
+				"pt: INFO s0 run 1/1 patchId",
+				"spt: INFO check 1/1: " + check);
+		assertEquals(List.of(), items());
+		assertEquals(List.of(), runs());
+	}
+
 	private static int run(
 			final Patches patches,
 			final JobContext ctx)
@@ -137,6 +237,26 @@ public class SchemaPatchTest extends CopeModel4Test
 			body[i] = SchemaSampleItem.create(contents[i]);
 
 		return new SchemaPatch(body)
+		{
+			@Override
+			public String getID()
+			{
+				return "patchId";
+			}
+
+			@Override
+			public int getStage()
+			{
+				return 0;
+			}
+		};
+	}
+
+	private static SchemaPatch patchCheck(
+			final String[] checks,
+			final String body)
+	{
+		return new SchemaPatch(checks, new String[]{ body })
 		{
 			@Override
 			public String getID()
