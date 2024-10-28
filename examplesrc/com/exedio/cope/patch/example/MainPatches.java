@@ -52,7 +52,7 @@ public final class MainPatches
 
 	static void add(final String id, final String... body)
 	{
-		builder.insertAtStart(new SchemaPatch(){
+		builder.insertAtStart(new SchemaPatch(body){
 
 			@Override
 			public String getID()
@@ -64,12 +64,6 @@ public final class MainPatches
 			public int getStage()
 			{
 				return 10;
-			}
-
-			@Override
-			protected String[] computeBody()
-			{
-				return body;
 			}
 		});
 	}

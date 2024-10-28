@@ -91,16 +91,6 @@ public class PatchesTest
 			"id >123456789 < is not trimmed");
 	}
 
-	@Test void check()
-	{
-		final PatchesBuilder builder = new PatchesBuilder();
-		final Patch patch = newSamplePatchCheck("id");
-		assertFails(() ->
-			builder.insertAtStart(patch),
-			RuntimeException.class,
-			"check exception message");
-	}
-
 	@Test void idDuplicate()
 	{
 		final PatchesBuilder builder = new PatchesBuilder();
@@ -166,12 +156,7 @@ public class PatchesTest
 
 	private static SamplePatch newSamplePatch(final String id)
 	{
-		return new SamplePatch(null, id, null, true);
-	}
-
-	private static SamplePatch newSamplePatchCheck(final String id)
-	{
-		return new SamplePatch(null, id, "check exception message", true);
+		return new SamplePatch(null, id, true);
 	}
 
 	@Test void insertStaleFromResourceNotFound()

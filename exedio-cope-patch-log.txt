@@ -7,6 +7,30 @@ omit bug fixes.
 The items are sorted inversely, i.e. the latest items are on top.
 
 --------------------------------------------------------------------------
+* SchemaPatch#computeBody() replaced by constructor parameter and
+	Patch#check() dropped.
+	This breaks backwards API compatibility, causes compiler errors.
+	Migration typically looks like this:
+
+		new SchemaPatch() {
+
+			// other methods such as getID / getStage ...
+
+			@Override
+			protected String[] computeBody()
+			{
+				return body;
+			}
+		}
+
+	becomes:
+
+		new SchemaPatch( body ) { // <<< constructor parameter here
+
+			// other methods such as getID / getStage ...
+
+		}
+
 * JDK 17 required.
 * servlet-api 4.0.1 required.
 * Patch#isSuppressed() added.

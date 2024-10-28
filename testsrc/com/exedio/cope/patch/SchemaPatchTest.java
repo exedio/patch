@@ -137,10 +137,8 @@ public class SchemaPatchTest extends CopeModel4Test
 		for(int i = 0; i<contents.length; i++)
 			body[i] = SchemaSampleItem.create(contents[i]);
 
-		return new SchemaPatch()
+		return new SchemaPatch(body)
 		{
-			boolean gotBody = false;
-
 			@Override
 			public String getID()
 			{
@@ -151,15 +149,6 @@ public class SchemaPatchTest extends CopeModel4Test
 			public int getStage()
 			{
 				return 0;
-			}
-
-			@Override
-			protected String[] computeBody()
-			{
-				assertFalse(gotBody, "gotBody");
-				gotBody = true;
-
-				return body;
 			}
 		};
 	}
