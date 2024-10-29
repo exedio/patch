@@ -18,14 +18,13 @@
 
 package com.exedio.cope.junit;
 
-import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public final class CopeAssert
 {
@@ -35,13 +34,13 @@ public final class CopeAssert
 		assertTrue(UNMODIFIABLE_COLLECTIONS.contains(name), name);
 	}
 
-	private static final HashSet<String> UNMODIFIABLE_COLLECTIONS = new HashSet<>(asList(
+	private static final Set<String> UNMODIFIABLE_COLLECTIONS = Set.of(
 			"java.util.Collections$UnmodifiableCollection",
 			"java.util.Collections$UnmodifiableRandomAccessList",
 			"java.util.Collections$SingletonList",
 			"java.util.Collections$EmptyList",
 			"java.util.Collections$UnmodifiableSet",
-			"java.util.Collections$UnmodifiableNavigableSet$EmptyNavigableSet"));
+			"java.util.Collections$UnmodifiableNavigableSet$EmptyNavigableSet");
 
 	public static void assertEqualsUnmodifiable(final List<?> expected, final Collection<?> actual)
 	{
@@ -57,8 +56,8 @@ public final class CopeAssert
 		assertEquals(expected, actual);
 	}
 
-	private static final HashSet<String> UNMODIFIABLE_MAPS = new HashSet<>(asList(
-			"java.util.Collections$UnmodifiableMap"));
+	private static final Set<String> UNMODIFIABLE_MAPS = Set.of(
+			"java.util.Collections$UnmodifiableMap");
 
 
 	private CopeAssert()

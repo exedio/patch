@@ -21,7 +21,6 @@ import java.io.Serial;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
@@ -77,7 +76,7 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 					"Patches: Unknown (not connected)",
 					call.getDivContent("patchesStatus"));
 			assertEquals(
-					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/connect", CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
+					List.of(CONTEXT_PATH+SERVLET_PATH+"/connect", CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
 			assertEquals("Not connected\n", requestGetStatus(servlet, "model"));
 			assertEquals("Unknown (not connected)\n", requestGetStatus(servlet, "mutex"));
@@ -115,7 +114,7 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 				"Patches: Not Done",
 				call.getDivContent("patchesStatus"));
 		assertEquals(
-				Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
+				List.of(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 				call.getGlobalActions());
 		assertEquals("Connected\n", requestGetStatus(servlet, "model"));
 		assertEquals("None\n", requestGetStatus(servlet, "mutex"));
@@ -169,7 +168,7 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 					"Patches: Done",
 					call.getDivContent("patchesStatus"));
 			assertEquals(
-					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
+					List.of(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
 			assertEquals("Connected\n", requestGetStatus(servlet, "model"));
 			assertEquals("None\n", requestGetStatus(servlet, "mutex"));
@@ -231,7 +230,7 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 					"Patches: Done",
 					call.getDivContent("patchesStatus"));
 			assertEquals(
-					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
+					List.of(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
 			assertEquals("Connected\n", requestGetStatus(servlet, "model"));
 			assertEquals("None\n", requestGetStatus(servlet, "mutex"));
@@ -296,7 +295,7 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 					"Patches: Failed",
 					call.getDivContent("patchesStatus"));
 			assertEquals(
-					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/releaseMutex", CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
+					List.of(CONTEXT_PATH+SERVLET_PATH+"/releaseMutex", CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
 			assertEquals("Connected\n", requestGetStatus(servlet, "model"));
 			assertThat(requestGetStatus(servlet, "mutex"), matchesPattern(
@@ -329,7 +328,7 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 					"Patches: Not Done",
 					call.getDivContent("patchesStatus"));
 			assertEquals(
-					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
+					List.of(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
 			assertEquals("Connected\n", requestGetStatus(servlet, "model"));
 			assertEquals("None\n", requestGetStatus(servlet, "mutex"));
@@ -375,7 +374,7 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 					"Patches: Not Done",
 					call.getDivContent("patchesStatus"));
 			assertEquals(
-					Arrays.asList(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
+					List.of(CONTEXT_PATH+SERVLET_PATH+"/run", CONTEXT_PATH+SERVLET_PATH+"/preempt"),
 					call.getGlobalActions());
 			assertEquals("Connected\n", requestGetStatus(servlet, "model"));
 			assertEquals("None\n", requestGetStatus(servlet, "mutex"));

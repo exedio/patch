@@ -18,8 +18,6 @@
 
 package com.exedio.cope.patch;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -45,7 +43,7 @@ public class StageTest extends CopeModel4Test
 
 	@Test void test()
 	{
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(patch("oneB", 1));
 		builder.insertAtStart(patch("twoB", 2));
@@ -66,7 +64,7 @@ public class StageTest extends CopeModel4Test
 			assertFalse(runs.hasNext());
 		}
 		assertEquals(0, run(patches, JobContexts.EMPTY));
-		assertEquals(asList(oneA, oneB, twoA, twoB), runs());
+		assertEquals(List.of(oneA, oneB, twoA, twoB), runs());
 		final PatchesBuilder builder2 = new PatchesBuilder();
 		builder2.insertAtStart(patch("twoC", 2));
 		builder2.insertAtStart(patch("oneC", 1));

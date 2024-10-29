@@ -18,7 +18,6 @@
 
 package com.exedio.cope.patch;
 
-import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -50,7 +49,7 @@ public class SchemaPatchTest extends CopeModel4Test
 	{
 		log.listen(Patches.class, "pt");
 		log.listen(SchemaPatch.class, "spt");
-		assertEquals(emptyList(), items());
+		assertEquals(List.of(), items());
 		final PatchesBuilder builder = new PatchesBuilder();
 		final SchemaPatch patch = patch("one");
 		builder.insertAtStart(patch);
@@ -78,7 +77,7 @@ public class SchemaPatchTest extends CopeModel4Test
 	{
 		log.listen(Patches.class, "pt");
 		log.listen(SchemaPatch.class, "spt");
-		assertEquals(emptyList(), items());
+		assertEquals(List.of(), items());
 		final JC ctx = new JC();
 		final PatchesBuilder builder = new PatchesBuilder();
 		final SchemaPatch patch = patch("one", "two", "three");

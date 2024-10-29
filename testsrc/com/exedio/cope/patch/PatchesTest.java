@@ -20,13 +20,13 @@ package com.exedio.cope.patch;
 
 import static com.exedio.cope.junit.Assert.assertFails;
 import static com.exedio.cope.junit.CopeAssert.assertEqualsUnmodifiable;
-import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.exedio.cope.MandatoryViolationException;
 import com.exedio.cope.StringCharSetViolationException;
 import com.exedio.cope.StringLengthViolationException;
 import com.exedio.cope.util.AssertionErrorJobContext;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class PatchesTest
@@ -147,10 +147,10 @@ public class PatchesTest
 		final Patches patches = builder.build();
 
 		assertEqualsUnmodifiable(
-				asList("other1", "other2", "other3", "stale1", "stale2"),
+				List.of("other1", "other2", "other3", "stale1", "stale2"),
 				patches.getIDs());
 		assertEqualsUnmodifiable(
-				asList("other1", "other2", "other3"),
+				List.of("other1", "other2", "other3"),
 				patches.getNonStaleIDs());
 	}
 
