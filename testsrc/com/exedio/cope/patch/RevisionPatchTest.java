@@ -19,7 +19,6 @@
 package com.exedio.cope.patch;
 
 import static com.exedio.cope.SchemaInfo.quoteName;
-import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -51,7 +50,7 @@ public class RevisionPatchTest extends CopeModel4Test
 
 	@Test void test() throws SQLException
 	{
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), runs());
 
 		final HashMap<String, String> env = new HashMap<>();
 		save(new RevisionInfoRevise(

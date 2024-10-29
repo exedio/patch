@@ -24,7 +24,7 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.LogbackException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -63,7 +63,7 @@ public final class LogRule implements AfterEachCallback, ParameterResolver
 
 	public void assertEvents(final String... expectedEvents)
 	{
-		assertEquals(Arrays.asList(expectedEvents), actualEvents);
+		assertEquals(List.of(expectedEvents), actualEvents);
 		actualEvents.clear();
 	}
 

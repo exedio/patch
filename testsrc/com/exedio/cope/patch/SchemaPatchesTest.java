@@ -19,11 +19,11 @@
 package com.exedio.cope.patch;
 
 import static com.exedio.cope.junit.Assert.assertFails;
-import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 import com.exedio.cope.StringLengthViolationException;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class SchemaPatchesTest
@@ -31,8 +31,8 @@ public class SchemaPatchesTest
 	@Test void getBody()
 	{
 		final SchemaPatch patch = patch("one", "two");
-		assertEquals(asList("one", "two"), asList(patch.getBody()));
-		assertEquals(asList("one", "two"), asList(patch.getBody()));
+		assertEquals(List.of("one", "two"), List.of(patch.getBody()));
+		assertEquals(List.of("one", "two"), List.of(patch.getBody()));
 		assertNotSame(patch.getBody(), patch.getBody());
 	}
 

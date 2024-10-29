@@ -20,8 +20,6 @@ package com.exedio.cope.patch;
 
 import static com.exedio.cope.junit.Assert.assertFails;
 import static java.time.Month.AUGUST;
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -71,8 +69,8 @@ public class PatchTest extends CopeModel4Test
 	@Test void one(final LogRule log)
 	{
 		log.listen(Patches.class);
-		assertEquals(emptyList(), items());
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), items());
+		assertEquals(List.of(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("one"));
 		final Patches patches = builder.build();
@@ -101,8 +99,8 @@ public class PatchTest extends CopeModel4Test
 		log.assertEvents();
 		assertEquals(0, run(patches, JobContexts.EMPTY));
 		log.assertEvents("INFO run initiated by PatchTestInitiator");
-		assertEquals(asList(one), items());
-		assertEquals(asList(runOne), runs());
+		assertEquals(List.of(one), items());
+		assertEquals(List.of(runOne), runs());
 		assertEquals(true, isDone(patches));
 	}
 
@@ -110,8 +108,8 @@ public class PatchTest extends CopeModel4Test
 	@Test void oneWithListener(final LogRule log)
 	{
 		log.listen(Patches.class);
-		assertEquals(emptyList(), items());
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), items());
+		assertEquals(List.of(), runs());
 		final TestPatchesDoneListener listener = new TestPatchesDoneListener();
 		final PatchesBuilder builder = new PatchesBuilder().withDoneListener(listener);
 		builder.insertAtStart(newSamplePatch("one"));
@@ -136,8 +134,8 @@ public class PatchTest extends CopeModel4Test
 	@Test void oneNonTx(final LogRule log)
 	{
 		log.listen(Patches.class);
-		assertEquals(emptyList(), items());
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), items());
+		assertEquals(List.of(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatchNonTx("one"));
 		final Patches patches = builder.build();
@@ -169,16 +167,16 @@ public class PatchTest extends CopeModel4Test
 		log.assertEvents();
 		assertEquals(0, run(patches, JobContexts.EMPTY));
 		log.assertEvents("INFO run initiated by PatchTestInitiator");
-		assertEquals(asList(one), items());
-		assertEquals(asList(runOne), runs());
+		assertEquals(List.of(one), items());
+		assertEquals(List.of(runOne), runs());
 		assertEquals(true, isDone(patches));
 	}
 
 	@Test void two(final LogRule log)
 	{
 		log.listen(Patches.class);
-		assertEquals(emptyList(), items());
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), items());
+		assertEquals(List.of(), runs());
 		final JC ctx = new JC();
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("two"));
@@ -222,8 +220,8 @@ public class PatchTest extends CopeModel4Test
 		assertEquals(0, run(patches, ctx));
 		log.assertEvents("INFO run initiated by PatchTestInitiator");
 		ctx.assertIt("");
-		assertEquals(asList(one, two), items());
-		assertEquals(asList(runOne, runTwo), runs());
+		assertEquals(List.of(one, two), items());
+		assertEquals(List.of(runOne, runTwo), runs());
 		assertEquals(true, isDone(patches));
 
 		final PatchesBuilder builder2 = new PatchesBuilder();
@@ -265,27 +263,27 @@ public class PatchTest extends CopeModel4Test
 
 	@Test void empty()
 	{
-		assertEquals(emptyList(), items());
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), items());
+		assertEquals(List.of(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		final Patches patches = builder.build();
 		assertEquals(true, isDone(patches));
 
 		assertEquals(0, run(patches, JobContexts.EMPTY));
-		assertEquals(asList(), items());
-		assertEquals(asList(), runs());
+		assertEquals(List.of(), items());
+		assertEquals(List.of(), runs());
 		assertEquals(true, isDone(patches));
 
 		assertEquals(0, run(patches, JobContexts.EMPTY));
-		assertEquals(asList(), items());
-		assertEquals(asList(), runs());
+		assertEquals(List.of(), items());
+		assertEquals(List.of(), runs());
 		assertEquals(true, isDone(patches));
 	}
 
 	@Test void emptyWithListener()
 	{
-		assertEquals(emptyList(), items());
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), items());
+		assertEquals(List.of(), runs());
 		final TestPatchesDoneListener listener = new TestPatchesDoneListener();
 		final PatchesBuilder builder = new PatchesBuilder().withDoneListener(listener);
 		final Patches patches = builder.build();
@@ -298,7 +296,7 @@ public class PatchTest extends CopeModel4Test
 	@Test void preempt(final LogRule log)
 	{
 		log.listen(Patches.class);
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatchNonTx("nonTx"));
 		builder.insertAtStart(newSamplePatch("two"));
@@ -366,7 +364,7 @@ public class PatchTest extends CopeModel4Test
 	@Test void preemptWithListener(final LogRule log)
 	{
 		log.listen(Patches.class);
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatchNonTx("nonTx"));
 		builder.insertAtStart(newSamplePatch("two"));
@@ -390,7 +388,7 @@ public class PatchTest extends CopeModel4Test
 	@Test void preemptSingle(final LogRule log)
 	{
 		log.listen(Patches.class);
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatchNonTx("nonTx"));
 		builder.insertAtStart(newSamplePatch("theBadPatch"));
@@ -425,8 +423,8 @@ public class PatchTest extends CopeModel4Test
 	@SuppressWarnings({"DuplicateExpressions", "RedundantSuppression"})
 	@Test void failure(final ClockRule clock)
 	{
-		assertEquals(emptyList(), items());
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), items());
+		assertEquals(List.of(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch("fail"));
 		builder.insertAtStart(newSamplePatch("ok"));
@@ -461,8 +459,8 @@ public class PatchTest extends CopeModel4Test
 			"run by another thread (may be on another server). Mutex has been locked for running the " +
 			"2 patches of stage 0.",
 			UniqueViolationException.class);
-		assertEquals(asList(ok), items());
-		assertEquals(asList(runOk), runs());
+		assertEquals(List.of(ok), items());
+		assertEquals(List.of(runOk), runs());
 		assertEquals(false, isDone(patches));
 
 		PatchMutex.release();
@@ -470,16 +468,16 @@ public class PatchTest extends CopeModel4Test
 			run(patches, JobContexts.EMPTY),
 			RuntimeException.class,
 			"failed");
-		assertEquals(asList(ok), items());
-		assertEquals(asList(runOk), runs());
+		assertEquals(List.of(ok), items());
+		assertEquals(List.of(runOk), runs());
 		assertEquals(false, isDone(patches));
 	}
 
 	@SuppressWarnings({"DuplicateExpressions", "RedundantSuppression"})
 	@Test void failureNonTx(final ClockRule clock)
 	{
-		assertEquals(emptyList(), items());
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), items());
+		assertEquals(List.of(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatchNonTx("fail"));
 		builder.insertAtStart(newSamplePatchNonTx("ok"));
@@ -516,8 +514,8 @@ public class PatchTest extends CopeModel4Test
 			"run by another thread (may be on another server). Mutex has been locked for running the " +
 			"2 patches of stage 0.",
 			UniqueViolationException.class);
-		assertEquals(asList(ok, fail1), items());
-		assertEquals(asList(runOk), runs());
+		assertEquals(List.of(ok, fail1), items());
+		assertEquals(List.of(runOk), runs());
 		assertEquals(false, isDone(patches));
 
 		PatchMutex.release();
@@ -543,7 +541,7 @@ public class PatchTest extends CopeModel4Test
 	@Test void suppressedRun(final LogRule log)
 	{
 		log.listen(Patches.class);
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), runs());
 		final JC ctx = new JC();
 		final PatchesBuilder builder = new PatchesBuilder();
 		final SamplePatch suppressed;
@@ -567,7 +565,7 @@ public class PatchTest extends CopeModel4Test
 		ctx.assertIt(
 				"stop()" +
 				"stop()" + "message(run s0 1/1 one)" + "progress()" );
-		assertEquals(asList("one"), runIds());
+		assertEquals(List.of("one"), runIds());
 		assertEquals(true, isDone(patches));
 
 		log.assertEvents();
@@ -576,7 +574,7 @@ public class PatchTest extends CopeModel4Test
 				"INFO run initiated by PatchTestInitiator",
 				"INFO s0 skipped suppressed twoSuppressed");
 		ctx.assertIt("");
-		assertEquals(asList("one"), runIds());
+		assertEquals(List.of("one"), runIds());
 		assertEquals(true, isDone(patches));
 
 		suppressed.isSuppressedResult(IsSuppressedResult.SUPER);
@@ -594,14 +592,14 @@ public class PatchTest extends CopeModel4Test
 		ctx.assertIt(
 				"stop()" +
 				"stop()" + "message(run s0 1/1 twoSuppressed)" + "progress()" );
-		assertEquals(asList("one", "twoSuppressed"), runIds());
+		assertEquals(List.of("one", "twoSuppressed"), runIds());
 		assertEquals(true, isDone(patches));
 	}
 
 	@Test void suppressedPreempt(final LogRule log)
 	{
 		log.listen(Patches.class);
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), runs());
 		final JC ctx = new JC();
 		final PatchesBuilder builder = new PatchesBuilder();
 		final SamplePatch suppressed;
@@ -621,7 +619,7 @@ public class PatchTest extends CopeModel4Test
 				"INFO s0 mutex release");
 		ctx.assertIt(
 				"" );
-		assertEquals(asList("one"), runIds());
+		assertEquals(List.of("one"), runIds());
 		assertEquals(true, isDone(patches));
 
 		log.assertEvents();
@@ -630,7 +628,7 @@ public class PatchTest extends CopeModel4Test
 				"INFO preempt initiated by PatchTestInitiator",
 				"INFO s0 skipped 1 suppressed patches");
 		ctx.assertIt("");
-		assertEquals(asList("one"), runIds());
+		assertEquals(List.of("one"), runIds());
 		assertEquals(true, isDone(patches));
 
 		suppressed.isSuppressedResult(IsSuppressedResult.SUPER);
@@ -644,7 +642,7 @@ public class PatchTest extends CopeModel4Test
 				"INFO s0 mutex release");
 		ctx.assertIt(
 				"" );
-		assertEquals(asList("one", "twoSuppressed"), runIds());
+		assertEquals(List.of("one", "twoSuppressed"), runIds());
 		assertEquals(true, isDone(patches));
 	}
 
@@ -652,7 +650,7 @@ public class PatchTest extends CopeModel4Test
 	{
 		final String id = "staleID";
 
-		assertEquals(emptyList(), items());
+		assertEquals(List.of(), items());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(newSamplePatch(id));
 		final Patches patches = builder.build();
@@ -681,7 +679,7 @@ public class PatchTest extends CopeModel4Test
 
 	@Test void staleError()
 	{
-		assertEquals(emptyList(), items());
+		assertEquals(List.of(), items());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertAtStart(Patches.stale("staleID"));
 		final Patches patches = builder.build();
@@ -691,7 +689,7 @@ public class PatchTest extends CopeModel4Test
 			RuntimeException.class,
 			"stale patch >staleID< is supposed to been run already, " +
 			"therefore cannot be run again.");
-		assertEquals(emptyList(), items());
+		assertEquals(List.of(), items());
 		assertEquals(false, isDone(patches));
 	}
 
@@ -705,7 +703,7 @@ public class PatchTest extends CopeModel4Test
 
 	@Test void insertStaleFromResource() throws IOException
 	{
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), runs());
 		final PatchesBuilder builder = new PatchesBuilder();
 		builder.insertStaleFromResource(PatchTest.class);
 		final Patches patches = builder.build();
@@ -721,7 +719,7 @@ public class PatchTest extends CopeModel4Test
 
 	@Test void withStaleFromResource()
 	{
-		assertEquals(emptyList(), runs());
+		assertEquals(List.of(), runs());
 		final PatchesBuilder builder = new PatchesBuilder().withStaleFromResource(PatchTest.class);
 		final Patches patches = builder.build();
 		preempt(patches);
