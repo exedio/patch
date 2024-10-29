@@ -40,11 +40,7 @@ public abstract class SchemaPatch implements Patch
 {
 	private static final Logger logger = LoggerFactory.getLogger(SchemaPatch.class);
 
-	@Override
-	public void check()
-	{
-		getBodyInternal();
-	}
+	private final String[] body;
 
 	@Override
 	public final boolean isTransactionally()
@@ -99,22 +95,10 @@ public abstract class SchemaPatch implements Patch
 	 * The second statement will fail,
 	 * because there is no column {@code stock} but only {@code supply}.
 	 */
-	protected abstract String[] computeBody();
-
-	public final String[] getBody()
+	protected SchemaPatch(final String[] body)
 	{
-		return Arrays.copyOf(getBodyInternal());
-	}
-
-	private String[] body = null;
-
-	private String[] getBodyInternal()
-	{
-		if(body!=null)
-			return body;
-
-		final String[] body =
-				requireNonEmptyAndCopy(computeBody(), "body");
+		this.body =
+				requireNonEmptyAndCopy(body, "body");
 		for(int i = 0; i<body.length; i++)
 		{
 			try
@@ -126,16 +110,17 @@ public abstract class SchemaPatch implements Patch
 				throw new IllegalArgumentException("body[" + i + "]: " + e.getMessageWithoutFeature(), e);
 			}
 		}
+	}
 
-		this.body = body;
-		return body;
+	public final String[] getBody()
+	{
+		return Arrays.copyOf(body);
 	}
 
 	@Override
 	public final void run(final JobContext ctx)
 	{
 		final String id = getID();
-		final String[] body = getBodyInternal();
 		final Model model = SchemaPatchRun.TYPE.getModel();
 
 		if(logger.isInfoEnabled())

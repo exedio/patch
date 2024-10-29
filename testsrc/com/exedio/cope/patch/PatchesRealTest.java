@@ -67,6 +67,6 @@ public class PatchesRealTest extends CopeModel4Test
 
 	private static SamplePatch newSamplePatch(final String id)
 	{
-		return new SamplePatch(MODEL, id, null, true);
+		return new SamplePatch(MODEL, id, true);
 	}
 }

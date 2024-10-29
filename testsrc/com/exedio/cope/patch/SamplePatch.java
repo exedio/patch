@@ -30,18 +30,15 @@ public class SamplePatch implements Patch
 {
 	private final Model model;
 	private final String id;
-	private final String checkExceptionMessage;
 	private final boolean isTransactionally;
 
 	SamplePatch(
 			final Model model,
 			final String id,
-			final String checkExceptionMessage,
 			final boolean isTransactionally)
 	{
 		this.model = model;
 		this.id = id;
-		this.checkExceptionMessage = checkExceptionMessage;
 		this.isTransactionally = isTransactionally;
 	}
 
@@ -55,13 +52,6 @@ public class SamplePatch implements Patch
 	public int getStage()
 	{
 		return 0;
-	}
-
-	@Override
-	public void check()
-	{
-		if(checkExceptionMessage!=null)
-			throw new RuntimeException(checkExceptionMessage);
 	}
 
 

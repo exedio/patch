@@ -21,7 +21,6 @@ package com.exedio.cope.patch;
 import static com.exedio.cope.junit.Assert.assertFails;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 import com.exedio.cope.StringLengthViolationException;
@@ -37,57 +36,41 @@ public class SchemaPatchesTest
 		assertNotSame(patch.getBody(), patch.getBody());
 	}
 
-	@Test void getBodyNull()
-	{
-		final SchemaPatch patch = patch((String[])null);
-		assertFails(
-			patch::getBody,
-			NullPointerException.class, "body");
-	}
-
 	@Test void nullBody()
 	{
-		final PatchesBuilder builder = new PatchesBuilder();
-		final SchemaPatch patch = patch((String[])null);
 		assertFails(() ->
-			builder.insertAtStart(patch),
+			patch((String[])null),
 			NullPointerException.class, "body");
 	}
 
 	@Test void emptyBody()
 	{
-		final PatchesBuilder builder = new PatchesBuilder();
-		final SchemaPatch patch = patch();
+		//noinspection Convert2MethodRef
 		assertFails(() ->
-			builder.insertAtStart(patch),
+			patch(),
 			IllegalArgumentException.class,
 			"body must not be empty");
 	}
 
 	@Test void nullBodyElement()
 	{
-		final PatchesBuilder builder = new PatchesBuilder();
-		final SchemaPatch patch = patch("one", null);
 		assertFails(() ->
-			builder.insertAtStart(patch),
+			patch("one", null),
 			NullPointerException.class,
 			"body[1]");
 	}
 
 	@Test void emptyBodyElement()
 	{
-		final PatchesBuilder builder = new PatchesBuilder();
-		final SchemaPatch patch = patch("one", "");
 		assertFails(() ->
-			builder.insertAtStart(patch),
+			patch("one", ""),
 			IllegalArgumentException.class,
 			"body[1] must not be empty");
 	}
 
 	@Test void longBodyElement()
 	{
-		final PatchesBuilder builder = new PatchesBuilder();
-		final SchemaPatch patch = patch("one", "X".repeat(10*1000*1000 + 1));
+		final String secondBody = "X".repeat(10*1000*1000 + 1);
 		final String valueTruncated =
 				"'" +
 				"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" +
@@ -95,7 +78,7 @@ public class SchemaPatchesTest
 				"XXXXXXXXXXXXXXXXXXXX'" +
 				" (truncated, was 10000001 characters)";
 		final Exception e = assertFails(() ->
-			builder.insertAtStart(patch),
+			patch("one", secondBody),
 			IllegalArgumentException.class,
 			"body[1]: length violation, " +
 			valueTruncated + " is too long, " +
@@ -112,10 +95,8 @@ public class SchemaPatchesTest
 
 	private static SchemaPatch patch(final String... body)
 	{
-		return new SchemaPatch()
+		return new SchemaPatch(body)
 		{
-			boolean gotBody = false;
-
 			@Override
 			public String getID()
 			{
@@ -126,15 +107,6 @@ public class SchemaPatchesTest
 			public int getStage()
 			{
 				return 0;
-			}
-
-			@Override
-			protected String[] computeBody()
-			{
-				assertFalse(gotBody, "gotBody");
-				gotBody = true;
-
-				return body;
 			}
 		};
 	}

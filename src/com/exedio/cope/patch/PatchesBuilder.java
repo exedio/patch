@@ -42,7 +42,6 @@ public final class PatchesBuilder
 		PatchRun.patch.check(id);
 		if(!id.equals(id.trim()))
 			throw new IllegalArgumentException("id >" + id + "< is not trimmed");
-		patch.check();
 
 		assertNotExhausted();
 

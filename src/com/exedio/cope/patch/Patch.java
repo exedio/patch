@@ -26,14 +26,6 @@ public interface Patch
 	int getStage();
 
 	/**
-	 * The default implementation is empty.
-	 */
-	default void check()
-	{
-		// empty
-	}
-
-	/**
 	 * If this method returns {@code false} this patch is treated normally.
 	 * The default implementation returns {@code false}.
 	 * <p>
