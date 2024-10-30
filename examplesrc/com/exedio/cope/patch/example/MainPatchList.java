@@ -36,6 +36,19 @@ final class MainPatchList
 		// new patches on top
 		add(new AbstractPatch()
 		{
+			@Override
+			public void run(final JobContext ctx)
+			{
+			}
+
+			@Override
+			public String getID()
+			{
+				return "<h1>HTML in Patch ID</h1>";
+			}
+		});
+		add(new AbstractPatch()
+		{
 
 			@Override
 			public void run(final JobContext context)
