@@ -1,5 +1,6 @@
 package com.exedio.cope.patch;
 
+import com.exedio.cope.util.XMLEncoder;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -42,7 +43,7 @@ final class Out
 
 	void write(final String s)
 	{
-		bf.append(s);
+		XMLEncoder.append(bf, s);
 	}
 
 	void write(final int i)
