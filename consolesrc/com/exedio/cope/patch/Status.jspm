@@ -177,6 +177,8 @@ final class Status_Jspm
 		}
 %>
 		</table>
+		<hr>
+		<small><a href="copsResourceStatus.html" target="_blank">Resource Status</a></small>
 	</body>
 </html>
 <%
