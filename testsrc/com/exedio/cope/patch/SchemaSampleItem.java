@@ -38,6 +38,12 @@ final class SchemaSampleItem extends Item
 	@Wrapper(wrap="get", visibility=PACKAGE)
 	private static final StringField content = new StringField().toFinal();
 
+	static String select()
+	{
+		return
+				"SELECT " + q(getPrimaryKeyColumnName(TYPE)) + " FROM " + q(getTableName(TYPE));
+	}
+
 	static String create(final String contentValue)
 	{
 		return

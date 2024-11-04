@@ -36,6 +36,27 @@ public class SchemaPatchesTest
 		assertNotSame(patch.getBody(), patch.getBody());
 	}
 
+	@Test void nullCheck()
+	{
+		assertFails(() ->
+				patchCheck((String[])null),
+				NullPointerException.class, "checks");
+	}
+
+	@Test void nullCheckElement()
+	{
+		assertFails(() ->
+				patchCheck("one", null),
+				NullPointerException.class, "checks[1]");
+	}
+
+	@Test void emptyCheckElement()
+	{
+		assertFails(() ->
+				patchCheck("one", ""),
+				IllegalArgumentException.class, "checks[1] must not be empty");
+	}
+
 	@Test void nullBody()
 	{
 		assertFails(() ->
@@ -96,6 +117,24 @@ public class SchemaPatchesTest
 	private static SchemaPatch patch(final String... body)
 	{
 		return new SchemaPatch(body)
+		{
+			@Override
+			public String getID()
+			{
+				return "id";
+			}
+
+			@Override
+			public int getStage()
+			{
+				return 0;
+			}
+		};
+	}
+
+	private static void patchCheck(final String... checks)
+	{
+		new SchemaPatch(checks, new String[]{"body"})
 		{
 			@Override
 			public String getID()

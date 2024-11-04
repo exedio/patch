@@ -31,6 +31,7 @@ import com.exedio.cope.misc.Arrays;
 import com.exedio.cope.util.JobContext;
 import com.exedio.dsmf.SQLRuntimeException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import org.slf4j.Logger;
@@ -39,7 +40,9 @@ import org.slf4j.LoggerFactory;
 public abstract class SchemaPatch implements Patch
 {
 	private static final Logger logger = LoggerFactory.getLogger(SchemaPatch.class);
+	public static final String[] EMPTY_STRINGS = {};
 
+	private final String[] checks;
 	private final String[] body;
 
 	@Override
@@ -97,6 +100,17 @@ public abstract class SchemaPatch implements Patch
 	 */
 	protected SchemaPatch(final String[] body)
 	{
+		this(EMPTY_STRINGS, body);
+	}
+
+	protected SchemaPatch(final String[] checks, final String[] body)
+	{
+		//noinspection DataFlowIssue
+		this.checks =
+				checks==null || checks.length>0
+				? requireNonEmptyAndCopy(checks, "checks")
+				: null;
+
 		this.body =
 				requireNonEmptyAndCopy(body, "body");
 		for(int i = 0; i<body.length; i++)
@@ -122,6 +136,44 @@ public abstract class SchemaPatch implements Patch
 	{
 		final String id = getID();
 		final Model model = SchemaPatchRun.TYPE.getModel();
+
+		if(checks!=null)
+		{
+			try(Connection connection = SchemaInfo.newConnection(model))
+			{
+				for(int position = 0; position<checks.length; position++)
+				{
+					final String sql = checks[position];
+					if(logger.isInfoEnabled())
+						logger.info("check {}/{}: {}", position+1, checks.length, sql);
+					if(ctx.supportsMessage())
+						ctx.setMessage("SchemaPatch check " + (position+1) + '/' + checks.length + ' ' + sql);
+
+					try(Statement statement = connection.createStatement();
+						 ResultSet rs = statement.executeQuery(sql))
+					{
+						if(!rs.next())
+							throw new IllegalStateException(
+									"Check failed, returned empty result set: " + sql);
+						final long result = rs.getLong(1);
+						if(rs.wasNull())
+							throw new IllegalStateException(
+									"Check failed, returned null: " + sql);
+						if(result!=0)
+							throw new IllegalStateException(
+									"Check failed, returned " + result + ": " + sql);
+						if(rs.next())
+							throw new IllegalStateException(
+									"Check failed, returned result set with more than one line: " + sql);
+					}
+					ctx.incrementProgress();
+				}
+			}
+			catch(final SQLException e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
 
 		if(logger.isInfoEnabled())
 			logger.info("executing {} statements for {}", body.length, id);
