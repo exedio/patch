@@ -54,7 +54,6 @@
 		<dependency org="org.junit.jupiter"  name="junit-jupiter-engine"   rev="5.&junit.version.minor;" conf="test->default" />
 		<dependency org="org.junit.platform" name="junit-platform-console" rev="1.&junit.version.minor;" conf="test->default" />
 		<dependency org="org.hamcrest" name="hamcrest-core" rev="2.1" conf="test->default; ide->default,sources" />
-		<dependency org="org.apiguardian"    name="apiguardian-api"        rev="1.0.0" conf="test->default" />
 		<dependency org="com.google.code.findbugs" name="jsr305" rev="3.0.2" conf="jsr305->default" />
 		<dependency org="javax.servlet" name="javax.servlet-api" rev="4.0.1" conf="console->default; ide->default,sources" />
 		<dependency org="com.exedio" name="cops"     rev="394" conf="console->runtime; ide->runtime,sources,changelog" />
