@@ -10,9 +10,9 @@ String debianSnapshot = '20220418'
 @Field
 String jdk = 'openjdk-17'
 @Field
-String idea = '2023.2'
+String idea = '2023.3.8'
 @Field
-String ideaSHA256 = 'b1a5c267ca86850764b0541bee0c27af7d2082e55516e95a0c8d30539571735c'
+String ideaSHA256 = '0f611af8539a0a1744e2d0083930aef128ece20a4086631240bfa6228677614e'
 
 String projectName = env.JOB_NAME.substring(0, env.JOB_NAME.indexOf("/")) // depends on name and location of multibranch pipeline in jenkins
 boolean isRelease = env.BRANCH_NAME=="master"
