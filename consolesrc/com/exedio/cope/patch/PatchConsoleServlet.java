@@ -112,22 +112,22 @@ public abstract class PatchConsoleServlet extends CopsServlet
 
 			if (CONNECT_ACTION.equals(action))
 			{
-				connect();
+				assureConnectToken();
 			}
 			else if (RELEASE_MUTEX_ACTION.equals(action))
 			{
-				connect();
+				assureConnectToken();
 				releasePatchMutex();
 			}
 			else if (PREEMPT_ACTION.equals(action))
 			{
-				connect();
+				assureConnectToken();
 				final Patches patches = getPatches();
 				patches.preempt(ServletPatchInitiatorUtil.create(getServletConfig(), request));
 			}
 			else if (PREEMPT_SINGLE_ACTION.equals(action))
 			{
-				connect();
+				assureConnectToken();
 				final String id = request.getParameter(PARAM_PATCH_ID);
 				if (id == null)
 					throw new NullPointerException("Request parameter " + PARAM_PATCH_ID + " must not be null");
@@ -221,7 +221,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 		final PrintWriterPatchExecution execution = new PrintWriterPatchExecution(response.getWriter());
 		try
 		{
-			connect();
+			assureConnectToken();
 			final Patches patches = getPatches();
 			response.getWriter()
 						.println("Start patching, this will continue even if connection is interrupted.");
@@ -248,12 +248,13 @@ public abstract class PatchConsoleServlet extends CopsServlet
 
 	boolean isConnected()
 	{
-		return connectToken != null;
+		return getModel().isConnected();
 	}
 
-	void connect()
+	@SuppressWarnings("SynchronizedMethod")
+	synchronized void assureConnectToken()
 	{
-		if (!isConnected())
+		if (connectToken == null)
 		{
 			connectToken = ServletUtil.getConnectedModel(this);
 			getModel().reviseIfSupportedAndAutoEnabled();
@@ -263,10 +264,14 @@ public abstract class PatchConsoleServlet extends CopsServlet
 	@Override
 	public final void destroy()
 	{
-		if (connectToken != null)
+		//noinspection SynchronizeOnThis
+		synchronized (this)
 		{
-			connectToken.returnStrictly();
-			connectToken = null;
+			if (connectToken != null)
+			{
+				connectToken.returnStrictly();
+				connectToken = null;
+			}
 		}
 		super.destroy();
 	}
@@ -288,6 +293,8 @@ public abstract class PatchConsoleServlet extends CopsServlet
 	{
 		if (!isConnected())
 			return "Unknown (not connected)";
+		// model may be connected but this servlet may have no token yet, so call connect()
+		assureConnectToken();
 		final Model model = getModel();
 		try (TransactionTry tx = model.startTransactionTry("AbstractPatchServlet#getPatchMutexInfo"))
 		{
@@ -304,6 +311,8 @@ public abstract class PatchConsoleServlet extends CopsServlet
 	{
 		if (!isConnected())
 			return "Unknown (not connected)";
+		// model may be connected but this servlet may have no token yet, so call connect()
+		assureConnectToken();
 		// we could return Node.COLOR.name() instead of the switch, but then we miss when this enum is refactored
 		final Color cumulativeColor = getModel().getVerifiedSchema().getCumulativeColor();
 		return switch(cumulativeColor)
@@ -340,6 +349,8 @@ public abstract class PatchConsoleServlet extends CopsServlet
 
 		if (isConnected())
 		{
+			// model may be connected but this servlet may have no token yet, so call connect()
+			assureConnectToken();
 			final Model model = getModel();
 			try (final TransactionTry tx = model.startTransactionTry("AbstractPatchServlet#getPatchList"))
 			{

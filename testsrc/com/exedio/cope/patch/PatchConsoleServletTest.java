@@ -477,6 +477,13 @@ public class PatchConsoleServletTest  extends CopeModel4Test
 		{
 			return connectedOverwrite == null ? super.isConnected() : connectedOverwrite;
 		}
+
+		@Override
+		synchronized void assureConnectToken()
+		{
+			// do nothing, TestServlet can't claim a connectToken in test run as MODEL is not visible and
+			// ServletUtil.getConnectedModel(Servlet) will fail
+		}
 	}
 
 	private static ServletConfig createServletConfig()
