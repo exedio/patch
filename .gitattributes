@@ -7,6 +7,8 @@
 *.html diff=html
 *.css diff=css
 
+exedio-cope-patch-log.txt merge=union
+
 # Allows diffing jars by diffing their manifests. To make it work do:
 #
 #   git config --global diff.jar.textconv /path/to/executable
