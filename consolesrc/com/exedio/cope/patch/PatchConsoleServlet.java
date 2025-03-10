@@ -535,10 +535,15 @@ public abstract class PatchConsoleServlet extends CopsServlet
 		{
 			stage = patchRun.getStage();
 			transactionally = patchRun.getIsTransactionally();
-			host = patchRun.getHost();
-			savepoint = patchRun.getSavepoint();
+			host = replaceNull(patchRun.getHost());
+			savepoint = replaceNull(patchRun.getSavepoint());
 			finished = patchRun.getFinished();
 			elapsed = patchRun.getElapsed();
+		}
+
+		private static String replaceNull(final String s)
+		{
+			return s==null ? "NULL" : s;
 		}
 
 		int getStage()
