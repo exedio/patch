@@ -67,6 +67,8 @@ try
 				testResults: 'build/testresults/*.xml',
 				skipPublishingChecks: true
 			)
+			assertGitUnchanged()
+
 			archiveArtifacts fingerprint: true, artifacts: 'build/success/*'
 			plot(
 				csvFileName: 'plots.csv',
