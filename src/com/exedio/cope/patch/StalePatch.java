@@ -20,6 +20,7 @@ package com.exedio.cope.patch;
 
 import com.exedio.cope.util.JobContext;
 
+@SuppressWarnings("ClassCanBeRecord")
 final class StalePatch implements Patch
 {
 	private final String id;
