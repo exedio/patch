@@ -1,6 +1,5 @@
 package com.exedio.cope.patch;
 
-@SuppressWarnings("ClassCanBeRecord")
 public final class PatchInitiator
 {
 	private final String initiator;
