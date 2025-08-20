@@ -57,6 +57,7 @@ public final class TransactionLeakFilter implements Filter
 		doFilter((HttpServletRequest)request, (HttpServletResponse)response, chain);
 	}
 
+	@SuppressWarnings("MethodMayBeStatic") // false positive, bug in idea
 	private void doFilter(
 			final HttpServletRequest request,
 			final HttpServletResponse response,
@@ -143,14 +144,14 @@ public final class TransactionLeakFilter implements Filter
 		private void log(final String name)
 		{
 			final Transaction tx = model.currentTransaction();
-			logger.warn(String.format(
-					"transaction leaked: %d (%s) at %s-%s-%s in %s ()",
+			logger.warn(
+					"transaction leaked: {} ({}) at {}-{}-{} in {} ()",
 					tx.getID(),
 					tx.getName(),
 					request.getContextPath(),
 					request.getServletPath(),
 					request.getPathInfo(),
-					name ));
+					name);
 		}
 	}
 }

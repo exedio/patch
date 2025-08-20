@@ -12,9 +12,9 @@ String debianSnapshot = '20220418'
 @Field
 String jdk = 'openjdk-17'
 @Field
-String idea = '2023.3.8'
+String idea = '2025.2-PATCHED'
 @Field
-String ideaSHA256 = '0f611af8539a0a1744e2d0083930aef128ece20a4086631240bfa6228677614e'
+String ideaSHA256 = 'd530962a6aabcbf2387c14c1ae7641e1bfa18d8fa435819a2f797a34a0ecf83c'
 
 boolean isRelease = env.BRANCH_NAME=="master"
 

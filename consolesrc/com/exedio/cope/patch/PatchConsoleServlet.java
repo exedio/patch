@@ -428,6 +428,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 	 * the database PatchRun of a patch and the SchemaPatchRun's of a patch.
 	 * All sub views are optional.
 	 */
+	@SuppressWarnings("ClassCanBeRecord")
 	static class PatchView
 	{
 		private final String id;

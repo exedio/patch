@@ -2,6 +2,7 @@ package com.exedio.cope.patch.example;
 
 import java.sql.SQLException;
 
+@SuppressWarnings("unused") // OK: is referred to by hsqldb CREATE FUNCTION
 public final class HSQLSleep
 {
 	private HSQLSleep()
