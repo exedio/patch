@@ -33,7 +33,7 @@
 		<conf visibility="private" name="ide" extends="runtime,test"
 				description="classpath for IDEs such as Eclipse and IntelliJ, includes java sources and changelogs" />
 	</configurations>
-	<publications>
+	<publications defaultconf="SPECIFY_A_CONFIGURATION">
 		<artifact name="&artifacts.name;" conf="runtime"   type="jar" ext="jar" />
 		<artifact name="&artifacts.name;-console" conf="console"   type="jar" ext="jar" />
 		<artifact name="&artifacts.name;" conf="sources"   type="src" ext="zip" />
