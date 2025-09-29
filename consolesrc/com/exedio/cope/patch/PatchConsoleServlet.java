@@ -1,5 +1,6 @@
 package com.exedio.cope.patch;
 
+import static com.exedio.cops.Cop.isPost;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
 import com.exedio.cope.Model;
@@ -104,7 +105,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 		// Post requests are actions
 		// after action is performed, we send a redirect to root path of this servlet,
 		// exception: executions like run or preempt will send a plain text output of the execution
-		if ("POST".equals(request.getMethod()))
+		if (isPost(request))
 		{
 			String action = request.getPathInfo();
 			if (action != null && action.startsWith("/"))
