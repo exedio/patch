@@ -5,7 +5,7 @@
 			cookies="false">
 
 	<Parameter
-			name="root.com.exedio.cope.servletutil.ServletSource.propertiesFile"
+			name="root.com.exedio.cope.util.servlet.ServletSource.propertiesFile"
 			value="@PROPERTIES@"
 	/>
 
