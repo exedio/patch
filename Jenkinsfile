@@ -16,7 +16,7 @@ String idea = '2025.2-PATCHED'
 @Field
 String ideaSHA256 = 'd530962a6aabcbf2387c14c1ae7641e1bfa18d8fa435819a2f797a34a0ecf83c'
 
-boolean isRelease = env.BRANCH_NAME=="master"
+boolean isRelease = env.BRANCH_NAME=="master" || env.BRANCH_NAME=="main"
 
 Map<String, ?> recordIssuesDefaults = [
 	failOnError         : true,
