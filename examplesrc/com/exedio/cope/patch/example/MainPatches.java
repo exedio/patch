@@ -26,10 +26,10 @@ import com.exedio.cope.misc.ConnectToken;
 import com.exedio.cope.misc.ServletUtil;
 import com.exedio.cope.patch.Patch;
 import com.exedio.cope.patch.PatchInitiator;
-import com.exedio.cope.patch.ServletPatchInitiatorUtil;
 import com.exedio.cope.patch.Patches;
 import com.exedio.cope.patch.PatchesBuilder;
 import com.exedio.cope.patch.SchemaPatch;
+import com.exedio.cope.patch.ServletPatchInitiatorUtil;
 import com.exedio.cope.util.EmptyJobContext;
 import jakarta.servlet.Servlet;
 
