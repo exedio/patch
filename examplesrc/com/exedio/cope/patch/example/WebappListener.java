@@ -28,9 +28,9 @@ import com.exedio.cope.ConnectProperties;
 import com.exedio.cope.misc.ConnectToken;
 import com.exedio.cope.util.servlet.ServletSource;
 import com.exedio.dsmf.Node;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 
 public final class WebappListener implements ServletContextListener
 {

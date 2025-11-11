@@ -31,7 +31,7 @@ import com.exedio.cope.patch.Patches;
 import com.exedio.cope.patch.PatchesBuilder;
 import com.exedio.cope.patch.SchemaPatch;
 import com.exedio.cope.util.EmptyJobContext;
-import javax.servlet.Servlet;
+import jakarta.servlet.Servlet;
 
 public final class MainPatches
 {

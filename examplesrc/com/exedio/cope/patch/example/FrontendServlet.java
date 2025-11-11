@@ -2,9 +2,9 @@ package com.exedio.cope.patch.example;
 
 import java.io.IOException;
 import java.io.Serial;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class FrontendServlet extends HttpServlet
 {
