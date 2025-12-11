@@ -64,7 +64,7 @@
 		<dependency org="jakarta.servlet" name="jakarta.servlet-api" rev="6.0.0" conf="console->default; ide->default,sources" />
 		<dependency org="com.exedio" name="cops"     rev="394" conf="console->runtime; ide->runtime,sources,changelog" />
 		<dependency org="com.exedio" name="jspm"     rev="202" conf="jspm->runtime; ide->changelog" />
-		<dependency org="org.apache.tomcat" name="tomcat" rev="9.0.43" conf="example->default">
+		<dependency org="org.apache.tomcat" name="tomcat" rev="10.1.34" conf="example->default">
 			<artifact name="tomcat" type="tar.gz" />
 		</dependency>
 		<dependency org="com.exedio" name="copeconsole" rev="7051" conf="example->runtime" />

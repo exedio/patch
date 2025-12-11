@@ -9,6 +9,10 @@
 		<jakartaee-migrate file="exedio-cope-src.zip" />
 		<jakartaee-migrate file="exedio-cope-util-jar.jar" otherconfs="runtime,console,example,test" />
 		<jakartaee-migrate file="exedio-cope-util-src.zip" />
+		<javax2jakarta
+				src ="artifacts/lib/example/exedio-cope-console-jar.jar"
+				dest="artifacts/lib/example/exedio-cope-console-jar.jar"
+				profile="servlet" />
 
 		<syncContents from="artifacts/lib" to="../lib">
 			<firstmatchmapper>
