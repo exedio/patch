@@ -169,7 +169,12 @@
 	<target name="jar" depends="jar.runtime, jar.console" />
 
 	<target name="jar.runtime" depends="src.compile">
-		<jar jarfile="build/${artifacts.name}.jar" filesonly="true" duplicate="fail" strict="fail" level="9">
+		<jar
+				jarfile="build/${artifacts.name}.jar"
+				filesonly="true"
+				duplicate="fail"
+				strict="fail"
+				level="9">
 			<fileset dir="build/classes/src" />
 			<manifest>
 				<attribute name="Specification-Title" value="${artifacts.title}" />
@@ -184,7 +189,12 @@
 	</target>
 
 	<target name="jar.console" depends="consolesrc.compile">
-		<jar jarfile="build/${artifacts.name}-console.jar" filesonly="true" duplicate="fail" strict="fail" level="9">
+		<jar
+				jarfile="build/${artifacts.name}-console.jar"
+				filesonly="true"
+				duplicate="fail"
+				strict="fail"
+				level="9">
 			<fileset dir="build/classes/consolesrc" />
 			<manifest>
 				<attribute name="Specification-Title" value="${artifacts.title} console" />
@@ -200,7 +210,12 @@
 
 	<target name="jar.src">
 		<mkdir dir="build" />
-		<zip destfile="build/${artifacts.name}-src.zip" filesonly="true" whenempty="fail" duplicate="fail" level="9">
+		<zip
+				destfile="build/${artifacts.name}-src.zip"
+				filesonly="true"
+				whenempty="fail"
+				duplicate="fail"
+				level="9">
 			<zipfileset dir="${basedir}/src"><include name="**/*.java"/><exclude name="**/*_Jspm.java" /></zipfileset>
 			<zipfileset dir="${basedir}/consolesrc">
 				<include name="**/*.java" />
