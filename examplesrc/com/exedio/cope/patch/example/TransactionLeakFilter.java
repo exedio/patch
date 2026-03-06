@@ -57,7 +57,6 @@ public final class TransactionLeakFilter implements Filter
 		doFilter((HttpServletRequest)request, (HttpServletResponse)response, chain);
 	}
 
-	@SuppressWarnings("MethodMayBeStatic") // false positive, bug in idea
 	private void doFilter(
 			final HttpServletRequest request,
 			final HttpServletResponse response,
