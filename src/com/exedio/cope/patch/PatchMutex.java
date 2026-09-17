@@ -69,7 +69,7 @@ final class PatchMutex extends Item
 			throw new IllegalStateException(
 					"Patch Mutex is locked" +
 					(mutex!=null ? (
-							" since " + ofPattern("uuuu-MM-dd HH:mm:ss", Locale.US).
+							" since " + ofPattern("uuuu-MM-dd HH:mm:ss", Locale.ROOT).
 									format(ofInstant(mutex.getFinished().toInstant(), UTC)) + " (UTC)" +
 							" by " + mutex.getHost())
 					: "") + ". " +
