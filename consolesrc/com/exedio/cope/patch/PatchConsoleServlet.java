@@ -302,7 +302,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 			final List<PatchMutex> seachResult = PatchMutex.TYPE.search();
 			final PatchMutex mutex = seachResult.isEmpty() ? null : seachResult.get(0);
 			return tx.commit( mutex == null ? "None"
-					: String.format(Locale.ENGLISH, "Stage: %d Patches: %d Host: %s Finished: %tF %tT SavePoint: %s",
+					: String.format(Locale.ROOT, "Stage: %d Patches: %d Host: %s Finished: %tF %tT SavePoint: %s",
 							mutex.getStage(), mutex.getNumberOfPatches(), mutex.getHost(), mutex.getFinished(),
 							mutex.getFinished(), mutex.getSavepoint()));
 		}
@@ -660,7 +660,7 @@ public abstract class PatchConsoleServlet extends CopsServlet
 		public void setCompleteness(final double completeness)
 		{
 			super.setCompleteness(completeness);
-			writer.println(String.format(Locale.ENGLISH, "%.1f%%", completeness * 100d));
+			writer.println(String.format(Locale.ROOT, "%.1f%%", completeness * 100d));
 			writer.flush();
 		}
 

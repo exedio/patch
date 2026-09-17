@@ -23,7 +23,7 @@ final class Out
 
 	static SimpleDateFormat createDateFomat()
 	{
-		return new SimpleDateFormat("yyyy-MM-dd'&nbsp;'HH:mm:ss'<small>'.SSS'</small>'", Locale.ENGLISH);
+		return new SimpleDateFormat("yyyy-MM-dd'&nbsp;'HH:mm:ss'<small>'.SSS'</small>'", Locale.ROOT);
 	}
 
 	Out(
