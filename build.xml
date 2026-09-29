@@ -145,6 +145,7 @@
 	<target name="test" depends="testsrc.compile, checkAntIfUnless">
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testtmpdir" />
+		<mkdir dir="build/testhomedir" />
 		<java taskname="junit" fork="yes" dir="${basedir}"
 				failonerror="true"
 				classname="org.junit.platform.console.ConsoleLauncher">
@@ -161,6 +162,7 @@
 			<arg line="--select-class ${test}" if:set="test" />
 			<arg line="--reports-dir build/testresults" />
 			<sysproperty key="java.io.tmpdir" value="${basedir}/build/testtmpdir" />
+			<sysproperty key="user.home"      value="${basedir}/build/testhomedir" />
 			<sysproperty key="java.awt.headless" value="true" />
 			<assertions><enable/></assertions>
 		</java>
